@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tdengine-insight
+  namespace: tdengine
+  labels:
+    app: tdengine-insight
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30880
+    name: http
+  selector:
+    app: tdengine-insight
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdengine-insight
+  namespace: tdengine
+  labels:
+    app: tdengine-insight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tdengine-insight
+  template:
+    metadata:
+      labels:
+        app: tdengine-insight
+    spec:
+      containers:
+      - name: tdengine-insight
+        image: docker.m.daocloud.io/tdengine/insight:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: TAOS_ADDRESS
+          value: "tdengine.tdengine.svc.cluster.local:6030"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

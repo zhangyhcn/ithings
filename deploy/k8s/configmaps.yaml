@@ -1,0 +1,750 @@
+# 创建 configmaps 之前，先把配置文件转换:
+# kubectl create configmap modbus-driver-config --from-file=drivers/modbus/modbus.json -n ithings --dry-run=client -o yaml > deploy/k8s/modbus-driver-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: electric-meter-group-config
+  namespace: ithings
+data:
+  electric-meter-group.json: |
+    {
+      "tenant_id": "tenant-001",
+      "org_id": "org-001",
+      "site_id": "site-001",
+      "namespace_id": "building-a",
+      "remote_transport": {
+        "type": "mqtt",
+        "broker": "tcp://broker.example.com:1883",
+        "username": "user",
+        "password": "password",
+        "client_id": "electric-meter-group-building-a"
+      },
+      "devices": [
+        {
+          "device_instance_id": "meter-001",
+          "device_name": "Main Entrance Electricity Meter",
+          "device_type": "electricity-meter",
+          "poll_interval_ms": 1000,
+          "driver": {
+            "device_instance_id": "meter-001",
+            "driver_name": "modbus-driver",
+            "driver_type": "modbus",
+            "poll_interval_ms": 1000,
+            "zmq": {
+              "enabled": true,
+              "publisher_address": "tcp://*:5555",
+              "topic": "modbus/data"
+            },
+            "logging": {
+              "level": "info",
+              "format": "json"
+            },
+            "custom": {
+              "host": "172.25.219.101",
+              "port": 502,
+              "slave_id": 1,
+              "profile": {
+                "apiVersion": "v1",
+                "name": "electricity-meter-three-phase",
+                "manufacturer": "ABB",
+                "model": "3PH-Meter",
+                "labels": ["electricity", "modbus", "three-phase"],
+                "description": "Three-phase electricity meter",
+                "device_resources": [
+                  {
+                    "name": "voltage_a",
+                    "isHidden": false,
+                    "description": "Phase A voltage",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 0,
+                      "rawType": "INT16",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "V",
+                        "minimum": 0,
+                        "maximum": 500
+                      }
+                    }
+                  },
+                  {
+                    "name": "voltage_b",
+                    "isHidden": false,
+                    "description": "Phase B voltage",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 1,
+                      "rawType": "INT16",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "V",
+                        "minimum": 0,
+                        "maximum": 500
+                      }
+                    }
+                  },
+                  {
+                    "name": "voltage_c",
+                    "isHidden": false,
+                    "description": "Phase C voltage",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 2,
+                      "rawType": "INT16",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "V",
+                        "minimum": 0,
+                        "maximum": 500
+                      }
+                    }
+                  },
+                  {
+                    "name": "current_a",
+                    "isHidden": false,
+                    "description": "Phase A current",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 3,
+                      "rawType": "INT16",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "A",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  {
+                    "name": "current_b",
+                    "isHidden": false,
+                    "description": "Phase B current",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 4,
+                      "rawType": "INT16",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "A",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  {
+                    "name": "current_c",
+                    "isHidden": false,
+                    "description": "Phase C current",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 5,
+                      "rawType": "INT16",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "A",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  {
+                    "name": "power_total",
+                    "isHidden": false,
+                    "description": "Total active power",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 6,
+                      "rawType": "INT32",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "kW",
+                        "minimum": 0,
+                        "maximum": 1000
+                      }
+                    }
+                  },
+                  {
+                    "name": "energy_total",
+                    "isHidden": false,
+                    "description": "Total energy consumption",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 8,
+                      "rawType": "INT32",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "kWh",
+                        "minimum": 0,
+                        "maximum": 999999
+                      }
+                    }
+                  }
+                ],
+                "device_commands": [
+                  {
+                    "name": "reset_energy",
+                    "readWrite": "W",
+                    "resource_operations": [
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "thing_model": {
+            "model_id": "electricity-meter.three-phase.1.0",
+            "model_version": "1.0",
+            "device_type": "electricity-meter",
+            "manufacturer": "ABB",
+            "description": "Three-phase electricity meter",
+            "properties": [
+              {
+                "identifier": "voltage_a",
+                "name": "Voltage Phase A",
+                "type": "float",
+                "unit": "V",
+                "access": "R",
+                "range": [0, 500],
+                "default_value": 0,
+                "description": "Phase A voltage"
+              },
+              {
+                "identifier": "voltage_b",
+                "name": "Voltage Phase B",
+                "type": "float",
+                "unit": "V",
+                "access": "R",
+                "range": [0, 500],
+                "default_value": 0,
+                "description": "Phase B voltage"
+              },
+              {
+                "identifier": "voltage_c",
+                "name": "Voltage Phase C",
+                "type": "float",
+                "unit": "V",
+                "access": "R",
+                "range": [0, 500],
+                "default_value": 0,
+                "description": "Phase C voltage"
+              },
+              {
+                "identifier": "current_a",
+                "name": "Current Phase A",
+                "type": "float",
+                "unit": "A",
+                "access": "R",
+                "range": [0, 100],
+                "default_value": 0,
+                "description": "Phase A current"
+              },
+              {
+                "identifier": "current_b",
+                "name": "Current Phase B",
+                "type": "float",
+                "unit": "A",
+                "access": "R",
+                "range": [0, 100],
+                "default_value": 0,
+                "description": "Phase B current"
+              },
+              {
+                "identifier": "current_c",
+                "name": "Current Phase C",
+                "type": "float",
+                "unit": "A",
+                "access": "R",
+                "range": [0, 100],
+                "default_value": 0,
+                "description": "Phase C current"
+              },
+              {
+                "identifier": "power_total",
+                "name": "Total Power",
+                "type": "float",
+                "unit": "kW",
+                "access": "R",
+                "range": [0, 1000],
+                "default_value": 0,
+                "description": "Total active power"
+              },
+              {
+                "identifier": "energy_total",
+                "name": "Total Energy",
+                "type": "float",
+                "unit": "kWh",
+                "access": "R",
+                "range": [0, 999999],
+                "default_value": 0,
+                "description": "Total energy consumption"
+              }
+            ],
+            "events": [
+              {
+                "identifier": "overload",
+                "name": "Overload Alarm",
+                "level": "ALERT",
+                "output_params": [
+                  {
+                    "identifier": "power_total",
+                    "name": "Current Power",
+                    "type": "float"
+                  }
+                ],
+                "description": "Triggered when power exceeds threshold"
+              },
+              {
+                "identifier": "voltage_abnormal",
+                "name": "Voltage Abnormal",
+                "level": "WARN",
+                "output_params": [
+                  {
+                    "identifier": "voltage_a",
+                    "name": "Voltage A",
+                    "type": "float"
+                  },
+                  {
+                    "identifier": "voltage_b",
+                    "name": "Voltage B",
+                    "type": "float"
+                  },
+                  {
+                    "identifier": "voltage_c",
+                    "name": "Voltage C",
+                    "type": "float"
+                  }
+                ],
+                "description": "Triggered when voltage is out of normal range"
+              }
+            ],
+            "rules": [
+              {
+                "identifier": "overload_alarm",
+                "name": "Overload Alarm Rule",
+                "conditions": [
+                  {
+                    "property_identifier": "power_total",
+                    "operator": ">",
+                    "value": 100
+                  }
+                ],
+                "condition_logic": "and",
+                "actions": [
+                  {
+                    "trigger_event": {
+                      "event_identifier": "overload",
+                      "data": {
+                        "power_total": "{{power_total}}"
+                      }
+                    }
+                  }
+                ],
+                "enabled": true
+              },
+              {
+                "identifier": "voltage_abnormal_alarm",
+                "name": "Voltage Abnormal Alarm",
+                "conditions": [
+                  {
+                    "property_identifier": "voltage_a",
+                    "operator": "<",
+                    "value": 180
+                  },
+                  {
+                    "property_identifier": "voltage_a",
+                    "operator": ">",
+                    "value": 260
+                  }
+                ],
+                "condition_logic": "or",
+                "actions": [
+                  {
+                    "trigger_event": {
+                      "event_identifier": "voltage_abnormal",
+                      "data": {
+                        "voltage_a": "{{voltage_a}}",
+                        "voltage_b": "{{voltage_b}}",
+                        "voltage_c": "{{voltage_c}}"
+                      }
+                    }
+                  }
+                ],
+                "enabled": true
+              }
+            ],
+            "commands": [
+              {
+                "identifier": "reset_energy",
+                "name": "Reset Energy",
+                "description": "Reset energy accumulator",
+                "parameters": []
+              }
+            ]
+          }
+        },
+        {
+          "device_instance_id": "meter-002",
+          "device_name": "Air Conditioner Electricity Meter",
+          "device_type": "electricity-meter",
+          "poll_interval_ms": 2000,
+          "driver": {
+            "device_instance_id": "meter-002",
+            "driver_name": "modbus-driver",
+            "driver_type": "modbus",
+            "poll_interval_ms": 2000,
+            "zmq": {
+              "enabled": true,
+              "publisher_address": "tcp://*:5556",
+              "topic": "modbus/data"
+            },
+            "logging": {
+              "level": "info",
+              "format": "json"
+            },
+            "custom": {
+              "host": "172.25.219.101",
+              "port": 502,
+              "slave_id": 2,
+              "profile": {
+                "apiVersion": "v1",
+                "name": "electricity-meter-single-phase",
+                "manufacturer": "Schneider",
+                "model": "1PH-Meter",
+                "labels": ["electricity", "modbus", "single-phase"],
+                "description": "Single-phase electricity meter",
+                "device_resources": [
+                  {
+                    "name": "voltage",
+                    "isHidden": false,
+                    "description": "Voltage",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 0,
+                      "rawType": "INT16",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "V",
+                        "minimum": 0,
+                        "maximum": 300
+                      }
+                    }
+                  },
+                  {
+                    "name": "current",
+                    "isHidden": false,
+                    "description": "Current",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 1,
+                      "rawType": "INT16",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "A",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  {
+                    "name": "power",
+                    "isHidden": false,
+                    "description": "Active power",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 2,
+                      "rawType": "INT32",
+                      "scale": 0.01
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.01,
+                        "units": "kW",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    }
+                  },
+                  {
+                    "name": "energy",
+                    "isHidden": false,
+                    "description": "Total energy",
+                    "attributes": {
+                      "primaryTable": "INPUT_REGISTERS",
+                      "startingAddress": 4,
+                      "rawType": "INT32",
+                      "scale": 0.1
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "defaultValue": 0,
+                        "scale": 0.1,
+                        "units": "kWh",
+                        "minimum": 0,
+                        "maximum": 999999
+                      }
+                    }
+                  }
+                ],
+                "device_commands": [
+                ]
+              }
+            }
+          },
+          "thing_model": {
+            "model_id": "electricity-meter.single-phase.1.0",
+            "model_version": "1.0",
+            "device_type": "electricity-meter",
+            "manufacturer": "Schneider",
+            "description": "Single-phase electricity meter",
+            "properties": [
+              {
+                "identifier": "voltage",
+                "name": "Voltage",
+                "type": "float",
+                "unit": "V",
+                "access": "R",
+                "range": [0, 300],
+                "default_value": 0,
+                "description": "Voltage"
+              },
+              {
+                "identifier": "current",
+                "name": "Current",
+                "type": "float",
+                "unit": "A",
+                "access": "R",
+                "range": [0, 100],
+                "default_value": 0,
+                "description": "Current"
+              },
+              {
+                "identifier": "power",
+                "name": "Active Power",
+                "type": "float",
+                "unit": "kW",
+                "access": "R",
+                "range": [0, 100],
+                "default_value": 0,
+                "description": "Active power"
+              },
+              {
+                "identifier": "energy",
+                "name": "Energy",
+                "type": "float",
+                "unit": "kWh",
+                "access": "R",
+                "range": [0, 999999],
+                "default_value": 0,
+                "description": "Total energy"
+              }
+            ],
+            "events": [
+              {
+                "identifier": "overload",
+                "name": "Overload Alarm",
+                "level": "ALERT",
+                "output_params": [
+                  {
+                    "identifier": "power",
+                    "name": "Current Power",
+                    "type": "float"
+                  }
+                ],
+                "description": "Triggered when power exceeds threshold"
+              }
+            ],
+            "rules": [
+              {
+                "identifier": "overload_alarm",
+                "name": "Overload Alarm Rule",
+                "conditions": [
+                  {
+                    "property_identifier": "power",
+                    "operator": ">",
+                    "value": 10
+                  }
+                ],
+                "condition_logic": "and",
+                "actions": [
+                  {
+                    "trigger_event": {
+                      "event_identifier": "overload",
+                      "data": {
+                        "power": "{{power}}"
+                      }
+                    }
+                  }
+                ],
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: device-meter-config
+  namespace: ithings
+data:
+  meter-config-integration.json: |
+    {
+      "device_name": "modbus-meter-1",
+      "device_type": "modbus-meter",
+      "poll_interval_ms": 1000,
+      "driver": {
+        "enabled": true,
+        "server_address": "tcp://172.25.219.101:5555"
+      },
+      "logging": {
+        "level": "info",
+        "format": "json"
+      },
+      "custom": {
+        "thing_model": {
+          "model_id": "modbus-temperature-sensor.1.0",
+          "model_version": "1.0",
+          "device_type": "temperature-sensor",
+          "manufacturer": "EdgeX",
+          "description": "Modbus temperature and humidity sensor",
+          "properties": [
+            {
+              "identifier": "temperature",
+              "name": "Temperature",
+              "type": "float",
+              "unit": "°C",
+              "access": "R",
+              "range": [-40, 120],
+              "default_value": 0,
+              "description": "Current temperature reading"
+            },
+            {
+              "identifier": "humidity",
+              "name": "Humidity",
+              "type": "float",
+              "unit": "%RH",
+              "access": "R",
+              "range": [0, 100],
+              "default_value": 0,
+              "description": "Current humidity reading"
+            },
+            {
+              "identifier": "relay_status",
+              "name": "Relay Status",
+              "type": "bool",
+              "access": "RW",
+              "default_value": false,
+              "description": "Relay on/off status"
+            }
+          ],
+          "events": [
+            {
+              "identifier": "high_temperature",
+              "name": "High Temperature",
+              "level": "WARN",
+              "output_params": [
+                {
+                  "identifier": "temperature",
+                  "name": "Current Temperature",
+                  "type": "float"
+                }
+              ],
+              "description": "Triggered when temperature exceeds 30°C"
+            }
+          ],
+          "rules": [
+            {
+              "identifier": "high_temp_alarm",
+              "name": "High Temperature Alarm",
+              "conditions": [
+                {
+                  "property_identifier": "temperature",
+                  "operator": ">",
+                  "value": 30
+                }
+              ],
+              "condition_logic": "and",
+              "actions": [
+                {
+                  "trigger_event": {
+                    "event_identifier": "high_temperature",
+                    "data": {
+                      "temperature": "{{temperature}}"
+                    }
+                  }
+                }
+              ],
+              "enabled": true
+            }
+          ]
+        }
+      }
+    }

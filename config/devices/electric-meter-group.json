@@ -1,0 +1,410 @@
+{
+  "tenant_id": "tenant-001",
+  "org_id": "org-001",
+  "site_id": "site-001",
+  "namespace_id": "building-a",
+  "devices": [
+    {
+      "device_instance_id": "meter-001",
+      "device_name": "Main Entrance Electricity Meter",
+      "device_type": "electricity-meter",
+      "poll_interval_ms": 1000,
+      "driver": {
+        "device_instance_id": "meter-001",
+        "driver_name": "modbus-driver",
+        "driver_type": "modbus",
+        "poll_interval_ms": 1000,
+        "zmq": {
+          "enabled": true,
+          "publisher_address": "tcp://*:5555",
+          "topic": "modbus/data"
+        },
+        "logging": {
+          "level": "info",
+          "format": "json"
+        },
+        "custom": {
+          "host": "172.25.219.101",
+          "port": 502,
+          "slave_id": 1
+        }
+      },
+      "thing_model": {
+        "model_id": "electricity-meter.three-phase.1.0",
+        "model_version": "1.0",
+        "device_type": "electricity-meter",
+        "manufacturer": "ABB",
+        "description": "Three-phase electricity meter",
+        "properties": [
+          {
+            "identifier": "voltage_a",
+            "name": "Voltage Phase A",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [0, 500],
+            "default_value": 0,
+            "description": "Phase A voltage",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 0,
+              "rawType": "INT16",
+              "scale": 0.1
+            }
+          },
+          {
+            "identifier": "voltage_b",
+            "name": "Voltage Phase B",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [0, 500],
+            "default_value": 0,
+            "description": "Phase B voltage",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 1,
+              "rawType": "INT16",
+              "scale": 0.1
+            }
+          },
+          {
+            "identifier": "voltage_c",
+            "name": "Voltage Phase C",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [0, 500],
+            "default_value": 0,
+            "description": "Phase C voltage",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 2,
+              "rawType": "INT16",
+              "scale": 0.1
+            }
+          },
+          {
+            "identifier": "current_a",
+            "name": "Current Phase A",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [0, 100],
+            "default_value": 0,
+            "description": "Phase A current",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 3,
+              "rawType": "INT16",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "current_b",
+            "name": "Current Phase B",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [0, 100],
+            "default_value": 0,
+            "description": "Phase B current",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 4,
+              "rawType": "INT16",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "current_c",
+            "name": "Current Phase C",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [0, 100],
+            "default_value": 0,
+            "description": "Phase C current",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 5,
+              "rawType": "INT16",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "power_total",
+            "name": "Total Power",
+            "type": "float",
+            "unit": "kW",
+            "access": "R",
+            "range": [0, 1000],
+            "default_value": 0,
+            "description": "Total active power",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 6,
+              "rawType": "INT32",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "energy_total",
+            "name": "Total Energy",
+            "type": "float",
+            "unit": "kWh",
+            "access": "R",
+            "range": [0, 999999],
+            "default_value": 0,
+            "description": "Total energy consumption",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 8,
+              "rawType": "INT32",
+              "scale": 0.1
+            }
+          }
+        ],
+        "events": [
+          {
+            "identifier": "overload",
+            "name": "Overload Alarm",
+            "level": "ALERT",
+            "output_params": [
+              {
+                "identifier": "power_total",
+                "name": "Current Power",
+                "type": "float"
+              }
+            ],
+            "description": "Triggered when power exceeds threshold"
+          },
+          {
+            "identifier": "voltage_abnormal",
+            "name": "Voltage Abnormal",
+            "level": "WARN",
+            "output_params": [
+              {
+                "identifier": "voltage_a",
+                "name": "Voltage A",
+                "type": "float"
+              },
+              {
+                "identifier": "voltage_b",
+                "name": "Voltage B",
+                "type": "float"
+              },
+              {
+                "identifier": "voltage_c",
+                "name": "Voltage C",
+                "type": "float"
+              }
+            ],
+            "description": "Triggered when voltage is out of normal range"
+          }
+        ],
+        "rules": [
+          {
+            "identifier": "overload_alarm",
+            "name": "Overload Alarm Rule",
+            "conditions": [
+              {
+                "property_identifier": "power_total",
+                "operator": ">",
+                "value": 100
+              }
+            ],
+            "condition_logic": "and",
+            "actions": [
+              {
+                "trigger_event": {
+                  "event_identifier": "overload",
+                  "data": {
+                    "power_total": "{{power_total}}"
+                  }
+                }
+              }
+            ],
+            "enabled": true
+          },
+          {
+            "identifier": "voltage_abnormal_alarm",
+            "name": "Voltage Abnormal Alarm",
+            "conditions": [
+              {
+                "property_identifier": "voltage_a",
+                "operator": "<",
+                "value": 180
+              },
+              {
+                "property_identifier": "voltage_a",
+                "operator": ">",
+                "value": 260
+              }
+            ],
+            "condition_logic": "or",
+            "actions": [
+              {
+                "trigger_event": {
+                  "event_identifier": "voltage_abnormal",
+                  "data": {
+                    "voltage_a": "{{voltage_a}}",
+                    "voltage_b": "{{voltage_b}}",
+                    "voltage_c": "{{voltage_c}}"
+                  }
+                }
+              }
+            ],
+            "enabled": true
+          }
+        ],
+        "commands": [
+          {
+            "identifier": "reset_energy",
+            "name": "Reset Energy",
+            "description": "Reset energy accumulator",
+            "parameters": []
+          }
+        ]
+      }
+    },
+    {
+      "device_id": "meter-002",
+      "device_name": "Air Conditioner Electricity Meter",
+      "device_type": "electricity-meter",
+      "poll_interval_ms": 2000,
+      "driver": {
+        "driver_name": "modbus-driver",
+        "driver_type": "modbus",
+        "poll_interval_ms": 2000,
+        "zmq": {
+          "enabled": true,
+          "publisher_address": "tcp://*:5556",
+          "topic": "modbus/data"
+        },
+        "logging": {
+          "level": "info",
+          "format": "json"
+        },
+        "custom": {
+          "host": "172.25.219.101",
+          "port": 502,
+          "slave_id": 2
+        }
+      },
+      "thing_model": {
+        "model_id": "electricity-meter.single-phase.1.0",
+        "model_version": "1.0",
+        "device_type": "electricity-meter",
+        "manufacturer": "Schneider",
+        "description": "Single-phase electricity meter",
+        "properties": [
+          {
+            "identifier": "voltage",
+            "name": "Voltage",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [0, 300],
+            "default_value": 0,
+            "description": "Voltage",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 0,
+              "rawType": "INT16",
+              "scale": 0.1
+            }
+          },
+          {
+            "identifier": "current",
+            "name": "Current",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [0, 100],
+            "default_value": 0,
+            "description": "Current",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 1,
+              "rawType": "INT16",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "power",
+            "name": "Active Power",
+            "type": "float",
+            "unit": "kW",
+            "access": "R",
+            "range": [0, 100],
+            "default_value": 0,
+            "description": "Active power",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 2,
+              "rawType": "INT32",
+              "scale": 0.01
+            }
+          },
+          {
+            "identifier": "energy",
+            "name": "Energy",
+            "type": "float",
+            "unit": "kWh",
+            "access": "R",
+            "range": [0, 999999],
+            "default_value": 0,
+            "description": "Total energy",
+            "modbus": {
+              "primaryTable": "INPUT_REGISTERS",
+              "startingAddress": 4,
+              "rawType": "INT32",
+              "scale": 0.1
+            }
+          }
+        ],
+        "events": [
+          {
+            "identifier": "overload",
+            "name": "Overload Alarm",
+            "level": "ALERT",
+            "output_params": [
+              {
+                "identifier": "power",
+                "name": "Current Power",
+                "type": "float"
+              }
+            ],
+            "description": "Triggered when power exceeds threshold"
+          }
+        ],
+        "rules": [
+          {
+            "identifier": "overload_alarm",
+            "name": "Overload Alarm Rule",
+            "conditions": [
+              {
+                "property_identifier": "power",
+                "operator": ">",
+                "value": 10
+              }
+            ],
+            "condition_logic": "and",
+            "actions": [
+              {
+                "trigger_event": {
+                  "event_identifier": "overload",
+                  "data": {
+                    "power": "{{power}}"
+                  }
+                }
+              }
+            ],
+            "enabled": true
+          }
+        ]
+      }
+    }
+  ]
+}

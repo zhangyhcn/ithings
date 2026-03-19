@@ -1,0 +1,105 @@
+{
+  "driver_name": "modbus-driver",
+  "driver_type": "modbus",
+  "poll_interval_ms": 1000,
+  "zmq": {
+    "enabled": true,
+    "publisher_address": "tcp://*:5555",
+    "topic": "modbus/data",
+    "high_water_mark": 1000
+  },
+  "logging": {
+    "level": "info",
+    "format": "json"
+  },
+  "custom": {
+    "host": "172.25.219.101",
+    "port": 502,
+    "slave_id": 1,
+    "profile": {
+      "apiVersion": "v2",
+      "name": "Modbus-Temperature-Sensor",
+      "manufacturer": "EdgeX",
+      "model": "MB-TS100",
+      "labels": ["modbus", "temperature", "sensor"],
+      "description": "Modbus TCP temperature sensor device profile",
+      "deviceResources": [
+        {
+          "name": "Temperature",
+          "isHidden": false,
+          "description": "Current temperature reading (0.1°C resolution)",
+          "attributes": {
+            "primaryTable": "INPUT_REGISTERS",
+            "startingAddress": "0",
+            "rawType": "INT16"
+          },
+          "properties": {
+            "value": {
+              "type": "Int16",
+              "readWrite": "R",
+              "defaultValue": "0",
+              "scale": 0.1,
+              "units": "°C",
+              "minimum": -400,
+              "maximum": 1200
+            }
+          }
+        },
+        {
+          "name": "Humidity",
+          "isHidden": false,
+          "description": "Current humidity reading (0.1% resolution)",
+          "attributes": {
+            "primaryTable": "INPUT_REGISTERS",
+            "startingAddress": "1",
+            "rawType": "UINT16"
+          },
+          "properties": {
+            "value": {
+              "type": "Uint16",
+              "readWrite": "R",
+              "defaultValue": "0",
+              "scale": 0.1,
+              "units": "%RH",
+              "minimum": 0,
+              "maximum": 1000
+            }
+          }
+        },
+        {
+          "name": "RelayStatus",
+          "isHidden": false,
+          "description": "Relay control register",
+          "attributes": {
+            "primaryTable": "COILS",
+            "startingAddress": "0"
+          },
+          "properties": {
+            "value": {
+              "type": "Bool",
+              "readWrite": "RW",
+              "defaultValue": "false"
+            }
+          }
+        }
+      ],
+      "deviceCommands": [
+        {
+          "name": "ReadEnvironment",
+          "readWrite": "R",
+          "resourceOperations": [
+            { "deviceResource": "Temperature" },
+            { "deviceResource": "Humidity" }
+          ]
+        },
+        {
+          "name": "ControlRelay",
+          "readWrite": "W",
+          "resourceOperations": [
+            { "deviceResource": "RelayStatus" }
+          ]
+        }
+      ]
+    }
+  }
+}

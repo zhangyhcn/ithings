@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modbus-driver
+  namespace: ithings
+  labels:
+    app: modbus-driver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modbus-driver
+  template:
+    metadata:
+      labels:
+        app: modbus-driver
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: modbus-driver
+        image: 172.17.0.1:30500/ithings/modbus-driver:latest
+        imagePullPolicy: IfNotPresent
+        args: ["-c", "/config/modbus.json"]
+        ports:
+        - containerPort: 5555
+          name: zmq
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      volumes:
+      - name: config
+        configMap:
+          name: modbus-driver-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: modbus-driver
+  namespace: ithings
+  labels:
+    app: modbus-driver
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5555
+    targetPort: 5555
+    name: zmq
+  selector:
+    app: modbus-driver

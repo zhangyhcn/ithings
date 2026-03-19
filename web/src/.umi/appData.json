@@ -1,0 +1,2477 @@
+{
+  "cwd": "/root/source/rust/ithings/web",
+  "pkg": {
+    "name": "icloud-web",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "dev": "umi dev",
+      "build": "umi build",
+      "start": "npm run dev",
+      "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
+      "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,less}'"
+    },
+    "dependencies": {
+      "@ant-design/icons": "^5.2.6",
+      "@ant-design/pro-components": "^2.6.43",
+      "@umijs/max": "^4.0.7",
+      "@umijs/utils": "^4.6.32",
+      "antd": "^5.12.2",
+      "axios": "^1.6.2",
+      "lodash": "^4.17.21",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "umi": "^4.0.7",
+      "umi-request": "^1.4.0"
+    },
+    "devDependencies": {
+      "@types/lodash": "^4.14.202",
+      "@types/react": "^18.2.42",
+      "@types/react-dom": "^18.2.17",
+      "@typescript-eslint/eslint-plugin": "^6.13.1",
+      "@typescript-eslint/parser": "^6.13.1",
+      "eslint": "^8.54.0",
+      "prettier": "^3.1.0",
+      "typescript": "^5.3.2"
+    },
+    "engines": {
+      "node": ">=18.0.0"
+    }
+  },
+  "pkgPath": "/root/source/rust/ithings/web/package.json",
+  "plugins": {
+    "./node_modules/@umijs/core/dist/service/servicePlugin": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "preset",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/core/dist/service/servicePlugin.js",
+      "id": "./node_modules/@umijs/core/dist/service/servicePlugin",
+      "key": "servicePlugin",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "@umijs/preset-umi": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "preset",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/index.js",
+      "id": "@umijs/preset-umi",
+      "key": "umi",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 6
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/registerMethods": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/registerMethods.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/registerMethods",
+      "key": "registerMethods",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onStart": [
+            0
+          ]
+        },
+        "register": 4
+      },
+      "enableBy": "register"
+    },
+    "@umijs/did-you-know": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/did-you-know/dist/plugin.js",
+      "id": "@umijs/did-you-know",
+      "key": "umijsDidYouKnow",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onStart": [
+            7
+          ]
+        },
+        "register": 2
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/404/404": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/404/404.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/404/404",
+      "key": "404",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyRoutes": [
+            0
+          ]
+        },
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/aiDev/aiDev": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/aiDev/aiDev.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/aiDev/aiDev",
+      "key": "aiDev",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/appData/appData": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/appData/appData.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/appData/appData",
+      "key": "appData",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyAppData": [
+            33
+          ]
+        },
+        "register": 44
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/appData/umiInfo": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/appData/umiInfo.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/appData/umiInfo",
+      "key": "umiInfo",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/check/check": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/check/check.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/check/check",
+      "key": "check",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onCheckConfig": [
+            1
+          ],
+          "onCheck": [
+            1
+          ]
+        },
+        "register": 2
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/check/babel722": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/check/babel722.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/check/babel722",
+      "key": "babel722",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onCheck": [
+            1
+          ]
+        },
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/codeSplitting/codeSplitting": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/codeSplitting/codeSplitting.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/codeSplitting/codeSplitting",
+      "key": "codeSplitting",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/configPlugins/configPlugins": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/configPlugins/configPlugins.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/configPlugins/configPlugins",
+      "key": "configPlugins",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyConfig": [
+            0
+          ]
+        },
+        "register": 15
+      },
+      "enableBy": "register"
+    },
+    "virtual: config-title": {
+      "id": "virtual: config-title",
+      "key": "title",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-styles": {
+      "id": "virtual: config-styles",
+      "key": "styles",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-scripts": {
+      "id": "virtual: config-scripts",
+      "key": "scripts",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-routes": {
+      "id": "virtual: config-routes",
+      "key": "routes",
+      "config": {
+        "onChange": "regenerateTmpFiles"
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-routeLoader": {
+      "id": "virtual: config-routeLoader",
+      "key": "routeLoader",
+      "config": {
+        "default": {
+          "moduleType": "esm"
+        }
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-reactRouter5Compat": {
+      "id": "virtual: config-reactRouter5Compat",
+      "key": "reactRouter5Compat",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-presets": {
+      "id": "virtual: config-presets",
+      "key": "presets",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-plugins": {
+      "id": "virtual: config-plugins",
+      "key": "plugins",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-npmClient": {
+      "id": "virtual: config-npmClient",
+      "key": "npmClient",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-mountElementId": {
+      "id": "virtual: config-mountElementId",
+      "key": "mountElementId",
+      "config": {
+        "default": "root"
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-metas": {
+      "id": "virtual: config-metas",
+      "key": "metas",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-links": {
+      "id": "virtual: config-links",
+      "key": "links",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-historyWithQuery": {
+      "id": "virtual: config-historyWithQuery",
+      "key": "historyWithQuery",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-history": {
+      "id": "virtual: config-history",
+      "key": "history",
+      "config": {
+        "default": {
+          "type": "browser"
+        }
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-headScripts": {
+      "id": "virtual: config-headScripts",
+      "key": "headScripts",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-esbuildMinifyIIFE": {
+      "id": "virtual: config-esbuildMinifyIIFE",
+      "key": "esbuildMinifyIIFE",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-conventionRoutes": {
+      "id": "virtual: config-conventionRoutes",
+      "key": "conventionRoutes",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-conventionLayout": {
+      "id": "virtual: config-conventionLayout",
+      "key": "conventionLayout",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-base": {
+      "id": "virtual: config-base",
+      "key": "base",
+      "config": {
+        "default": "/"
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-analyze": {
+      "id": "virtual: config-analyze",
+      "key": "analyze",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-writeToDisk": {
+      "id": "virtual: config-writeToDisk",
+      "key": "writeToDisk",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-transformRuntime": {
+      "id": "virtual: config-transformRuntime",
+      "key": "transformRuntime",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-theme": {
+      "id": "virtual: config-theme",
+      "key": "theme",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-targets": {
+      "id": "virtual: config-targets",
+      "key": "targets",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-svgr": {
+      "id": "virtual: config-svgr",
+      "key": "svgr",
+      "config": {
+        "default": {}
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-svgo": {
+      "id": "virtual: config-svgo",
+      "key": "svgo",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-stylusLoader": {
+      "id": "virtual: config-stylusLoader",
+      "key": "stylusLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-styleLoader": {
+      "id": "virtual: config-styleLoader",
+      "key": "styleLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-srcTranspilerOptions": {
+      "id": "virtual: config-srcTranspilerOptions",
+      "key": "srcTranspilerOptions",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-srcTranspiler": {
+      "id": "virtual: config-srcTranspiler",
+      "key": "srcTranspiler",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-sassLoader": {
+      "id": "virtual: config-sassLoader",
+      "key": "sassLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-runtimePublicPath": {
+      "id": "virtual: config-runtimePublicPath",
+      "key": "runtimePublicPath",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-purgeCSS": {
+      "id": "virtual: config-purgeCSS",
+      "key": "purgeCSS",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-publicPath": {
+      "id": "virtual: config-publicPath",
+      "key": "publicPath",
+      "config": {
+        "default": "/"
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-proxy": {
+      "id": "virtual: config-proxy",
+      "key": "proxy",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-postcssLoader": {
+      "id": "virtual: config-postcssLoader",
+      "key": "postcssLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-outputPath": {
+      "id": "virtual: config-outputPath",
+      "key": "outputPath",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-normalCSSLoaderModules": {
+      "id": "virtual: config-normalCSSLoaderModules",
+      "key": "normalCSSLoaderModules",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-mfsu": {
+      "id": "virtual: config-mfsu",
+      "key": "mfsu",
+      "config": {
+        "default": {
+          "strategy": "eager"
+        }
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-mdx": {
+      "id": "virtual: config-mdx",
+      "key": "mdx",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-manifest": {
+      "id": "virtual: config-manifest",
+      "key": "manifest",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-lessLoader": {
+      "id": "virtual: config-lessLoader",
+      "key": "lessLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-jsMinifierOptions": {
+      "id": "virtual: config-jsMinifierOptions",
+      "key": "jsMinifierOptions",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-jsMinifier": {
+      "id": "virtual: config-jsMinifier",
+      "key": "jsMinifier",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-inlineLimit": {
+      "id": "virtual: config-inlineLimit",
+      "key": "inlineLimit",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-ignoreMomentLocale": {
+      "id": "virtual: config-ignoreMomentLocale",
+      "key": "ignoreMomentLocale",
+      "config": {
+        "default": true
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-https": {
+      "id": "virtual: config-https",
+      "key": "https",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-hash": {
+      "id": "virtual: config-hash",
+      "key": "hash",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-forkTSChecker": {
+      "id": "virtual: config-forkTSChecker",
+      "key": "forkTSChecker",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-fastRefresh": {
+      "id": "virtual: config-fastRefresh",
+      "key": "fastRefresh",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-extraPostCSSPlugins": {
+      "id": "virtual: config-extraPostCSSPlugins",
+      "key": "extraPostCSSPlugins",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-extraBabelPresets": {
+      "id": "virtual: config-extraBabelPresets",
+      "key": "extraBabelPresets",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-extraBabelPlugins": {
+      "id": "virtual: config-extraBabelPlugins",
+      "key": "extraBabelPlugins",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-extraBabelIncludes": {
+      "id": "virtual: config-extraBabelIncludes",
+      "key": "extraBabelIncludes",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-externals": {
+      "id": "virtual: config-externals",
+      "key": "externals",
+      "config": {
+        "default": {}
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-esm": {
+      "id": "virtual: config-esm",
+      "key": "esm",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-devtool": {
+      "id": "virtual: config-devtool",
+      "key": "devtool",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-depTranspiler": {
+      "id": "virtual: config-depTranspiler",
+      "key": "depTranspiler",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-define": {
+      "id": "virtual: config-define",
+      "key": "define",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-deadCode": {
+      "id": "virtual: config-deadCode",
+      "key": "deadCode",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cssPublicPath": {
+      "id": "virtual: config-cssPublicPath",
+      "key": "cssPublicPath",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cssMinifierOptions": {
+      "id": "virtual: config-cssMinifierOptions",
+      "key": "cssMinifierOptions",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cssMinifier": {
+      "id": "virtual: config-cssMinifier",
+      "key": "cssMinifier",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cssLoaderModules": {
+      "id": "virtual: config-cssLoaderModules",
+      "key": "cssLoaderModules",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cssLoader": {
+      "id": "virtual: config-cssLoader",
+      "key": "cssLoader",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-copy": {
+      "id": "virtual: config-copy",
+      "key": "copy",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-checkDepCssModules": {
+      "id": "virtual: config-checkDepCssModules",
+      "key": "checkDepCssModules",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-chainWebpack": {
+      "id": "virtual: config-chainWebpack",
+      "key": "chainWebpack",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-cacheDirectoryPath": {
+      "id": "virtual: config-cacheDirectoryPath",
+      "key": "cacheDirectoryPath",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-babelLoaderCustomize": {
+      "id": "virtual: config-babelLoaderCustomize",
+      "key": "babelLoaderCustomize",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-autoprefixer": {
+      "id": "virtual: config-autoprefixer",
+      "key": "autoprefixer",
+      "config": {},
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-autoCSSModules": {
+      "id": "virtual: config-autoCSSModules",
+      "key": "autoCSSModules",
+      "config": {
+        "default": true
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "virtual: config-alias": {
+      "id": "virtual: config-alias",
+      "key": "alias",
+      "config": {
+        "default": {
+          "umi": "@@/exports",
+          "react": "/root/source/rust/ithings/web/node_modules/react",
+          "react-dom": "/root/source/rust/ithings/web/node_modules/react-dom",
+          "react-router": "/root/source/rust/ithings/web/node_modules/react-router",
+          "react-router-dom": "/root/source/rust/ithings/web/node_modules/react-router-dom"
+        }
+      },
+      "type": "plugin",
+      "enableBy": "register",
+      "time": {
+        "hooks": {},
+        "register": 0
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/crossorigin/crossorigin": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/crossorigin/crossorigin.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/crossorigin/crossorigin",
+      "key": "crossorigin",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/depsOnDemand/depsOnDemand": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/depsOnDemand/depsOnDemand.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/depsOnDemand/depsOnDemand",
+      "key": "depsOnDemand",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onStart": [
+            2
+          ]
+        },
+        "register": 2
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/devTool/devTool": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/devTool/devTool.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/devTool/devTool",
+      "key": "devTool",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/esbuildHelperChecker/esbuildHelperChecker": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/esbuildHelperChecker/esbuildHelperChecker.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/esbuildHelperChecker/esbuildHelperChecker",
+      "key": "esbuildHelperChecker",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 163
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/esmi/esmi": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/esmi/esmi.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/esmi/esmi",
+      "key": "esmi",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 41
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/exportStatic/exportStatic": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/exportStatic/exportStatic.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/exportStatic/exportStatic",
+      "key": "exportStatic",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 47
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/favicons/favicons": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/favicons/favicons.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/favicons/favicons",
+      "key": "favicons",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyAppData": [
+            1
+          ]
+        },
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/helmet/helmet": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/helmet/helmet.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/helmet/helmet",
+      "key": "helmet",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/icons/icons": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/icons/icons.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/icons/icons",
+      "key": "icons",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/mock/mock": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/mock/mock.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/mock/mock",
+      "key": "mock",
+      "config": {},
+      "time": {
+        "hooks": {
+          "onStart": [
+            1
+          ]
+        },
+        "register": 36
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/mpa/mpa": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/mpa/mpa.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/mpa/mpa",
+      "key": "mpa",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/okam/okam": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/okam/okam.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/okam/okam",
+      "key": "okam",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/overrides/overrides": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/overrides/overrides.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/overrides/overrides",
+      "key": "overrides",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/phantomDependency/phantomDependency": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/phantomDependency/phantomDependency.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/phantomDependency/phantomDependency",
+      "key": "phantomDependency",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/polyfill/polyfill": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/polyfill/polyfill.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/polyfill/polyfill",
+      "key": "polyfill",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyConfig": [
+            1
+          ]
+        },
+        "register": 1
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/polyfill/publicPathPolyfill": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/polyfill/publicPathPolyfill.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/polyfill/publicPathPolyfill",
+      "key": "publicPathPolyfill",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/prepare/prepare": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/prepare/prepare.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/prepare/prepare",
+      "key": "prepare",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/routePrefetch/routePrefetch": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/routePrefetch/routePrefetch.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/routePrefetch/routePrefetch",
+      "key": "routePrefetch",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/stagewise/stagewise": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/stagewise/stagewise.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/stagewise/stagewise",
+      "key": "stagewise",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/terminal/terminal": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/terminal/terminal.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/terminal/terminal",
+      "key": "terminal",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/tmpFiles/tmpFiles": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/tmpFiles/tmpFiles.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/tmpFiles/tmpFiles",
+      "key": "tmpFiles",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 11
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/clientLoader/clientLoader": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/clientLoader/clientLoader.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/clientLoader/clientLoader",
+      "key": "clientLoader",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 5
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/routeProps/routeProps": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/routeProps/routeProps.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/routeProps/routeProps",
+      "key": "routeProps",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/ssr/ssr": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/ssr/ssr.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/ssr/ssr",
+      "key": "ssr",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 4
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/tmpFiles/configTypes": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/tmpFiles/configTypes.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/tmpFiles/configTypes",
+      "key": "configTypes",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/transform/transform": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/transform/transform.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/transform/transform",
+      "key": "transform",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 7
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/lowImport/lowImport": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/lowImport/lowImport.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/lowImport/lowImport",
+      "key": "lowImport",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 5
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/vite/vite": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/vite/vite.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/vite/vite",
+      "key": "vite",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/apiRoute/apiRoute": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/apiRoute/apiRoute.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/apiRoute/apiRoute",
+      "key": "apiRoute",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 4
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/monorepo/redirect": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/monorepo/redirect.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/monorepo/redirect",
+      "key": "monorepoRedirect",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 30
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/test/test": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/test/test.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/test/test",
+      "key": "test",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/clickToComponent/clickToComponent": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/clickToComponent/clickToComponent.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/clickToComponent/clickToComponent",
+      "key": "clickToComponent",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/legacy/legacy": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/legacy/legacy.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/legacy/legacy",
+      "key": "legacy",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/classPropertiesLoose/classPropertiesLoose": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/classPropertiesLoose/classPropertiesLoose.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/classPropertiesLoose/classPropertiesLoose",
+      "key": "classPropertiesLoose",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/webpack/webpack": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/webpack/webpack.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/webpack/webpack",
+      "key": "preset-umi:webpack",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/swc/swc": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/swc/swc.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/swc/swc",
+      "key": "swc",
+      "config": {},
+      "time": {
+        "hooks": {
+          "addOnDemandDeps": [
+            0
+          ]
+        },
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/ui/ui": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/ui/ui.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/ui/ui",
+      "key": "ui",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/mako/mako": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/mako/mako.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/mako/mako",
+      "key": "mako",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/utoopack/utoopack": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/utoopack/utoopack.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/utoopack/utoopack",
+      "key": "utoopack",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/hmrGuardian/hmrGuardian": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/hmrGuardian/hmrGuardian.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/hmrGuardian/hmrGuardian",
+      "key": "hmrGuardian",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 4
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/routePreloadOnLoad/routePreloadOnLoad": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/routePreloadOnLoad/routePreloadOnLoad.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/routePreloadOnLoad/routePreloadOnLoad",
+      "key": "routePreloadOnLoad",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 42
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/forget/forget": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/forget/forget.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/forget/forget",
+      "key": "forget",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "config"
+    },
+    "./node_modules/@umijs/preset-umi/dist/features/bundler/bundler": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/features/bundler/bundler.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/features/bundler/bundler",
+      "key": "preset-umi:bundler",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/build": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/build.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/build",
+      "key": "build",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 4
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/config/config": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/config/config.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/config/config",
+      "key": "config",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 80
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/dev/dev": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/dev/dev.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/dev/dev",
+      "key": "dev",
+      "config": {},
+      "time": {
+        "hooks": {
+          "modifyAppData": [
+            166
+          ]
+        },
+        "register": 19
+      }
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/help": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/help.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/help",
+      "key": "help",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/lint": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/lint.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/lint",
+      "key": "lint",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/setup": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/setup.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/setup",
+      "key": "setup",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/deadcode": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/deadcode.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/deadcode",
+      "key": "deadcode",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/version": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/version.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/version",
+      "key": "version",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/page": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/page.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/page",
+      "key": "generator:page",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/prettier": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/prettier.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/prettier",
+      "key": "generator:prettier",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/tsconfig": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/tsconfig.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/tsconfig",
+      "key": "generator:tsconfig",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/jest": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/jest.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/jest",
+      "key": "generator:jest",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/tailwindcss": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/tailwindcss.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/tailwindcss",
+      "key": "generator:tailwindcss",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/dva": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/dva.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/dva",
+      "key": "generator:dva",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/component": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/component.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/component",
+      "key": "generator:component",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/mock": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/mock.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/mock",
+      "key": "generator:mock",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/cypress": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/cypress.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/cypress",
+      "key": "generator:cypress",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/api": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/api.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/api",
+      "key": "generator:api",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/generators/precommit": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/generators/precommit.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/generators/precommit",
+      "key": "generator:precommit",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/plugin": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/plugin.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/plugin",
+      "key": "command:plugin",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 0
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/verify-commit": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/verify-commit.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/verify-commit",
+      "key": "verifyCommit",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/preview": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/preview.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/preview",
+      "key": "preview",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 48
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/preset-umi/dist/commands/mfsu/mfsu": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/preset-umi/dist/commands/mfsu/mfsu.js",
+      "id": "./node_modules/@umijs/preset-umi/dist/commands/mfsu/mfsu",
+      "key": "mfsu-cli",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    },
+    "@umijs/plugin-run": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/plugin-run/dist/index.js",
+      "id": "@umijs/plugin-run",
+      "key": "run",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 2
+      },
+      "enableBy": "register"
+    },
+    "./node_modules/@umijs/core/dist/service/generatePlugin": {
+      "cwd": "/root/source/rust/ithings/web",
+      "type": "plugin",
+      "path": "/root/source/rust/ithings/web/node_modules/@umijs/core/dist/service/generatePlugin.js",
+      "id": "./node_modules/@umijs/core/dist/service/generatePlugin",
+      "key": "generatePlugin",
+      "config": {},
+      "time": {
+        "hooks": {},
+        "register": 1
+      },
+      "enableBy": "register"
+    }
+  },
+  "presets": [],
+  "name": "dev",
+  "args": {
+    "_": []
+  },
+  "userConfig": {
+    "routes": [
+      {
+        "path": "/user",
+        "routes": [
+          {
+            "path": "/user/login",
+            "component": "@/pages/user/Login"
+          },
+          {
+            "path": "/user/register",
+            "component": "@/pages/user/Register"
+          },
+          {
+            "path": "/user/forgot-password",
+            "component": "@/pages/user/ForgotPassword"
+          }
+        ]
+      },
+      {
+        "path": "/create_tenant",
+        "component": "@/pages/tenant/Create"
+      },
+      {
+        "path": "/",
+        "component": "@/layouts/BasicLayout",
+        "routes": [
+          {
+            "path": "/",
+            "redirect": "/dashboard"
+          },
+          {
+            "path": "/dashboard",
+            "component": "@/pages/Dashboard"
+          },
+          {
+            "path": "/tenant",
+            "component": "@/pages/tenant/List"
+          },
+          {
+            "path": "/users",
+            "component": "@/pages/user/List"
+          },
+          {
+            "path": "/site",
+            "component": "@/pages/site/List"
+          },
+          {
+            "path": "/namespace",
+            "component": "@/pages/namespace/List"
+          },
+          {
+            "path": "/organization",
+            "component": "@/pages/organization/List"
+          },
+          {
+            "path": "/department",
+            "component": "@/pages/department/List"
+          },
+          {
+            "path": "/resources",
+            "routes": [
+              {
+                "path": "/resources/crd",
+                "component": "@/pages/resource/crd/List"
+              },
+              {
+                "path": "/resources/operator",
+                "component": "@/pages/resource/operator/List"
+              },
+              {
+                "path": "/resources/controller",
+                "component": "@/pages/resource/controller/List"
+              }
+            ]
+          },
+          {
+            "path": "/settings",
+            "routes": [
+              {
+                "path": "/settings/system",
+                "component": "@/pages/settings/SystemConfig"
+              },
+              {
+                "path": "/settings/role",
+                "component": "@/pages/role/List"
+              },
+              {
+                "path": "/settings/user-role",
+                "component": "@/pages/user-role/List"
+              },
+              {
+                "path": "/settings/role-menu",
+                "component": "@/pages/role-menu/List"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "npmClient": "npm",
+    "proxy": {
+      "/api": {
+        "target": "http://localhost:8080",
+        "changeOrigin": true
+      }
+    }
+  },
+  "mainConfigFile": "/root/source/rust/ithings/web/.umirc.ts",
+  "config": {
+    "routeLoader": {
+      "moduleType": "esm"
+    },
+    "mountElementId": "root",
+    "history": {
+      "type": "browser"
+    },
+    "base": "/",
+    "svgr": {},
+    "publicPath": "/",
+    "mfsu": {
+      "strategy": "eager"
+    },
+    "ignoreMomentLocale": true,
+    "externals": {},
+    "autoCSSModules": true,
+    "alias": {
+      "umi": "@@/exports",
+      "react": "/root/source/rust/ithings/web/node_modules/react",
+      "react-dom": "/root/source/rust/ithings/web/node_modules/react-dom",
+      "react-router": "/root/source/rust/ithings/web/node_modules/react-router",
+      "react-router-dom": "/root/source/rust/ithings/web/node_modules/react-router-dom",
+      "@": "/root/source/rust/ithings/web/src",
+      "@@": "/root/source/rust/ithings/web/src/.umi",
+      "regenerator-runtime": "/root/source/rust/ithings/web/node_modules/regenerator-runtime"
+    },
+    "routes": [
+      {
+        "path": "/user",
+        "routes": [
+          {
+            "path": "/user/login",
+            "component": "@/pages/user/Login"
+          },
+          {
+            "path": "/user/register",
+            "component": "@/pages/user/Register"
+          },
+          {
+            "path": "/user/forgot-password",
+            "component": "@/pages/user/ForgotPassword"
+          }
+        ]
+      },
+      {
+        "path": "/create_tenant",
+        "component": "@/pages/tenant/Create"
+      },
+      {
+        "path": "/",
+        "component": "@/layouts/BasicLayout",
+        "routes": [
+          {
+            "path": "/",
+            "redirect": "/dashboard"
+          },
+          {
+            "path": "/dashboard",
+            "component": "@/pages/Dashboard"
+          },
+          {
+            "path": "/tenant",
+            "component": "@/pages/tenant/List"
+          },
+          {
+            "path": "/users",
+            "component": "@/pages/user/List"
+          },
+          {
+            "path": "/site",
+            "component": "@/pages/site/List"
+          },
+          {
+            "path": "/namespace",
+            "component": "@/pages/namespace/List"
+          },
+          {
+            "path": "/organization",
+            "component": "@/pages/organization/List"
+          },
+          {
+            "path": "/department",
+            "component": "@/pages/department/List"
+          },
+          {
+            "path": "/resources",
+            "routes": [
+              {
+                "path": "/resources/crd",
+                "component": "@/pages/resource/crd/List"
+              },
+              {
+                "path": "/resources/operator",
+                "component": "@/pages/resource/operator/List"
+              },
+              {
+                "path": "/resources/controller",
+                "component": "@/pages/resource/controller/List"
+              }
+            ]
+          },
+          {
+            "path": "/settings",
+            "routes": [
+              {
+                "path": "/settings/system",
+                "component": "@/pages/settings/SystemConfig"
+              },
+              {
+                "path": "/settings/role",
+                "component": "@/pages/role/List"
+              },
+              {
+                "path": "/settings/user-role",
+                "component": "@/pages/user-role/List"
+              },
+              {
+                "path": "/settings/role-menu",
+                "component": "@/pages/role-menu/List"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "npmClient": "npm",
+    "proxy": {
+      "/api": {
+        "target": "http://localhost:8080",
+        "changeOrigin": true
+      }
+    },
+    "targets": {
+      "chrome": 80
+    }
+  },
+  "routes": {
+    "1": {
+      "path": "/user",
+      "id": "1",
+      "absPath": "/user"
+    },
+    "2": {
+      "path": "/user/login",
+      "file": "@/pages/user/Login.tsx",
+      "parentId": "1",
+      "id": "2",
+      "absPath": "/user/login",
+      "__content": "import { useState } from 'react';\nimport { Form, Input, Button, Card, message } from 'antd';\nimport { UserOutlined, LockOutlined } from '@ant-design/icons';\nimport { useNavigate } from 'react-router-dom';\nimport { authApi } from '@/services/api';\n\ninterface LoginFormValues {\n  username: string;\n  password: string;\n}\n\nexport default function Login() {\n  const navigate = useNavigate();\n  const [loading, setLoading] = useState(false);\n\n  const onFinish = async (values: LoginFormValues) => {\n    setLoading(true);\n    try {\n      const data = await authApi.login(values);\n      localStorage.setItem('access_token', data.access_token);\n      localStorage.setItem('refresh_token', data.refresh_token);\n      localStorage.setItem('user', JSON.stringify(data.user));\n      if (data.user.tenant_id) {\n        localStorage.setItem('tenant_id', data.user.tenant_id);\n      }\n      message.success('登录成功');\n      navigate('/');\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <div style={{\n      display: 'flex',\n      justifyContent: 'center',\n      alignItems: 'center',\n      minHeight: '100vh',\n      background: '#f0f2f5',\n    }}>\n      <Card\n        title={<h2 style={{ textAlign: 'center', margin: 0 }}>物联网云平台</h2>}\n        style={{ width: 400 }}\n      >\n        <Form\n          name=\"login\"\n          onFinish={onFinish}\n          autoComplete=\"off\"\n          size=\"large\"\n        >\n          <Form.Item\n            name=\"username\"\n            rules={[{ required: true, message: '请输入用户名' }]}\n          >\n            <Input\n              prefix={<UserOutlined />}\n              placeholder=\"用户名\"\n            />\n          </Form.Item>\n\n          <Form.Item\n            name=\"password\"\n            rules={[{ required: true, message: '请输入密码' }]}\n          >\n            <Input.Password\n              prefix={<LockOutlined />}\n              placeholder=\"密码\"\n            />\n          </Form.Item>\n\n          <Form.Item>\n            <Button type=\"primary\" htmlType=\"submit\" block loading={loading}>\n              登录\n            </Button>\n          </Form.Item>\n\n          <div style={{ textAlign: 'center', marginTop: 16 }}>\n            <Button type=\"link\" onClick={() => navigate('/user/register')}>\n              用户注册\n            </Button>\n            <Button type=\"link\" onClick={() => navigate('/user/forgot-password')}>\n              忘记密码\n            </Button>\n          </div>\n        </Form>\n      </Card>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/user/Login.tsx"
+    },
+    "3": {
+      "path": "/user/register",
+      "file": "@/pages/user/Register.tsx",
+      "parentId": "1",
+      "id": "3",
+      "absPath": "/user/register",
+      "__content": "import { useState } from 'react';\nimport { Form, Input, Button, Card, message, Select, Tabs } from 'antd';\nimport { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';\nimport { useNavigate } from 'react-router-dom';\nimport { authApi } from '@/services/api';\n\nconst { Option } = Select;\nconst { TabPane } = Tabs;\n\ninterface RegisterFormValues {\n  username: string;\n  email: string;\n  password: string;\n  confirmPassword: string;\n}\n\nexport default function Register() {\n  const navigate = useNavigate();\n  const [loading, setLoading] = useState(false);\n  const [activeTab, setActiveTab] = useState('login');\n\n  const onFinish = async (values: RegisterFormValues) => {\n    if (values.password !== values.confirmPassword) {\n      message.error('两次输入的密码不一致');\n      return;\n    }\n    setLoading(true);\n    try {\n      await authApi.register({\n        username: values.username,\n        email: values.email,\n        password: values.password,\n      });\n      message.success('注册成功，请登录');\n      setActiveTab('login');\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <div style={{\n      display: 'flex',\n      justifyContent: 'center',\n      alignItems: 'center',\n      minHeight: '100vh',\n      background: '#f0f2f5',\n    }}>\n      <Card style={{ width: 400 }}>\n        <Tabs activeKey={activeTab} onChange={setActiveTab}>\n          <TabPane tab=\"登录\" key=\"login\">\n            <Form\n              name=\"login\"\n              onFinish={(values) => {\n                authApi.login(values).then((data) => {\n                  localStorage.setItem('access_token', data.access_token);\n                  localStorage.setItem('refresh_token', data.refresh_token);\n                  localStorage.setItem('user', JSON.stringify(data.user));\n                  if (data.user.tenant_id) {\n                    localStorage.setItem('tenant_id', data.user.tenant_id);\n                  }\n                  message.success('登录成功');\n                  navigate('/');\n                });\n              }}\n              autoComplete=\"off\"\n              size=\"large\"\n            >\n              <Form.Item\n                name=\"username\"\n                rules={[{ required: true, message: '请输入用户名' }]}\n              >\n                <Input prefix={<UserOutlined />} placeholder=\"用户名\" />\n              </Form.Item>\n\n              <Form.Item\n                name=\"password\"\n                rules={[{ required: true, message: '请输入密码' }]}\n              >\n                <Input.Password prefix={<LockOutlined />} placeholder=\"密码\" />\n              </Form.Item>\n\n              <Form.Item>\n                <Button type=\"primary\" htmlType=\"submit\" block loading={loading}>\n                  登录\n                </Button>\n              </Form.Item>\n            </Form>\n          </TabPane>\n          <TabPane tab=\"注册\" key=\"register\">\n            <Form\n              name=\"register\"\n              onFinish={onFinish}\n              autoComplete=\"off\"\n              size=\"large\"\n            >\n              <Form.Item\n                name=\"username\"\n                rules={[{ required: true, message: '请输入用户名' }]}\n              >\n                <Input prefix={<UserOutlined />} placeholder=\"用户名\" />\n              </Form.Item>\n\n              <Form.Item\n                name=\"email\"\n                rules={[\n                  { required: true, message: '请输入邮箱' },\n                  { type: 'email', message: '请输入正确的邮箱格式' },\n                ]}\n              >\n                <Input prefix={<MailOutlined />} placeholder=\"邮箱\" />\n              </Form.Item>\n\n              <Form.Item\n                name=\"password\"\n                rules={[\n                  { required: true, message: '请输入密码' },\n                  { min: 6, message: '密码至少6位' },\n                ]}\n              >\n                <Input.Password prefix={<LockOutlined />} placeholder=\"密码\" />\n              </Form.Item>\n\n              <Form.Item\n                name=\"confirmPassword\"\n                rules={[\n                  { required: true, message: '请确认密码' },\n                  ({ getFieldValue }) => ({\n                    validator(_, value) {\n                      if (!value || getFieldValue('password') === value) {\n                        return Promise.resolve();\n                      }\n                      return Promise.reject(new Error('两次输入的密码不一致'));\n                    },\n                  }),\n                ]}\n              >\n                <Input.Password prefix={<LockOutlined />} placeholder=\"确认密码\" />\n              </Form.Item>\n\n              <Form.Item>\n                <Button type=\"primary\" htmlType=\"submit\" block loading={loading}>\n                  注册\n                </Button>\n              </Form.Item>\n            </Form>\n          </TabPane>\n        </Tabs>\n      </Card>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/user/Register.tsx"
+    },
+    "4": {
+      "path": "/user/forgot-password",
+      "file": "@/pages/user/ForgotPassword.tsx",
+      "parentId": "1",
+      "id": "4",
+      "absPath": "/user/forgot-password",
+      "__content": "import { useState } from 'react';\nimport { Form, Input, Button, Card, message } from 'antd';\nimport { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';\nimport { useNavigate } from 'react-router-dom';\nimport { authApi } from '@/services/api';\n\nconst { Option } = Select;\n\ninterface ForgotPasswordFormValues {\n  email: string;\n}\n\nexport default function ForgotPassword() {\n  const navigate = useNavigate();\n  const [loading, setLoading] = useState(false);\n\n  const onFinish = async (values: ForgotPasswordFormValues) => {\n    setLoading(true);\n    try {\n      await authApi.forgotPassword(values);\n      message.success('重置密码邮件已发送，请检查邮箱');\n      navigate('/user/login');\n    } catch (error) {\n      console.error(error);\n      message.error('发送失败，请稍后重试');\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <div style={{\n      display: 'flex',\n      justifyContent: 'center',\n      alignItems: 'center',\n      minHeight: '100vh',\n      background: '#f0f2f5',\n    }}>\n      <Card\n        title={<h2 style={{ textAlign: 'center', margin: 0 }}>忘记密码</h2>}\n        style={{ width: 400 }}\n      >\n        <Form\n          name=\"forgot-password\"\n          onFinish={onFinish}\n          autoComplete=\"off\"\n          size=\"large\"\n        >\n          <Form.Item\n            name=\"email\"\n            rules={[\n              { required: true, message: '请输入邮箱' },\n              { type: 'email', message: '请输入有效的邮箱地址' }\n            ]}\n          >\n            <Input\n              prefix={<MailOutlined />}\n              placeholder=\"邮箱地址\"\n            />\n          </Form.Item>\n\n          <Form.Item>\n            <Button type=\"primary\" htmlType=\"submit\" block loading={loading}>\n              发送重置邮件\n            </Button>\n          </Form.Item>\n\n          <Form.Item>\n            <Button type=\"link\" block onClick={() => navigate('/user/login')}>\n              返回登录\n            </Button>\n          </Form.Item>\n        </Form>\n      </Card>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/user/ForgotPassword.tsx"
+    },
+    "5": {
+      "path": "/create_tenant",
+      "file": "@/pages/tenant/Create.tsx",
+      "id": "5",
+      "absPath": "/create_tenant",
+      "__content": "import { useState } from 'react';\nimport { Form, Input, Button, Card, message, InputNumber } from 'antd';\nimport { useNavigate } from 'react-router-dom';\nimport { tenantApi } from '@/services/api';\n\ninterface CreateTenantFormValues {\n  name: string;\n  slug: string;\n  description: string;\n  admin_username: string;\n  admin_email: string;\n  admin_password: string;\n  admin_confirm_password: string;\n}\n\nexport default function CreateTenant() {\n  const navigate = useNavigate();\n  const [loading, setLoading] = useState(false);\n  const [form] = Form.useForm();\n\n  const onFinish = async (values: CreateTenantFormValues) => {\n    if (values.admin_password !== values.admin_confirm_password) {\n      message.error('两次输入的管理员密码不一致');\n      return;\n    }\n    setLoading(true);\n    try {\n      await tenantApi.create({\n        name: values.name,\n        slug: values.slug,\n        description: values.description,\n        admin_username: values.admin_username,\n        admin_email: values.admin_email,\n        admin_password: values.admin_password,\n      });\n      message.success('租户创建成功，管理员用户已创建');\n      navigate('/tenant');\n    } catch (error) {\n      console.error(error);\n      message.error('创建失败，请检查输入信息');\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>\n      <Card title=\"创建租户\" bordered={false}>\n        <Form\n          form={form}\n          layout=\"vertical\"\n          onFinish={onFinish}\n          autoComplete=\"off\"\n        >\n          <div style={{ marginBottom: '24px' }}>\n            <h3>租户信息</h3>\n          </div>\n\n          <Form.Item\n            name=\"name\"\n            label=\"租户名称\"\n            rules={[{ required: true, message: '请输入租户名称' }]}\n          >\n            <Input placeholder=\"请输入租户名称\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"slug\"\n            label=\"租户标识\"\n            rules={[\n              { required: true, message: '请输入租户标识' },\n              { pattern: /^[a-z0-9-]+$/, message: '只能包含小写字母、数字和连字符' },\n            ]}\n          >\n            <Input placeholder=\"请输入租户标识 (如: company-a)\" />\n          </Form.Item>\n\n          <Form.Item name=\"description\" label=\"租户描述\">\n            <Input.TextArea \n              placeholder=\"请输入租户描述\" \n              rows={4}\n            />\n          </Form.Item>\n\n          <div style={{ marginBottom: '24px', marginTop: '32px' }}>\n            <h3>管理员信息</h3>\n          </div>\n\n          <Form.Item\n            name=\"admin_username\"\n            label=\"管理员用户名\"\n            rules={[\n              { required: true, message: '请输入管理员用户名' },\n              { min: 3, message: '用户名至少3个字符' },\n            ]}\n          >\n            <Input placeholder=\"请输入管理员用户名\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"admin_email\"\n            label=\"管理员邮箱\"\n            rules={[\n              { required: true, message: '请输入管理员邮箱' },\n              { type: 'email', message: '请输入正确的邮箱格式' },\n            ]}\n          >\n            <Input placeholder=\"请输入管理员邮箱\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"admin_password\"\n            label=\"管理员密码\"\n            rules={[\n              { required: true, message: '请输入管理员密码' },\n              { min: 6, message: '密码至少6位' },\n            ]}\n          >\n            <Input.Password placeholder=\"请输入管理员密码\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"admin_confirm_password\"\n            label=\"确认密码\"\n            dependencies={['admin_password']}\n            rules={[\n              { required: true, message: '请确认管理员密码' },\n              ({ getFieldValue }) => ({\n                validator(_, value) {\n                  if (!value || getFieldValue('admin_password') === value) {\n                    return Promise.resolve();\n                  }\n                  return Promise.reject(new Error('两次输入的密码不一致'));\n                },\n              }),\n            ]}\n          >\n            <Input.Password placeholder=\"请再次输入管理员密码\" />\n          </Form.Item>\n\n          <Form.Item>\n            <Button type=\"primary\" htmlType=\"submit\" loading={loading} size=\"large\">\n              创建租户\n            </Button>\n            <Button \n              style={{ marginLeft: '8px' }} \n              onClick={() => navigate('/tenant')}\n              size=\"large\"\n            >\n              取消\n            </Button>\n          </Form.Item>\n        </Form>\n      </Card>\n    </div>\n  );\n}",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/tenant/Create.tsx"
+    },
+    "6": {
+      "path": "/",
+      "file": "@/layouts/BasicLayout.tsx",
+      "id": "6",
+      "absPath": "/",
+      "__content": "import type { MenuProps } from 'antd';\nimport { useEffect, useState } from 'react';\nimport { Outlet, useNavigate, useLocation } from 'react-router-dom';\nimport { Layout, Menu, Avatar, Dropdown, theme } from 'antd';\nimport {\n  DashboardOutlined,\n  ApartmentOutlined,\n  EnvironmentOutlined,\n  FolderOutlined,\n  UserOutlined,\n  LogoutOutlined,\n  SettingOutlined,\n  TeamOutlined,\n  GlobalOutlined,\n  ToolOutlined,\n} from '@ant-design/icons';\nimport { menuApi } from '@/services/api';\nimport type { Menu as MenuType } from '@/types';\n\nconst { Header, Sider, Content } = Layout;\n\ninterface User {\n  id: string;\n  username: string;\n  email: string;\n  role: string;\n}\n\nconst iconMap: Record<string, React.ReactNode> = {\n  DashboardOutlined: <DashboardOutlined />,\n  ApartmentOutlined: <ApartmentOutlined />,\n  EnvironmentOutlined: <EnvironmentOutlined />,\n  FolderOutlined: <FolderOutlined />,\n  UserOutlined: <UserOutlined />,\n  TeamOutlined: <TeamOutlined />,\n  SettingOutlined: <SettingOutlined />,\n  GlobalOutlined: <GlobalOutlined />,\n  ToolOutlined: <ToolOutlined />,\n};\n\nexport default function BasicLayout() {\n  const navigate = useNavigate();\n  const location = useLocation();\n  const [user, setUser] = useState<User | null>(null);\n  const [menus, setMenus] = useState<MenuType[]>([]);\n  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);\n  const [openKeys, setOpenKeys] = useState<string[]>([]);\n  const {\n    token: { colorBgContainer, borderRadiusLG },\n  } = theme.useToken();\n\n  useEffect(() => {\n    const userStr = localStorage.getItem('user');\n    if (userStr) {\n      setUser(JSON.parse(userStr));\n      loadMenus();\n    } else {\n      navigate('/user/login');\n    }\n  }, [navigate]);\n\n  useEffect(() => {\n    setSelectedKeys([location.pathname]);\n    const pathSegments = location.pathname.split('/').filter(Boolean);\n    if (pathSegments.length > 1) {\n      setOpenKeys([`/${pathSegments[0]}`]);\n    }\n  }, [location.pathname]);\n\n  const loadMenus = async () => {\n    try {\n      const data = await menuApi.getUserMenus();\n      setMenus(data);\n    } catch (error) {\n      console.error('Failed to load menus:', error);\n    }\n  };\n\n  const renderMenuItems = (menuList: MenuType[]): any[] => {\n    return menuList.map((menu) => {\n      const item: any = {\n        key: menu.path,\n        icon: menu.icon ? iconMap[menu.icon] : null,\n        label: menu.name,\n      };\n      if (menu.children && menu.children.length > 0) {\n        item.children = renderMenuItems(menu.children);\n      }\n      return item;\n    });\n  };\n\n  const handleUserMenuClick = ({ key }: { key: string }) => {\n    if (key === 'logout') {\n      handleLogout();\n    } else if (key === 'internationalization') {\n      navigate('/settings/internationalization');\n    } else {\n      navigate(`/${key}`);\n    }\n  };\n\n  const handleMenuClick = ({ key }: { key: string }) => {\n    navigate(key);\n  };\n\n  const handleLogout = () => {\n    localStorage.removeItem('access_token');\n    localStorage.removeItem('refresh_token');\n    localStorage.removeItem('user');\n    localStorage.removeItem('tenant_id');\n    navigate('/user/login');\n  };\n\n  const userMenu: MenuProps = {\n    items: [\n      {\n        key: 'profile',\n        icon: <UserOutlined />,\n        label: '个人中心',\n      },\n      {\n        key: 'settings',\n        icon: <SettingOutlined />,\n        label: '系统设置',\n      },\n      {\n        key: 'internationalization',\n        icon: <GlobalOutlined />,\n        label: '国际化',\n      },\n      {\n        type: 'divider',\n      },\n      {\n        key: 'logout',\n        icon: <LogoutOutlined />,\n        label: '退出登录',\n        danger: true,\n      },\n    ],\n  };\n\n  const menuItems = renderMenuItems(menus);\n\n  return (\n    <Layout style={{ minHeight: '100vh' }}>\n      <Sider\n        theme=\"dark\"\n        breakpoint=\"lg\"\n        collapsedWidth=\"0\"\n        style={{\n          overflow: 'auto',\n          height: '100vh',\n          position: 'fixed',\n          left: 0,\n          top: 0,\n          bottom: 0,\n        }}\n      >\n        <div style={{\n          height: 64,\n          display: 'flex',\n          alignItems: 'center',\n          justifyContent: 'center',\n          color: 'white',\n          fontSize: 18,\n          fontWeight: 'bold',\n        }}>\n          物联网云平台\n        </div>\n        <Menu\n          theme=\"dark\"\n          mode=\"inline\"\n          selectedKeys={selectedKeys}\n          openKeys={openKeys}\n          items={menuItems}\n          onClick={handleMenuClick}\n          onOpenChange={setOpenKeys}\n        />\n      </Sider>\n      <Layout style={{ marginLeft: 200 }}>\n        <Header style={{\n          padding: '0 24px',\n          background: colorBgContainer,\n          display: 'flex',\n          justifyContent: 'flex-end',\n          alignItems: 'center',\n        }}>\n          <Dropdown menu={{ ...userMenu, onClick: handleUserMenuClick }} placement=\"bottomRight\">\n            <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>\n              <Avatar icon={<UserOutlined />} />\n              <span>{user?.username || '用户'}</span>\n            </div>\n          </Dropdown>\n        </Header>\n        <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280 }}>\n          <div\n            style={{\n              padding: 24,\n              minHeight: 360,\n              background: colorBgContainer,\n              borderRadius: borderRadiusLG,\n            }}\n          >\n            <Outlet />\n          </div>\n        </Content>\n      </Layout>\n    </Layout>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/layouts/BasicLayout.tsx"
+    },
+    "7": {
+      "path": "/",
+      "redirect": "/dashboard",
+      "parentId": "6",
+      "id": "7",
+      "absPath": "/"
+    },
+    "8": {
+      "path": "/dashboard",
+      "file": "@/pages/Dashboard.tsx",
+      "parentId": "6",
+      "id": "8",
+      "absPath": "/dashboard",
+      "__content": "import { Card, Row, Col, Statistic } from 'antd';\nimport {\n  ApartmentOutlined,\n  EnvironmentOutlined,\n  FolderOutlined,\n  UserOutlined,\n} from '@ant-design/icons';\n\nexport default function Dashboard() {\n  return (\n    <div>\n      <h1>仪表盘</h1>\n      <Row gutter={16}>\n        <Col span={6}>\n          <Card>\n            <Statistic\n              title=\"租户数量\"\n              value={0}\n              prefix={<ApartmentOutlined />}\n            />\n          </Card>\n        </Col>\n        <Col span={6}>\n          <Card>\n            <Statistic\n              title=\"站点数量\"\n              value={0}\n              prefix={<EnvironmentOutlined />}\n            />\n          </Card>\n        </Col>\n        <Col span={6}>\n          <Card>\n            <Statistic\n              title=\"命名空间数量\"\n              value={0}\n              prefix={<FolderOutlined />}\n            />\n          </Card>\n        </Col>\n        <Col span={6}>\n          <Card>\n            <Statistic\n              title=\"用户数量\"\n              value={0}\n              prefix={<UserOutlined />}\n            />\n          </Card>\n        </Col>\n      </Row>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/Dashboard.tsx"
+    },
+    "9": {
+      "path": "/tenant",
+      "file": "@/pages/tenant/List.tsx",
+      "parentId": "6",
+      "id": "9",
+      "absPath": "/tenant",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { useNavigate } from 'react-router-dom';\nimport { tenantApi } from '@/services/api';\nimport type { Tenant } from '@/types';\n\nexport default function TenantList() {\n  const navigate = useNavigate();\n  const [tableData, setTableData] = useState<Tenant[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Tenant | null>(null);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await tenantApi.list({ page: 1, page_size: 100 });\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      if (editingRecord) {\n        await tenantApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await tenantApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Tenant) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await tenantApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Tenant>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"租户列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => navigate('/create_tenant')}\n          >\n            创建租户\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title=\"编辑租户\"\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={true}\n          >\n            <Input placeholder=\"请输入标识 (如: company-a)\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/tenant/List.tsx"
+    },
+    "10": {
+      "path": "/users",
+      "file": "@/pages/user/List.tsx",
+      "parentId": "6",
+      "id": "10",
+      "absPath": "/users",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { userApi } from '@/services/api';\nimport type { User } from '@/types';\n\nconst { Option } = Select;\n\nexport default function UserList() {\n  const [tableData, setTableData] = useState<User[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<User | null>(null);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      // 从localStorage获取当前用户的租户ID\n      const userStr = localStorage.getItem('user');\n      if (userStr) {\n        const user = JSON.parse(userStr);\n        const data = await userApi.list({ page: 1, page_size: 100, tenant_id: user.tenant_id });\n        setTableData(Array.isArray(data.list) ? data.list : []);\n      }\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      if (userStr && !editingRecord) {\n        const user = JSON.parse(userStr);\n        values.tenant_id = user.tenant_id;\n      }\n      \n      if (editingRecord) {\n        await userApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await userApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: User) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await userApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleToggleStatus = async (id: string, checked: boolean) => {\n    try {\n      await userApi.update(id, { is_active: checked });\n      message.success('状态更新成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<User>[] = [\n    {\n      title: '用户名',\n      dataIndex: 'username',\n      key: 'username',\n    },\n    {\n      title: '邮箱',\n      dataIndex: 'email',\n      key: 'email',\n    },\n    {\n      title: '角色',\n      dataIndex: 'role',\n      key: 'role',\n      render: (role: string) => {\n        const roleMap: Record<string, string> = {\n          admin: '管理员',\n          user: '普通用户',\n          editor: '编辑',\n        };\n        return roleMap[role] || role;\n      },\n    },\n    {\n      title: '状态',\n      dataIndex: 'is_active',\n      key: 'is_active',\n      render: (is_active: boolean, record) => (\n        <Switch \n          checked={is_active} \n          onChange={(checked) => handleToggleStatus(record.id, checked)}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n        />\n      ),\n    },\n    {\n      title: '超级用户',\n      dataIndex: 'is_superuser',\n      key: 'is_superuser',\n      render: (is_superuser: boolean) => (\n        <span style={{ color: is_superuser ? 'green' : 'gray' }}>\n          {is_superuser ? '是' : '否'}\n        </span>\n      ),\n    },\n    {\n      title: '最后登录',\n      dataIndex: 'last_login',\n      key: 'last_login',\n      render: (text: string) => text ? new Date(text).toLocaleString() : '从未登录',\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"用户列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n          >\n            创建用户\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑用户' : '创建用户'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"username\"\n            label=\"用户名\"\n            rules={[{ required: true, message: '请输入用户名' }]}\n          >\n            <Input placeholder=\"请输入用户名\" />\n          </Form.Item>\n          <Form.Item\n            name=\"email\"\n            label=\"邮箱\"\n            rules={[\n              { required: true, message: '请输入邮箱' },\n              { type: 'email', message: '请输入有效的邮箱地址' }\n            ]}\n          >\n            <Input placeholder=\"请输入邮箱\" />\n          </Form.Item>\n          {!editingRecord && (\n            <Form.Item\n              name=\"password\"\n              label=\"密码\"\n              rules={[{ required: true, message: '请输入密码', min: 6 }]}\n            >\n              <Input.Password placeholder=\"请输入密码\" />\n            </Form.Item>\n          )}\n          <Form.Item\n            name=\"role\"\n            label=\"角色\"\n            rules={[{ required: true, message: '请选择角色' }]}\n          >\n            <Select placeholder=\"请选择角色\">\n              <Option value=\"user\">普通用户</Option>\n              <Option value=\"editor\">编辑</Option>\n              <Option value=\"admin\">管理员</Option>\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"is_active\"\n            label=\"是否启用\"\n            valuePropName=\"checked\"\n            initialValue={true}\n          >\n            <Switch />\n          </Form.Item>\n          <Form.Item\n            name=\"tenant_id\"\n            label=\"租户\"\n            hidden\n          >\n            <Input />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/user/List.tsx"
+    },
+    "11": {
+      "path": "/site",
+      "file": "@/pages/site/List.tsx",
+      "parentId": "6",
+      "id": "11",
+      "absPath": "/site",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { siteApi } from '@/services/api';\nimport type { Site } from '@/types';\n\nexport default function SiteList() {\n  const [tableData, setTableData] = useState<Site[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Site | null>(null);\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await siteApi.list(user.tenant_id, { page: 1, page_size: 100 });\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await siteApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await siteApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Site) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!selectedTenantId) return;\n    try {\n      await siteApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Site>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '位置',\n      dataIndex: 'location',\n      key: 'location',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"站点列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n          >\n            新建\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑站点' : '新建站点'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识 (如: factory-a)\" />\n          </Form.Item>\n          <Form.Item name=\"location\" label=\"位置\">\n            <Input placeholder=\"请输入位置\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/site/List.tsx"
+    },
+    "12": {
+      "path": "/namespace",
+      "file": "@/pages/namespace/List.tsx",
+      "parentId": "6",
+      "id": "12",
+      "absPath": "/namespace",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, Select, message, Space, Popconfirm } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { namespaceApi } from '@/services/api';\nimport type { Namespace } from '@/types';\n\nexport default function NamespaceList() {\n  const [tableData, setTableData] = useState<Namespace[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Namespace | null>(null);\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await namespaceApi.listByTenant(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n\n      if (!tenantId) {\n        message.warning('无法获取租户信息');\n        return;\n      }\n      if (editingRecord) {\n        await namespaceApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await namespaceApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Namespace) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n\n      if (!tenantId) return;\n      await namespaceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Namespace>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '类型',\n      dataIndex: 'namespace_type',\n      key: 'namespace_type',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"命名空间列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n          >\n            新建\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑命名空间' : '新建命名空间'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识 (如: production)\" />\n          </Form.Item>\n          <Form.Item name=\"namespace_type\" label=\"类型\" initialValue=\"default\">\n            <Select placeholder=\"选择类型\">\n              <Select.Option value=\"default\">默认</Select.Option>\n              <Select.Option value=\"production\">生产</Select.Option>\n              <Select.Option value=\"development\">开发</Select.Option>\n              <Select.Option value=\"test\">测试</Select.Option>\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/namespace/List.tsx"
+    },
+    "13": {
+      "path": "/organization",
+      "file": "@/pages/organization/List.tsx",
+      "parentId": "6",
+      "id": "13",
+      "absPath": "/organization",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, InputNumber, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { organizationApi } from '@/services/api';\nimport type { Organization } from '@/types';\n\nexport default function OrganizationList() {\n  const [tableData, setTableData] = useState<Organization[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Organization | null>(null);\n  const [form] = Form.useForm();\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await organizationApi.list(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await organizationApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await organizationApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Organization) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await organizationApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleToggleStatus = async (id: string, checked: boolean) => {\n    try {\n      await organizationApi.update(selectedTenantId, id, { status: checked ? 'active' : 'inactive' });\n      message.success('状态更新成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Organization>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 200,\n    },\n    {\n      title: '上级机构',\n      dataIndex: 'parent_id',\n      key: 'parent_id',\n      width: 150,\n      render: (parent_id: string) => {\n        if (!parent_id) return '顶级机构';\n        const findOrg = (list: Organization[]): Organization | undefined => {\n          for (const org of list) {\n            if (org.id === parent_id) return org;\n            if (org.children) {\n              const found = findOrg(org.children);\n              if (found) return found;\n            }\n          }\n          return undefined;\n        };\n        const org = findOrg(tableData);\n        return org ? org.name : parent_id;\n      },\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '排序',\n      dataIndex: 'sort_order',\n      key: 'sort_order',\n      width: 80,\n      align: 'center',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      align: 'center',\n      render: (status: string, record) => (\n        <Switch \n          checked={status === 'active'} \n          onChange={(checked) => handleToggleStatus(record.id, checked)}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n        />\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 180,\n      align: 'center',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            description=\"删除后子机构也会被删除，是否继续?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  const buildTreeOptions = (list: Organization[], level = 0): any[] => {\n    return list.map(item => {\n      const prefix = level > 0 ? '├' + '─'.repeat(level * 2) + ' ' : '';\n      const options = [{\n        value: item.id,\n        label: prefix + item.name,\n      }];\n      if (item.children && item.children.length > 0) {\n        options.push(...buildTreeOptions(item.children, level + 1));\n      }\n      return options;\n    }).flat();\n  };\n\n  const parentOptions = [\n    { value: '', label: '顶级机构' },\n    ...buildTreeOptions(tableData)\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"组织机构管理\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n            disabled={!selectedTenantId}\n          >\n            创建组织机构\n          </Button>,\n        ]}\n        expandable={{ defaultExpandAllRows: true }}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑组织机构' : '创建组织机构'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={500}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入组织机构名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"parent_id\"\n            label=\"上级机构\"\n          >\n            <Select placeholder=\"请选择上级机构\">\n              {parentOptions.map(option => (\n                <Option key={option.value} value={option.value} disabled={editingRecord && option.value === editingRecord.id}>\n                  {option.label}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n          <Form.Item\n            name=\"sort_order\"\n            label=\"排序\"\n            initialValue={0}\n          >\n            <InputNumber min={0} style={{ width: '100%' }} placeholder=\"排序数值，越小越靠前\" />\n          </Form.Item>\n          <Form.Item\n            name=\"status\"\n            label=\"状态\"\n            valuePropName=\"checked\"\n            initialValue={true}\n            getValueFromEvent={(e) => e.target.checked ? 'active' : 'inactive'}\n            getValueProps={(value) => ({ checked: value === 'active' })}\n          >\n            <Switch checkedChildren=\"启用\" unCheckedChildren=\"禁用\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/organization/List.tsx"
+    },
+    "14": {
+      "path": "/department",
+      "file": "@/pages/department/List.tsx",
+      "parentId": "6",
+      "id": "14",
+      "absPath": "/department",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, InputNumber, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined, ApartmentOutlined } from '@ant-design/icons';\nimport { departmentApi, organizationApi } from '@/services/api';\nimport type { Department, Organization } from '@/types';\n\nconst { Option } = Select;\n\nexport default function DepartmentList() {\n  const [tableData, setTableData] = useState<Department[]>([]);\n  const [organizations, setOrganizations] = useState<Organization[]>([]);\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n  const [selectedOrgId, setSelectedOrgId] = useState<string>('');\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Department | null>(null);\n  const [form] = Form.useForm();\n\n  const fetchOrganizations = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setOrganizations([]);\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    try {\n      const data = await organizationApi.list(user.tenant_id);\n      const orgList = Array.isArray(data) ? data : [];\n      setOrganizations(orgList);\n      if (orgList.length > 0 && !selectedOrgId) {\n        setSelectedOrgId(orgList[0].id);\n      } else if (orgList.length === 0) {\n        setSelectedOrgId('');\n        setTableData([]);\n      }\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const fetchData = async () => {\n    if (!selectedTenantId || !selectedOrgId) {\n      setTableData([]);\n      return;\n    }\n    setLoading(true);\n    try {\n      const data = await departmentApi.list(selectedTenantId, selectedOrgId);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchOrganizations();\n  }, []);\n\n  useEffect(() => {\n    if (selectedOrgId) {\n      fetchData();\n    }\n  }, [selectedOrgId]);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await departmentApi.update(tenantId, selectedOrgId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await departmentApi.create(tenantId, selectedOrgId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Department) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await departmentApi.delete(selectedTenantId, selectedOrgId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleToggleStatus = async (id: string, checked: boolean) => {\n    try {\n      await departmentApi.update(selectedTenantId, selectedOrgId, id, { status: checked ? 'active' : 'inactive' });\n      message.success('状态更新成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const getOrganizationName = (orgId: string) => {\n    const findOrg = (list: Organization[]): Organization | undefined => {\n      for (const org of list) {\n        if (org.id === orgId) return org;\n        if (org.children) {\n          const found = findOrg(org.children);\n          if (found) return found;\n        }\n      }\n      return undefined;\n    };\n    const org = findOrg(organizations);\n    return org ? org.name : orgId;\n  };\n\n  const getParentDepartmentName = (parentId: string) => {\n    if (!parentId) return '顶级部门';\n    const findDept = (list: Department[]): Department | undefined => {\n      for (const dept of list) {\n        if (dept.id === parentId) return dept;\n        if (dept.children) {\n          const found = findDept(dept.children);\n          if (found) return found;\n        }\n      }\n      return undefined;\n    };\n    const dept = findDept(tableData);\n    return dept ? dept.name : parentId;\n  };\n\n  const buildOrgOptions = (list: Organization[], level = 0): any[] => {\n    return list.map(item => {\n      const prefix = level > 0 ? '├' + '─'.repeat(level * 2) + ' ' : '';\n      const options = [{\n        value: item.id,\n        label: prefix + item.name,\n      }];\n      if (item.children && item.children.length > 0) {\n        options.push(...buildOrgOptions(item.children, level + 1));\n      }\n      return options;\n    }).flat();\n  };\n\n  const buildDeptOptions = (list: Department[], level = 0): any[] => {\n    return list.map(item => {\n      const prefix = level > 0 ? '├' + '─'.repeat(level * 2) + ' ' : '';\n      const options = [{\n        value: item.id,\n        label: prefix + item.name,\n      }];\n      if (item.children && item.children.length > 0) {\n        options.push(...buildDeptOptions(item.children, level + 1));\n      }\n      return options;\n    }).flat();\n  };\n\n  const columns: ProColumns<Department>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 200,\n    },\n    {\n      title: '所属机构',\n      dataIndex: 'organization_id',\n      key: 'organization_id',\n      width: 150,\n      render: (orgId: string) => getOrganizationName(orgId),\n    },\n    {\n      title: '上级部门',\n      dataIndex: 'parent_id',\n      key: 'parent_id',\n      width: 150,\n      render: (parentId: string) => getParentDepartmentName(parentId),\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '排序',\n      dataIndex: 'sort_order',\n      key: 'sort_order',\n      width: 80,\n      align: 'center',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      align: 'center',\n      render: (status: string, record) => (\n        <Switch \n          checked={status === 'active'} \n          onChange={(checked) => handleToggleStatus(record.id, checked)}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n        />\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 180,\n      align: 'center',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            description=\"删除后子部门也会被删除，是否继续?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  const orgOptions = buildOrgOptions(organizations);\n  const parentDeptOptions = [\n    { value: '', label: '顶级部门' },\n    ...buildDeptOptions(tableData)\n  ];\n\n  return (\n    <div>\n      <div style={{ marginBottom: 16, display: 'flex', gap: 16, alignItems: 'center' }}>\n        <Select\n          placeholder=\"选择组织机构\"\n          style={{ width: 250 }}\n          value={selectedOrgId}\n          onChange={setSelectedOrgId}\n          disabled={!selectedTenantId}\n          options={buildOrgOptions(organizations)}\n        />\n      </div>\n      <ProTable\n        headerTitle=\"部门管理\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n            disabled={!selectedTenantId || !selectedOrgId}\n          >\n            创建部门\n          </Button>,\n        ]}\n        expandable={{ defaultExpandAllRows: true }}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑部门' : '创建部门'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={550}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"organization_id\"\n            label=\"所属组织机构\"\n            rules={[{ required: true, message: '请选择所属组织机构' }]}\n            initialValue={selectedOrgId}\n          >\n            <Select placeholder=\"请选择所属组织机构\" disabled>\n              {orgOptions.map(option => (\n                <Option key={option.value} value={option.value}>\n                  {option.label}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入部门名称' }]}\n          >\n            <Input placeholder=\"请输入部门名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"parent_id\"\n            label=\"上级部门\"\n          >\n            <Select placeholder=\"请选择上级部门\">\n              {parentDeptOptions.map(option => (\n                <Option key={option.value} value={option.value} disabled={editingRecord && option.value === editingRecord.id}>\n                  {option.label}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n          <Form.Item\n            name=\"sort_order\"\n            label=\"排序\"\n            initialValue={0}\n          >\n            <InputNumber min={0} style={{ width: '100%' }} placeholder=\"排序数值，越小越靠前\" />\n          </Form.Item>\n          <Form.Item\n            name=\"status\"\n            label=\"状态\"\n            valuePropName=\"checked\"\n            initialValue={true}\n            getValueFromEvent={(e) => e.target.checked ? 'active' : 'inactive'}\n            getValueProps={(value) => ({ checked: value === 'active' })}\n          >\n            <Switch checkedChildren=\"启用\" unCheckedChildren=\"禁用\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/department/List.tsx"
+    },
+    "15": {
+      "path": "/resources",
+      "parentId": "6",
+      "id": "15",
+      "absPath": "/resources"
+    },
+    "16": {
+      "path": "/resources/crd",
+      "file": "@/pages/resource/crd/List.tsx",
+      "parentId": "15",
+      "id": "16",
+      "absPath": "/resources/crd",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, Select, message, Space, Popconfirm, Tag } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined, CloudUploadOutlined } from '@ant-design/icons';\nimport { crdApi, namespaceApi } from '@/services/api';\nimport type { CRD, Namespace } from '@/types';\n\nexport default function CrdList() {\n  const [tableData, setTableData] = useState<CRD[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<CRD | null>(null);\n  const [namespaceOptions, setNamespaceOptions] = useState<{label: string, value: string}[]>([]);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await crdApi.list({ page: 1, page_size: 100 });\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchNamespaces = async () => {\n    try {\n      const data = await namespaceApi.listByTenant('default');\n      const options = data.map((ns: Namespace) => ({\n        label: `${ns.name} (${ns.slug})`,\n        value: ns.id,\n      }));\n      setNamespaceOptions(options);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n    fetchNamespaces();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      if (editingRecord) {\n        await crdApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await crdApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: CRD) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await crdApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handlePublish = async (id: string) => {\n    try {\n      await crdApi.publish(id);\n      message.success('发布成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const getStatusTag = (status: string) => {\n    switch (status) {\n      case 'draft':\n        return <Tag color=\"default\">草稿</Tag>;\n      case 'published':\n        return <Tag color=\"success\">已发布</Tag>;\n      default:\n        return <Tag color=\"default\">{status}</Tag>;\n    }\n  };\n\n  const columns: ProColumns<CRD>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: 'Group',\n      dataIndex: 'group',\n      key: 'group',\n    },\n    {\n      title: 'Version',\n      dataIndex: 'version',\n      key: 'version',\n    },\n    {\n      title: 'Kind',\n      dataIndex: 'kind',\n      key: 'kind',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => getStatusTag(status),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          {record.status !== 'published' && (\n            <Popconfirm\n              title=\"确认发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                发布\n              </Button>\n            </Popconfirm>\n          )}\n          {record.status === 'published' && (\n            <Popconfirm\n              title=\"确认重新发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                重新发布\n              </Button>\n            </Popconfirm>\n          )}\n          <Popconfirm\n            title=\"确认删除? 已发布的CRD将同时从K8s中删除\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"CRD定义列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setModalVisible(true);\n              setEditingRecord(null);\n              form.resetFields();\n            }}\n          >\n            创建CRD\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑CRD' : '创建CRD'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入CRD名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识，如: my-resource\" />\n          </Form.Item>\n          <Form.Item\n            name=\"namespace_id\"\n            label=\"命名空间\"\n            rules={[{ required: true, message: '请选择命名空间' }]}\n          >\n            <Select\n            placeholder=\"请选择命名空间\"\n            options={namespaceOptions}\n            showSearch\n            filterOption={(input, option) =>\n              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())\n            }\n          />\n          </Form.Item>\n          <Form.Item\n            name=\"group\"\n            label=\"Group\"\n            rules={[{ required: true, message: '请输入Group' }]}\n          >\n            <Input placeholder=\"如: example.com\" />\n          </Form.Item>\n          <Form.Item\n            name=\"version\"\n            label=\"Version\"\n            rules={[{ required: true, message: '请输入Version' }]}\n          >\n            <Input placeholder=\"如: v1\" />\n          </Form.Item>\n          <Form.Item\n            name=\"kind\"\n            label=\"Kind\"\n            rules={[{ required: true, message: '请输入Kind' }]}\n          >\n            <Input placeholder=\"如: MyResource\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item name=\"yaml\" label=\"YAML配置(JSON格式)\">\n            <Input.TextArea placeholder=\"请输入完整YAML配置(JSON格式)\" rows={10} />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/resource/crd/List.tsx"
+    },
+    "17": {
+      "path": "/resources/operator",
+      "file": "@/pages/resource/operator/List.tsx",
+      "parentId": "15",
+      "id": "17",
+      "absPath": "/resources/operator",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, Select, message, Space, Popconfirm, Tag } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined, CloudUploadOutlined } from '@ant-design/icons';\nimport { operatorApi, namespaceApi } from '@/services/api';\nimport type { Operator, Namespace } from '@/types';\n\nexport default function OperatorList() {\n  const [tableData, setTableData] = useState<Operator[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Operator | null>(null);\n  const [namespaceOptions, setNamespaceOptions] = useState<{label: string, value: string}[]>([]);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await operatorApi.list({ page: 1, page_size: 100 });\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchNamespaces = async () => {\n    try {\n      const data = await namespaceApi.listByTenant('default');\n      const options = data.map((ns: Namespace) => ({\n        label: `${ns.name} (${ns.slug})`,\n        value: ns.id,\n      }));\n      setNamespaceOptions(options);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n    fetchNamespaces();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      if (editingRecord) {\n        await operatorApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await operatorApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Operator) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await operatorApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handlePublish = async (id: string) => {\n    try {\n      await operatorApi.publish(id);\n      message.success('发布成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const getStatusTag = (status: string) => {\n    switch (status) {\n      case 'draft':\n        return <Tag color=\"default\">草稿</Tag>;\n      case 'published':\n        return <Tag color=\"success\">已发布</Tag>;\n      default:\n        return <Tag color=\"default\">{status}</Tag>;\n    }\n  };\n\n  const columns: ProColumns<Operator>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '版本',\n      dataIndex: 'version',\n      key: 'version',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => getStatusTag(status),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          {record.status !== 'published' && (\n            <Popconfirm\n              title=\"确认发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                发布\n              </Button>\n            </Popconfirm>\n          )}\n          {record.status === 'published' && (\n            <Popconfirm\n              title=\"确认重新发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                重新发布\n              </Button>\n            </Popconfirm>\n          )}\n          <Popconfirm\n            title=\"确认删除? 已发布的Operator将同时从K8s中删除\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"Operator定义列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setModalVisible(true);\n              setEditingRecord(null);\n              form.resetFields();\n            }}\n          >\n            创建Operator\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑Operator' : '创建Operator'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入Operator名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识，如: my-operator\" />\n          </Form.Item>\n          <Form.Item\n            name=\"namespace_id\"\n            label=\"命名空间\"\n            rules={[{ required: true, message: '请选择命名空间' }]}\n          >\n            <Select\n              placeholder=\"请选择命名空间\"\n              options={namespaceOptions}\n              showSearch\n              filterOption={(input, option) =>\n                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())\n              }\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"version\"\n            label=\"版本\"\n            rules={[{ required: true, message: '请输入版本' }]}\n          >\n            <Input placeholder=\"如: v1.0.0\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item name=\"yaml\" label=\"YAML配置(JSON格式)\">\n            <Input.TextArea placeholder=\"请输入完整YAML配置(JSON格式)\" rows={10} />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/resource/operator/List.tsx"
+    },
+    "18": {
+      "path": "/resources/controller",
+      "file": "@/pages/resource/controller/List.tsx",
+      "parentId": "15",
+      "id": "18",
+      "absPath": "/resources/controller",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, Select, message, Space, Popconfirm, Tag } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined, CloudUploadOutlined } from '@ant-design/icons';\nimport { controllerApi, namespaceApi } from '@/services/api';\nimport type { Controller, Namespace } from '@/types';\n\nexport default function ControllerList() {\n  const [tableData, setTableData] = useState<Controller[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Controller | null>(null);\n  const [namespaceOptions, setNamespaceOptions] = useState<{label: string, value: string}[]>([]);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await controllerApi.list({ page: 1, page_size: 100 });\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchNamespaces = async () => {\n    try {\n      const data = await namespaceApi.listByTenant('default');\n      const options = data.map((ns: Namespace) => ({\n        label: `${ns.name} (${ns.slug})`,\n        value: ns.id,\n      }));\n      setNamespaceOptions(options);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n    fetchNamespaces();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      if (editingRecord) {\n        await controllerApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await controllerApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Controller) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await controllerApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handlePublish = async (id: string) => {\n    try {\n      await controllerApi.publish(id);\n      message.success('发布成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const getStatusTag = (status: string) => {\n    switch (status) {\n      case 'draft':\n        return <Tag color=\"default\">草稿</Tag>;\n      case 'published':\n        return <Tag color=\"success\">已发布</Tag>;\n      default:\n        return <Tag color=\"default\">{status}</Tag>;\n    }\n  };\n\n  const columns: ProColumns<Controller>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: 'Kind',\n      dataIndex: 'kind',\n      key: 'kind',\n    },\n    {\n      title: '版本',\n      dataIndex: 'version',\n      key: 'version',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => getStatusTag(status),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          {record.status !== 'published' && (\n            <Popconfirm\n              title=\"确认发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                发布\n              </Button>\n            </Popconfirm>\n          )}\n          {record.status === 'published' && (\n            <Popconfirm\n              title=\"确认重新发布到K8s?\"\n              onConfirm={() => handlePublish(record.id)}\n            >\n              <Button type=\"link\" icon={<CloudUploadOutlined />}>\n                重新发布\n              </Button>\n            </Popconfirm>\n          )}\n          <Popconfirm\n            title=\"确认删除? 已发布的Controller将同时从K8s中删除\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"Controller定义列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setModalVisible(true);\n              setEditingRecord(null);\n              form.resetFields();\n            }}\n          >\n            创建Controller\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑Controller' : '创建Controller'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入Controller名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识，如: my-controller\" />\n          </Form.Item>\n          <Form.Item\n            name=\"namespace_id\"\n            label=\"命名空间\"\n            rules={[{ required: true, message: '请选择命名空间' }]}\n          >\n            <Select\n              placeholder=\"请选择命名空间\"\n              options={namespaceOptions}\n              showSearch\n              filterOption={(input, option) =>\n                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())\n              }\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"kind\"\n            label=\"Kind\"\n            rules={[{ required: true, message: '请输入Kind' }]}\n          >\n            <Input placeholder=\"如: Deployment\" />\n          </Form.Item>\n          <Form.Item\n            name=\"version\"\n            label=\"版本\"\n            rules={[{ required: true, message: '请输入版本' }]}\n          >\n            <Input placeholder=\"如: v1\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item name=\"yaml\" label=\"YAML配置(JSON格式)\">\n            <Input.TextArea placeholder=\"请输入完整YAML配置(JSON格式)\" rows={10} />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/resource/controller/List.tsx"
+    },
+    "19": {
+      "path": "/settings",
+      "parentId": "6",
+      "id": "19",
+      "absPath": "/settings"
+    },
+    "20": {
+      "path": "/settings/system",
+      "file": "@/pages/settings/SystemConfig.tsx",
+      "parentId": "19",
+      "id": "20",
+      "absPath": "/settings/system",
+      "__content": "import { useState } from 'react';\nimport { Card, Form, Input, Switch, Button, message, InputNumber } from 'antd';\nimport { ToolOutlined } from '@ant-design/icons';\n\nexport default function SystemConfig() {\n  const [form] = Form.useForm();\n  const [loading, setLoading] = useState(false);\n\n  const onFinish = async (values: any) => {\n    setLoading(true);\n    try {\n      // 这里调用保存系统配置的API\n      message.success('系统配置保存成功');\n    } catch (error) {\n      message.error('保存失败，请稍后重试');\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    <Card\n      title={\n        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>\n          <ToolOutlined />\n          系统配置\n        </div>\n      }\n    >\n      <Form\n        form={form}\n        layout=\"vertical\"\n        onFinish={onFinish}\n        initialValues={{ \n          site_name: '物联网云平台',\n          enable_registration: true,\n          session_timeout: 24,\n          max_login_attempts: 5,\n          enable_captcha: false,\n        }}\n        style={{ maxWidth: 600 }}\n      >\n        <Form.Item\n          name=\"site_name\"\n          label=\"站点名称\"\n          rules={[{ required: true, message: '请输入站点名称' }]}\n        >\n          <Input placeholder=\"请输入站点名称\" />\n        </Form.Item>\n\n        <Form.Item\n          name=\"site_description\"\n          label=\"站点描述\"\n        >\n          <Input.TextArea rows={3} placeholder=\"请输入站点描述\" />\n        </Form.Item>\n\n        <Form.Item\n          name=\"enable_registration\"\n          label=\"允许用户注册\"\n          valuePropName=\"checked\"\n        >\n          <Switch />\n        </Form.Item>\n\n        <Form.Item\n          name=\"session_timeout\"\n          label=\"会话超时时间（小时）\"\n          rules={[{ required: true, message: '请输入会话超时时间' }]}\n        >\n          <InputNumber min={1} max={720} style={{ width: '100%' }} />\n        </Form.Item>\n\n        <Form.Item\n          name=\"max_login_attempts\"\n          label=\"最大登录尝试次数\"\n          rules={[{ required: true, message: '请输入最大登录尝试次数' }]}\n        >\n          <InputNumber min={1} max={20} style={{ width: '100%' }} />\n        </Form.Item>\n\n        <Form.Item\n          name=\"enable_captcha\"\n          label=\"登录启用验证码\"\n          valuePropName=\"checked\"\n        >\n          <Switch />\n        </Form.Item>\n\n        <Form.Item>\n          <Button type=\"primary\" htmlType=\"submit\" loading={loading}>\n            保存配置\n          </Button>\n        </Form.Item>\n      </Form>\n    </Card>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/settings/SystemConfig.tsx"
+    },
+    "21": {
+      "path": "/settings/role",
+      "file": "@/pages/role/List.tsx",
+      "parentId": "19",
+      "id": "21",
+      "absPath": "/settings/role",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, TextArea } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { roleApi } from '@/services/api';\nimport type { Role } from '@/types';\n\nexport default function RoleList() {\n  const [tableData, setTableData] = useState<Role[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Role | null>(null);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const userStr = localStorage.getItem('user');\n      if (!userStr) {\n        setTableData([]);\n        setLoading(false);\n        return;\n      }\n      const user = JSON.parse(userStr);\n      const data = await roleApi.list(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      if (userStr && !editingRecord) {\n        const user = JSON.parse(userStr);\n        values.tenant_id = user.tenant_id;\n      }\n      \n      if (editingRecord) {\n        await roleApi.update(editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await roleApi.create(values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Role) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await roleApi.delete(id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Role>[] = [\n    {\n      title: '角色名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 150,\n    },\n    {\n      title: '角色标识',\n      dataIndex: 'slug',\n      key: 'slug',\n      width: 150,\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      render: (_, record) => (\n        <Switch\n          checked={record.status === 'active'}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n          disabled\n        />\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 150,\n      render: (_, record) => (\n        <Space size=\"middle\">\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确定要删除这个角色吗？\"\n            onConfirm={() => handleDelete(record.id)}\n            okText=\"确定\"\n            cancelText=\"取消\"\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable<Role>\n        headerTitle=\"角色管理\"\n        rowKey=\"id\"\n        loading={loading}\n        dataSource={tableData}\n        columns={columns}\n        search={false}\n        pagination={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"primary\"\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n            icon={<PlusOutlined />}\n          >\n            新建角色\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑角色' : '新建角色'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        footer={null}\n      >\n        <Form\n          form={form}\n          layout=\"vertical\"\n          onFinish={handleAdd}\n        >\n          <Form.Item\n            name=\"name\"\n            label=\"角色名称\"\n            rules={[{ required: true, message: '请输入角色名称' }]}\n          >\n            <Input placeholder=\"请输入角色名称\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"slug\"\n            label=\"角色标识\"\n            rules={[{ required: true, message: '请输入角色标识' }]}\n          >\n            <Input placeholder=\"请输入角色标识，如：admin\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <TextArea rows={3} placeholder=\"请输入角色描述\" />\n          </Form.Item>\n          <Form.Item\n            name=\"tenant_id\"\n            label=\"租户\"\n            hidden\n          >\n            <Input />\n          </Form.Item>\n          <Form.Item>\n            <Space>\n              <Button type=\"primary\" htmlType=\"submit\">\n                提交\n              </Button>\n              <Button\n                onClick={() => {\n                  setModalVisible(false);\n                  form.resetFields();\n                  setEditingRecord(null);\n                }}\n              >\n                取消\n              </Button>\n            </Space>\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/role/List.tsx"
+    },
+    "22": {
+      "path": "/settings/user-role",
+      "file": "@/pages/user-role/List.tsx",
+      "parentId": "19",
+      "id": "22",
+      "absPath": "/settings/user-role",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Select, Input, message, Space, Popconfirm } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { userApi, roleApi, userRoleApi } from '@/services/api';\nimport type { User, Role } from '@/types';\n\nconst { Option } = Select;\n\nexport default function UserRoleList() {\n  const [tableData, setTableData] = useState<User[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<User | null>(null);\n  const [roleList, setRoleList] = useState<Role[]>([]);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await userApi.list({ page: 1, page_size: 100 });\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchRoleList = async () => {\n    try {\n      const data = await roleApi.list();\n      setRoleList(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n    fetchRoleList();\n  }, []);\n\n  const handleAssign = async (values: any) => {\n    if (!editingRecord) return;\n    \n    try {\n      await userRoleApi.assignRoles({\n        user_id: editingRecord.id,\n        role_ids: values.role_ids,\n      });\n      message.success('角色分配成功');\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = async (record: User) => {\n    setEditingRecord(record);\n    try {\n      const userRoles = await userRoleApi.getUserRoles(record.id);\n      const roleIds = userRoles.map((ur: any) => ur.role_id);\n      form.setFieldsValue({\n        username: record.username,\n        role_ids: roleIds,\n      });\n      setModalVisible(true);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<User>[] = [\n    {\n      title: '用户名',\n      dataIndex: 'username',\n      key: 'username',\n      width: 150,\n    },\n    {\n      title: '邮箱',\n      dataIndex: 'email',\n      key: 'email',\n      width: 200,\n    },\n    {\n      title: '角色',\n      dataIndex: 'role',\n      key: 'role',\n      width: 120,\n    },\n    {\n      title: '状态',\n      dataIndex: 'is_active',\n      key: 'is_active',\n      width: 100,\n      render: (_, record) => (\n        <span className={record.is_active ? 'text-green-600' : 'text-red-600'}>\n          {record.is_active ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 150,\n      render: (_, record) => (\n        <Space size=\"middle\">\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            分配角色\n          </Button>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable<User>\n        headerTitle=\"用户角色授权\"\n        rowKey=\"id\"\n        loading={loading}\n        dataSource={tableData}\n        columns={columns}\n        search={false}\n        pagination={false}\n      />\n\n      <Modal\n        title=\"分配用户角色\"\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        footer={null}\n        width={500}\n      >\n        <Form\n          form={form}\n          layout=\"vertical\"\n          onFinish={handleAssign}\n        >\n          <Form.Item\n            name=\"username\"\n            label=\"用户名\"\n          >\n            <Input disabled placeholder=\"用户名\" />\n          </Form.Item>\n\n          <Form.Item\n            name=\"role_ids\"\n            label=\"选择角色\"\n            rules={[{ required: true, message: '请选择角色' }]}\n          >\n            <Select\n              mode=\"multiple\"\n              placeholder=\"请选择角色\"\n              optionFilterProp=\"children\"\n              showSearch\n            >\n              {roleList.map((role) => (\n                <Option key={role.id} value={role.id}>\n                  {role.name}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n\n          <Form.Item>\n            <Space>\n              <Button type=\"primary\" htmlType=\"submit\">\n                提交\n              </Button>\n              <Button\n                onClick={() => {\n                  setModalVisible(false);\n                  form.resetFields();\n                  setEditingRecord(null);\n                }}\n              >\n                取消\n              </Button>\n            </Space>\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/user-role/List.tsx"
+    },
+    "23": {
+      "path": "/settings/role-menu",
+      "file": "@/pages/role-menu/List.tsx",
+      "parentId": "19",
+      "id": "23",
+      "absPath": "/settings/role-menu",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Tree, Input, message, Space } from 'antd';\nimport { EditOutlined } from '@ant-design/icons';\nimport { roleApi, menuApi, roleMenuApi } from '@/services/api';\nimport type { Role, Menu } from '@/types';\n\nconst { TreeNode } = Tree;\n\nexport default function RoleMenuList() {\n  const [tableData, setTableData] = useState<Role[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Role | null>(null);\n  const [menuTree, setMenuTree] = useState<Menu[]>([]);\n  const [checkedKeys, setCheckedKeys] = useState<string[]>([]);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    setLoading(true);\n    try {\n      const data = await roleApi.list();\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchMenuTree = async () => {\n    try {\n      const data = await menuApi.list();\n      setMenuTree(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n    fetchMenuTree();\n  }, []);\n\n  const handleAssign = async () => {\n    if (!editingRecord) return;\n    \n    try {\n      await roleMenuApi.assignMenus({\n        role_id: editingRecord.id,\n        menu_ids: checkedKeys,\n      });\n      message.success('菜单权限分配成功');\n      setModalVisible(false);\n      setEditingRecord(null);\n      setCheckedKeys([]);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = async (record: Role) => {\n    setEditingRecord(record);\n    try {\n      const roleMenus = await roleMenuApi.getRoleMenus(record.id);\n      const menuIds = roleMenus.map((rm: any) => rm.menu_id);\n      setCheckedKeys(menuIds);\n      setModalVisible(true);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const renderMenuTree = (menus: Menu[]): React.ReactNode => {\n    return menus.map((menu) => (\n      <TreeNode\n        key={menu.id}\n        title={menu.name}\n      >\n        {menu.children && menu.children.length > 0 && renderMenuTree(menu.children)}\n      </TreeNode>\n    ));\n  };\n\n  const columns: ProColumns<Role>[] = [\n    {\n      title: '角色名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 150,\n    },\n    {\n      title: '角色标识',\n      dataIndex: 'slug',\n      key: 'slug',\n      width: 150,\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      render: (_, record) => (\n        <span className={record.status === 'active' ? 'text-green-600' : 'text-red-600'}>\n          {record.status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 150,\n      render: (_, record) => (\n        <Space size=\"middle\">\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            分配菜单\n          </Button>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable<Role>\n        headerTitle=\"角色菜单授权\"\n        rowKey=\"id\"\n        loading={loading}\n        dataSource={tableData}\n        columns={columns}\n        search={false}\n        pagination={false}\n      />\n\n      <Modal\n        title=\"分配菜单权限\"\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          setEditingRecord(null);\n          setCheckedKeys([]);\n        }}\n        onOk={handleAssign}\n        width={600}\n      >\n        <Form\n          form={form}\n          layout=\"vertical\"\n        >\n          <Form.Item\n            label=\"角色名称\"\n          >\n            <Input disabled value={editingRecord?.name} />\n          </Form.Item>\n\n          <Form.Item\n            label=\"选择菜单权限\"\n            rules={[{ required: true, message: '请选择菜单权限' }]}\n          >\n            <Tree\n              checkable\n              checkedKeys={checkedKeys}\n              onCheck={(keys) => setCheckedKeys(keys as string[])}\n              defaultExpandAll\n            >\n              {renderMenuTree(menuTree)}\n            </Tree>\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__isJSFile": true,
+      "__absFile": "/root/source/rust/ithings/web/src/pages/role-menu/List.tsx"
+    }
+  },
+  "apiRoutes": {},
+  "hasSrcDir": true,
+  "npmClient": "npm",
+  "umi": {
+    "version": "4.6.33",
+    "name": "Umi",
+    "importSource": "umi",
+    "cliName": "umi"
+  },
+  "bundleStatus": {
+    "done": false
+  },
+  "mfsuBundleStatus": {
+    "done": false
+  },
+  "react": {
+    "version": "18.3.1",
+    "path": "/root/source/rust/ithings/web/node_modules/react"
+  },
+  "react-dom": {
+    "version": "18.3.1",
+    "path": "/root/source/rust/ithings/web/node_modules/react-dom"
+  },
+  "appJS": {
+    "path": "/root/source/rust/ithings/web/src/app.ts",
+    "exports": [
+      "onRouteChange"
+    ]
+  },
+  "locale": "en-US",
+  "globalCSS": [],
+  "globalJS": [],
+  "overridesCSS": [],
+  "bundler": "webpack",
+  "git": {
+    "originUrl": "https://gitee.com/zhangyhcn/ithings.git"
+  },
+  "framework": "react",
+  "typescript": {
+    "tsVersion": "5.9.3",
+    "tslibVersion": "2.8.1"
+  },
+  "faviconFiles": [],
+  "port": 8000,
+  "host": "0.0.0.0",
+  "ip": "192.168.110.109"
+}

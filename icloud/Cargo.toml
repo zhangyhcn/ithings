@@ -1,0 +1,32 @@
+[package]
+name = "icloud"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"] }
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres"] }
+jsonwebtoken = "9"
+argon2 = "0.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1.0"
+anyhow = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+config = "0.14"
+validator = { version = "0.16", features = ["derive"] }
+rand = "0.8"
+sea-orm-migration = "0.12"
+async-trait = "0.1"
+kube = { version = "0.87", features = ["client", "rustls-tls"] }
+k8s-openapi = { version = "0.20", features = ["v1_28"] }
+base64 = "0.21"
+
+[dev-dependencies]

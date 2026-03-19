@@ -1,0 +1,36 @@
+[workspace]
+resolver = "2"
+members = [
+    "driver-core",
+    "modbus",
+    # "opcua",
+    # "bacnet",
+    # "mqtt",
+    # "http",
+    # "tcp",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["iThings Team"]
+license = "MIT"
+repository = "https://github.com/ithings/drivers"
+
+[workspace.dependencies]
+driver-core = { path = "driver-core" }
+
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1.0"
+anyhow = "1.0"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+config = "0.14"
+clap = { version = "4", features = ["derive"] }
+
+zmq = "0.10"

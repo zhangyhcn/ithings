@@ -1,0 +1,38 @@
+[workspace]
+members = [
+    "common",
+    "icloud",
+    "drivers/driver-core",
+    "drivers/modbus",
+    "devices/meter",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["iThings Team"]
+license = "MIT"
+
+[workspace.dependencies]
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1.0"
+anyhow = "1.0"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde", "std"] }
+uuid = { version = "1.0", features = ["serde", "v4"] }
+config = { version = "0.14", features = ["json"] }
+clap = { version = "4.0", features = ["derive"] }
+zmq = "0.10"
+sha2 = "0.10"
+rumqttc = { version = "0.23", features = ["use-native-tls"] }
+rdkafka = { version = "0.36", features = ["tokio", "ssl-vendored"] }
+regex = "1.10"
+
+driver-core = { path = "drivers/driver-core" }
+device-common = { path = "common" }
+driver-modbus = { path = "drivers/modbus" }

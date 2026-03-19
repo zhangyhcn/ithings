@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: electric-meter-group
+  namespace: ithings
+  labels:
+    app: electric-meter-group
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: electric-meter-group
+  template:
+    metadata:
+      labels:
+        app: electric-meter-group
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: modbus-driver
+        image: 172.17.0.1:30500/ithings/modbus-driver:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5555
+          name: zmq-pub
+        - containerPort: 5556
+          name: zmq-sub
+        volumeMounts:
+        - name: driver-config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      - name: device-meter
+        image: 172.17.0.1:30500/ithings/device-meter:latest
+        imagePullPolicy: IfNotPresent
+        args: ["-c", "/config/electric-meter-group.json"]
+        volumeMounts:
+        - name: device-config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      volumes:
+      - name: driver-config
+        configMap:
+          name: modbus-driver-config
+      - name: device-config
+        configMap:
+          name: electric-meter-group-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: electric-meter-group-driver
+  namespace: ithings
+  labels:
+    app: electric-meter-group
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5555
+    targetPort: 5555
+    name: zmq-pub
+  - port: 5556
+    targetPort: 5556
+    name: zmq-sub
+  selector:
+    app: electric-meter-group

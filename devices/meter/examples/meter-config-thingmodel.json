@@ -1,0 +1,229 @@
+{
+  "device_name": "three-phase-meter-1",
+  "device_type": "electricity-meter",
+  "poll_interval_ms": 1000,
+  "zmq": {
+    "enabled": true,
+    "subscriber_address": "tcp://localhost:5556",
+    "write_topic": "driver/write"
+  },
+  "mqtt": {
+    "enabled": false,
+    "broker_address": "tcp://localhost:1883",
+    "client_id": "three-phase-meter-1",
+    "topic_prefix": "devices",
+    "qos": 1
+  },
+  "logging": {
+    "level": "info",
+    "format": "json"
+  },
+  "driver": {
+    "enabled": true,
+    "driver_type": "zmq",
+    "server_address": "tcp://localhost:5555"
+  },
+  "custom": {
+    "thing_model": {
+      "modelId": "meter.electricity.three-phase.1.0",
+      "modelVersion": "1.0",
+      "deviceType": "electricity-meter",
+      "manufacturer": "Generic",
+      "description": "Three phase electricity meter",
+      "properties": [
+        {
+          "identifier": "voltage_l1",
+          "name": "Voltage L1",
+          "type": "float",
+          "unit": "V",
+          "access": "R",
+          "range": [
+            0,
+            400
+          ],
+          "description": "Voltage on phase L1"
+        },
+        {
+          "identifier": "voltage_l2",
+          "name": "Voltage L2",
+          "type": "float",
+          "unit": "V",
+          "access": "R",
+          "range": [
+            0,
+            400
+          ],
+          "description": "Voltage on phase L2"
+        },
+        {
+          "identifier": "voltage_l3",
+          "name": "Voltage L3",
+          "type": "float",
+          "unit": "V",
+          "access": "R",
+          "range": [
+            0,
+            400
+          ],
+          "description": "Voltage on phase L3"
+        },
+        {
+          "identifier": "current_l1",
+          "name": "Current L1",
+          "type": "float",
+          "unit": "A",
+          "access": "R",
+          "range": [
+            0,
+            100
+          ],
+          "description": "Current on phase L1"
+        },
+        {
+          "identifier": "current_l2",
+          "name": "Current L2",
+          "type": "float",
+          "unit": "A",
+          "access": "R",
+          "range": [
+            0,
+            100
+          ],
+          "description": "Current on phase L2"
+        },
+        {
+          "identifier": "current_l3",
+          "name": "Current L3",
+          "type": "float",
+          "unit": "A",
+          "access": "R",
+          "range": [
+            0,
+            100
+          ],
+          "description": "Current on phase L3"
+        },
+        {
+          "identifier": "active_power",
+          "name": "Active Power",
+          "type": "float",
+          "unit": "W",
+          "access": "R",
+          "range": [
+            0,
+            1000000
+          ],
+          "description": "Total active power"
+        },
+        {
+          "identifier": "power_factor",
+          "name": "Power Factor",
+          "type": "float",
+          "unit": "",
+          "access": "R",
+          "range": [
+            0,
+            1
+          ],
+          "description": "Power factor"
+        },
+        {
+          "identifier": "energy_active",
+          "name": "Active Energy",
+          "type": "float",
+          "unit": "kWh",
+          "access": "R",
+          "range": [
+            0,
+            100000000
+          ],
+          "description": "Total active energy"
+        }
+      ],
+      "events": [
+        {
+          "identifier": "over_voltage",
+          "name": "Over Voltage",
+          "level": "WARN",
+          "output_params": [
+            {
+              "identifier": "voltage",
+              "name": "Current Voltage",
+              "data_type": "float"
+            },
+            {
+              "identifier": "phase",
+              "name": "Phase",
+              "data_type": "string"
+            }
+          ],
+          "description": "Triggered when voltage exceeds threshold"
+        },
+        {
+          "identifier": "over_power",
+          "name": "Over Power",
+          "level": "WARN",
+          "output_params": [
+            {
+              "identifier": "power",
+              "name": "Current Power",
+              "data_type": "float"
+            }
+          ],
+          "description": "Triggered when power exceeds threshold"
+        }
+      ],
+      "services": [
+      ]
+    },
+    "rules": [
+      {
+        "identifier": "over_voltage_l1",
+        "name": "Over Voltage Alarm on L1",
+        "conditions": [
+          {
+            "property_identifier": "voltage_l1",
+            "operator": ">",
+            "value": 250
+          }
+        ],
+        "condition_logic": "and",
+        "actions": [
+          {
+            "trigger_event": {
+              "event_identifier": "over_voltage",
+              "data": {
+                "voltage": "{{voltage_l1}}",
+                "phase": "L1"
+              }
+            }
+          }
+        ],
+        "enabled": true
+      },
+      {
+        "identifier": "over_power",
+        "name": "Over Power Alarm",
+        "conditions": [
+          {
+            "property_identifier": "active_power",
+            "operator": ">",
+            "value": 10000
+          }
+        ],
+        "condition_logic": "and",
+        "actions": [
+          {
+            "trigger_event": {
+              "event_identifier": "over_power",
+              "data": {
+                "current_power": "{{active_power}}"
+              }
+            }
+          }
+        ],
+        "enabled": true
+      }
+    ]
+  }
+}

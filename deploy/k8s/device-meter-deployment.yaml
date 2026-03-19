@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-meter
+  namespace: ithings
+  labels:
+    app: device-meter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: device-meter
+  template:
+    metadata:
+      labels:
+        app: device-meter
+    spec:
+      containers:
+      - name: device-meter
+        image: 172.17.0.1:30500/ithings/device-meter:latest
+        imagePullPolicy: IfNotPresent
+        args: ["-c", "/config/meter-config-integration.json"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        configMap:
+          name: device-meter-config
