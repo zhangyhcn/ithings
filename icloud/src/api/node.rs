@@ -20,6 +20,12 @@ pub struct TenantPath {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct NodePath {
+    pub tenant_id: Uuid,
+    pub id: Uuid,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct PageQuery {
     pub page: Option<u64>,
     pub page_size: Option<u64>,
@@ -29,9 +35,9 @@ pub fn create_node_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/nodes", post(create_node))
         .route("/nodes", get(list_nodes))
-        .route("/nodes/{id}", get(get_node))
-        .route("/nodes/{id}", put(update_node))
-        .route("/nodes/{id}", delete(delete_node))
+        .route("/nodes/:id", get(get_node))
+        .route("/nodes/:id", put(update_node))
+        .route("/nodes/:id", delete(delete_node))
         .with_state(db)
 }
 
@@ -55,7 +61,7 @@ async fn create_node(
 
 async fn get_node(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
 ) -> Result<Json<Response<NodeResponse>>, AppError> {
     let service = NodeService::new(db);
     let node = service.find_by_id(id).await?;
@@ -74,7 +80,7 @@ async fn list_nodes(
 
 async fn update_node(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
     Json(req): Json<UpdateNodeRequest>,
 ) -> Result<Json<Response<NodeResponse>>, AppError> {
     let service = NodeService::new(db);
@@ -84,7 +90,7 @@ async fn update_node(
 
 async fn delete_node(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
 ) -> Result<Json<Response<()>>, AppError> {
     let service = NodeService::new(db);
     service.delete(id).await?;

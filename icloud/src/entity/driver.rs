@@ -17,6 +17,8 @@ pub struct Model {
     pub image: String,
     #[sea_orm(column_type = "Text")]
     pub version: String,
+    #[sea_orm(column_type = "Json")]
+    pub device_profile: Json,
     #[sea_orm(column_type = "Timestamp")]
     pub created_at: DateTime,
     #[sea_orm(column_type = "Timestamp")]

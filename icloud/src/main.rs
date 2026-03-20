@@ -32,6 +32,7 @@ use api::role_menu::create_role_menu_router;
 use api::user_role::create_user_role_router;
 use api::logout::create_logout_router;
 use api::{create_crd_router, create_operator_router, create_controller_router, create_config_map_router, create_secret_router};
+use api::device::create_device_router;
 use api::namespace::list_namespaces_by_tenant_slug;
 use config::Config;
 use middleware::{AuthState, JwtConfig, JwtService};
@@ -277,10 +278,12 @@ async fn main() {
             name TEXT NOT NULL,
             description TEXT,
             thing_model JSON NOT NULL,
+            rule JSON NOT NULL DEFAULT '{}',
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
             updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
             FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
         )"#,
+        r#"ALTER TABLE products ADD COLUMN IF NOT EXISTS rule JSON NOT NULL DEFAULT '{}'"#,
         r#"CREATE TABLE IF NOT EXISTS drivers (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             tenant_id UUID NOT NULL,
@@ -289,10 +292,12 @@ async fn main() {
             protocol_type TEXT NOT NULL,
             image TEXT NOT NULL,
             version TEXT NOT NULL,
+            device_profile JSON NOT NULL DEFAULT '{}',
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
             updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
             FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
         )"#,
+        r#"ALTER TABLE drivers ADD COLUMN IF NOT EXISTS device_profile JSON NOT NULL DEFAULT '{}'"#,
         r#"CREATE TABLE IF NOT EXISTS nodes (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             tenant_id UUID NOT NULL,
@@ -311,14 +316,10 @@ async fn main() {
             tenant_id UUID NOT NULL,
             org_id UUID NOT NULL,
             site_id UUID NOT NULL,
-            name TEXT NOT NULL,
-            brand_model TEXT,
-            product_id UUID NOT NULL,
-            driver_id UUID NOT NULL,
+            device_id UUID NOT NULL,
             poll_interval_ms INTEGER NOT NULL,
-            device_type TEXT NOT NULL,
-            driver_config JSON NOT NULL,
-            thing_model JSON NOT NULL,
+            driver_config JSON NOT NULL DEFAULT '{}',
+            thing_model JSON NOT NULL DEFAULT '{}',
             node_id UUID NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending',
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -326,9 +327,28 @@ async fn main() {
             FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
             FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE,
             FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE,
-            FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-            FOREIGN KEY (driver_id) REFERENCES drivers(id) ON DELETE CASCADE,
+            FOREIGN KEY (device_id) REFERENCES devices(id) ON DELETE CASCADE,
             FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+        )"#,
+        r#"CREATE TABLE IF NOT EXISTS devices (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            tenant_id UUID NOT NULL,
+            organization_id UUID,
+            site_id UUID,
+            product_id UUID,
+            name TEXT NOT NULL,
+            model TEXT,
+            manufacturer TEXT,
+            driver_image TEXT,
+            device_profile JSON NOT NULL DEFAULT '{}',
+            description TEXT,
+            status TEXT NOT NULL DEFAULT 'active',
+            created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+            updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+            FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+            FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE SET NULL,
+            FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE SET NULL,
+            FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
         )"#,
     ];
 
@@ -377,8 +397,8 @@ fn create_app(
 ) -> Router {
     let auth_state = AuthState::new(jwt_service, db.clone());
 
-    // 租户子资源路由需要放在租户路由前面，避免被 /tenants/{id} 匹配
     let api_v1 = Router::new()
+        .merge(create_tenant_router(db.clone()))
         .nest("/tenants/:tenant_id", Router::new()
             .merge(create_organization_router(db.clone()))
             .merge(create_department_router(db.clone()))
@@ -387,17 +407,15 @@ fn create_app(
             .merge(create_driver_router(db.clone()))
             .merge(create_node_router(db.clone()))
             .merge(create_namespace_router(db.clone()))
+            .merge(create_device_router(db.clone()))
             .nest("/sites/:site_id", Router::new()
                 .merge(create_device_instance_router(db.clone()))
             )
         )
-        // 直接通过租户slug获取命名空间列表
         .merge(Router::new()
             .route("/tenant/:tenant_slug/namespaces", get(list_namespaces_by_tenant_slug))
             .with_state(db.clone())
         )
-        // 其他路由
-        .merge(create_tenant_router(db.clone()))
         .merge(create_menu_router(db.clone(), auth_state.clone()))
         .merge(create_role_router(db.clone(), auth_state.clone()))
         .merge(create_user_role_router(db.clone(), auth_state.clone()))

@@ -1,4 +1,4 @@
-use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, PaginatorTrait, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, Set};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 use uuid::Uuid;
@@ -9,25 +9,17 @@ use crate::utils::AppError;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDeviceInstanceRequest {
-    pub name: String,
-    pub brand_model: Option<String>,
-    pub product_id: Uuid,
-    pub driver_id: Uuid,
+    pub device_id: Uuid,
     pub poll_interval_ms: u64,
-    pub device_type: String,
-    pub driver_config: JsonValue,
-    pub thing_model: JsonValue,
+    pub driver_config: Option<JsonValue>,
+    pub thing_model: Option<JsonValue>,
     pub node_id: Uuid,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateDeviceInstanceRequest {
-    pub name: Option<String>,
-    pub brand_model: Option<String>,
-    pub product_id: Option<Uuid>,
-    pub driver_id: Option<Uuid>,
+    pub device_id: Option<Uuid>,
     pub poll_interval_ms: Option<u64>,
-    pub device_type: Option<String>,
     pub driver_config: Option<JsonValue>,
     pub thing_model: Option<JsonValue>,
     pub node_id: Option<Uuid>,
@@ -40,12 +32,8 @@ pub struct DeviceInstanceResponse {
     pub tenant_id: String,
     pub org_id: String,
     pub site_id: String,
-    pub name: String,
-    pub brand_model: Option<String>,
-    pub product_id: String,
-    pub driver_id: String,
+    pub device_id: String,
     pub poll_interval_ms: u64,
-    pub device_type: String,
     pub driver_config: JsonValue,
     pub thing_model: JsonValue,
     pub node_id: String,
@@ -61,12 +49,8 @@ impl From<Model> for DeviceInstanceResponse {
             tenant_id: model.tenant_id.to_string(),
             org_id: model.org_id.to_string(),
             site_id: model.site_id.to_string(),
-            name: model.name,
-            brand_model: model.brand_model,
-            product_id: model.product_id.to_string(),
-            driver_id: model.driver_id.to_string(),
+            device_id: model.device_id.to_string(),
             poll_interval_ms: model.poll_interval_ms,
-            device_type: model.device_type.clone(),
             driver_config: model.driver_config,
             thing_model: model.thing_model,
             node_id: model.node_id.to_string(),
@@ -125,14 +109,10 @@ impl DeviceInstanceService {
             tenant_id: Set(tenant_id),
             org_id: Set(org_id),
             site_id: Set(site_id),
-            name: Set(req.name),
-            brand_model: Set(req.brand_model),
-            product_id: Set(req.product_id),
-            driver_id: Set(req.driver_id),
+            device_id: Set(req.device_id),
             poll_interval_ms: Set(req.poll_interval_ms),
-            device_type: Set(req.device_type),
-            driver_config: Set(req.driver_config),
-            thing_model: Set(req.thing_model),
+            driver_config: Set(req.driver_config.unwrap_or(serde_json::json!({}))),
+            thing_model: Set(req.thing_model.unwrap_or(serde_json::json!({}))),
             node_id: Set(req.node_id),
             status: Set("pending".to_string()),
             ..Default::default()
@@ -186,23 +166,11 @@ impl DeviceInstanceService {
 
         let mut active_model = model.into_active_model();
 
-        if let Some(name) = req.name {
-            active_model.name = Set(name);
-        }
-        if let Some(brand_model) = req.brand_model {
-            active_model.brand_model = Set(Some(brand_model));
-        }
-        if let Some(product_id) = req.product_id {
-            active_model.product_id = Set(product_id);
-        }
-        if let Some(driver_id) = req.driver_id {
-            active_model.driver_id = Set(driver_id);
+        if let Some(device_id) = req.device_id {
+            active_model.device_id = Set(device_id);
         }
         if let Some(poll_interval_ms) = req.poll_interval_ms {
             active_model.poll_interval_ms = Set(poll_interval_ms);
-        }
-        if let Some(device_type) = req.device_type {
-            active_model.device_type = Set(device_type);
         }
         if let Some(driver_config) = req.driver_config {
             active_model.driver_config = Set(driver_config);

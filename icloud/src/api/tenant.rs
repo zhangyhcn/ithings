@@ -25,9 +25,9 @@ pub fn create_tenant_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/tenants", post(create_tenant))
         .route("/tenants", get(list_tenants))
-        .route("/tenants/{id}", get(get_tenant))
-        .route("/tenants/{id}", put(update_tenant))
-        .route("/tenants/{id}", delete(delete_tenant))
+        .route("/tenants/:id", get(get_tenant))
+        .route("/tenants/:id", put(update_tenant))
+        .route("/tenants/:id", delete(delete_tenant))
         .with_state(db)
 }
 

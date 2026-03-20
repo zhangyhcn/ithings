@@ -11,7 +11,10 @@ use crate::utils::AppError;
 pub struct CreateProductRequest {
     pub name: String,
     pub description: Option<String>,
-    pub thing_model: JsonValue,
+    #[serde(default)]
+    pub thing_model: Option<JsonValue>,
+    #[serde(default)]
+    pub rule: Option<JsonValue>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,6 +22,7 @@ pub struct UpdateProductRequest {
     pub name: Option<String>,
     pub description: Option<String>,
     pub thing_model: Option<JsonValue>,
+    pub rule: Option<JsonValue>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -28,6 +32,7 @@ pub struct ProductResponse {
     pub name: String,
     pub description: Option<String>,
     pub thing_model: JsonValue,
+    pub rule: JsonValue,
     pub created_at: String,
     pub updated_at: String,
 }
@@ -40,6 +45,7 @@ impl From<Model> for ProductResponse {
             name: model.name,
             description: model.description,
             thing_model: model.thing_model,
+            rule: model.rule,
             created_at: model.created_at.to_string(),
             updated_at: model.updated_at.to_string(),
         }
@@ -74,7 +80,8 @@ impl ProductService {
             tenant_id: Set(tenant_id),
             name: Set(req.name),
             description: Set(req.description),
-            thing_model: Set(req.thing_model),
+            thing_model: Set(req.thing_model.unwrap_or(serde_json::json!({}))),
+            rule: Set(req.rule.unwrap_or(serde_json::json!({}))),
             ..Default::default()
         };
 
@@ -127,6 +134,9 @@ impl ProductService {
         }
         if let Some(thing_model) = req.thing_model {
             active_model.thing_model = Set(thing_model);
+        }
+        if let Some(rule) = req.rule {
+            active_model.rule = Set(rule);
         }
 
         let updated = active_model.update(&self.db).await?;

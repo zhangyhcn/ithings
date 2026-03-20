@@ -18,6 +18,7 @@ pub mod operator;
 pub mod controller;
 pub mod config_map;
 pub mod secret;
+pub mod device;
 
 pub use menu::create_menu_router;
 pub use logout::create_logout_router;
@@ -30,3 +31,4 @@ pub use product::create_product_router;
 pub use driver::create_driver_router;
 pub use node::create_node_router;
 pub use device_instance::create_device_instance_router;
+pub use device::create_device_router;

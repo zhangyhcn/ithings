@@ -183,6 +183,7 @@ export interface Product {
   name: string;
   description?: string;
   thing_model: any;
+  rule: any;
   created_at: string;
   updated_at: string;
 }
@@ -195,6 +196,7 @@ export interface Driver {
   protocol_type: string;
   image: string;
   version: string;
+  device_profile: any;
   created_at: string;
   updated_at: string;
 }
@@ -217,12 +219,8 @@ export interface DeviceInstance {
   tenant_id: string;
   org_id: string;
   site_id: string;
-  name: string;
-  brand_model?: string;
-  product_id: string;
-  driver_id: string;
+  device_id: string;
   poll_interval_ms: number;
-  device_type: string;
   driver_config: any;
   thing_model: any;
   node_id: string;
@@ -240,6 +238,23 @@ export interface Secret {
   data?: Record<string, string>;
   status: string;
   k8s_name?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Device {
+  id: string;
+  tenant_id: string;
+  organization_id?: string;
+  site_id?: string;
+  product_id?: string;
+  name: string;
+  model?: string;
+  manufacturer?: string;
+  driver_image?: string;
+  device_profile: any;
+  description?: string;
+  status: string;
   created_at: string;
   updated_at: string;
 }

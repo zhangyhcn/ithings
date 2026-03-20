@@ -20,6 +20,12 @@ pub struct TenantPath {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct DriverPath {
+    pub tenant_id: Uuid,
+    pub id: Uuid,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct PageQuery {
     pub page: Option<u64>,
     pub page_size: Option<u64>,
@@ -29,9 +35,9 @@ pub fn create_driver_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/drivers", post(create_driver))
         .route("/drivers", get(list_drivers))
-        .route("/drivers/{id}", get(get_driver))
-        .route("/drivers/{id}", put(update_driver))
-        .route("/drivers/{id}", delete(delete_driver))
+        .route("/drivers/:id", get(get_driver))
+        .route("/drivers/:id", put(update_driver))
+        .route("/drivers/:id", delete(delete_driver))
         .with_state(db)
 }
 
@@ -41,22 +47,13 @@ async fn create_driver(
     Json(req): Json<CreateDriverRequest>,
 ) -> Result<Json<Response<DriverResponse>>, AppError> {
     let service = DriverService::new(db);
-    let driver = service.create(
-        tenant_id,
-        CreateDriverRequest {
-            name: req.name,
-            description: req.description,
-            protocol_type: req.protocol_type,
-            image: req.image,
-            version: req.version,
-        }
-    ).await?;
+    let driver = service.create(tenant_id, req).await?;
     Ok(Json(Response::success(driver)))
 }
 
 async fn get_driver(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(DriverPath { tenant_id: _, id }): Path<DriverPath>,
 ) -> Result<Json<Response<DriverResponse>>, AppError> {
     let service = DriverService::new(db);
     let driver = service.find_by_id(id).await?;
@@ -75,7 +72,7 @@ async fn list_drivers(
 
 async fn update_driver(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(DriverPath { tenant_id: _, id }): Path<DriverPath>,
     Json(req): Json<UpdateDriverRequest>,
 ) -> Result<Json<Response<DriverResponse>>, AppError> {
     let service = DriverService::new(db);
@@ -85,7 +82,7 @@ async fn update_driver(
 
 async fn delete_driver(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(DriverPath { tenant_id: _, id }): Path<DriverPath>,
 ) -> Result<Json<Response<()>>, AppError> {
     let service = DriverService::new(db);
     service.delete(id).await?;

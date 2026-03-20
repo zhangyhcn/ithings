@@ -29,9 +29,9 @@ pub fn create_organization_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/organizations", post(create_organization))
         .route("/organizations", get(list_organizations))
-        .route("/organizations/{id}", get(get_organization))
-        .route("/organizations/{id}", put(update_organization))
-        .route("/organizations/{id}", delete(delete_organization))
+        .route("/organizations/:id", get(get_organization))
+        .route("/organizations/:id", put(update_organization))
+        .route("/organizations/:id", delete(delete_organization))
         .with_state(db)
 }
 

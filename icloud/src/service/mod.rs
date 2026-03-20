@@ -17,3 +17,4 @@ pub mod operator;
 pub mod controller;
 pub mod config_map;
 pub mod secret;
+pub mod device;

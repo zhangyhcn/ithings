@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
-import { Button, Modal, Form, Input, message, Space, Popconfirm } from 'antd';
+import { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deviceInstanceApi } from '@/services/api';
-import type { DeviceInstance } from '@/types';
+import { deviceInstanceApi, deviceApi, nodeApi } from '@/services/api';
+import type { DeviceInstance, Device, Node } from '@/types';
 
 export default function DeviceInstanceList() {
   const [tableData, setTableData] = useState<DeviceInstance[]>([]);
@@ -13,6 +13,8 @@ export default function DeviceInstanceList() {
   const [tenantId, setTenantId] = useState<string>('');
   const [siteId, setSiteId] = useState<string>('');
   const [form] = Form.useForm();
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
 
   const fetchData = async () => {
     const userStr = localStorage.getItem('user');
@@ -24,15 +26,21 @@ export default function DeviceInstanceList() {
     const user = JSON.parse(userStr);
     setTenantId(user.tenant_id);
     
-    if (!user.tenant_id || !siteId) {
-      setTableData([]);
-      setLoading(false);
-      return;
-    }
     setLoading(true);
     try {
-      const data = await deviceInstanceApi.list(user.tenant_id, '', siteId);
-      setTableData(Array.isArray(data.list) ? data.list : []);
+      const [deviceData, nodeData] = await Promise.all([
+        deviceApi.list(user.tenant_id),
+        nodeApi.list(user.tenant_id),
+      ]);
+      setDevices(Array.isArray(deviceData) ? deviceData : []);
+      setNodes(Array.isArray(nodeData) ? nodeData : []);
+
+      if (!user.tenant_id || !siteId) {
+        setTableData([]);
+      } else {
+        const data = await deviceInstanceApi.list(user.tenant_id, '', siteId);
+        setTableData(Array.isArray(data.list) ? data.list : []);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -82,14 +90,13 @@ export default function DeviceInstanceList() {
 
   const columns: ProColumns<DeviceInstance>[] = [
     {
-      title: '名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '品牌型号',
-      dataIndex: 'brand_model',
-      key: 'brand_model',
+      title: '设备名称',
+      dataIndex: 'device_name',
+      key: 'device_name',
+      render: (_: any, record: DeviceInstance) => {
+        const device = devices.find(d => d.id === record.device_id);
+        return device ? device.name : record.device_id;
+      },
     },
     {
       title: '轮询间隔',
@@ -98,9 +105,13 @@ export default function DeviceInstanceList() {
       render: (val: number) => `${val} ms`,
     },
     {
-      title: '设备类型',
-      dataIndex: 'device_type',
-      key: 'device_type',
+      title: '部署节点',
+      dataIndex: 'node_id',
+      key: 'node_id',
+      render: (nodeId: string) => {
+        const node = nodes.find(n => n.id === nodeId);
+        return node ? node.name : nodeId;
+      },
     },
     {
       title: '状态',
@@ -183,28 +194,21 @@ export default function DeviceInstanceList() {
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
           <Form.Item
-            name="name"
-            label="设备名称"
-            rules={[{ required: true, message: '请输入设备名称' }]}
+            name="device_id"
+            label="选择设备"
+            rules={[{ required: true, message: '请选择设备' }]}
           >
-            <Input placeholder="请输入设备名称" />
-          </Form.Item>
-          <Form.Item name="brand_model" label="品牌型号">
-            <Input placeholder="请输入品牌型号" />
-          </Form.Item>
-          <Form.Item
-            name="product_id"
-            label="关联产品"
-            rules={[{ required: true, message: '请选择产品' }]}
-          >
-            <Input placeholder="请输入产品 UUID" />
-          </Form.Item>
-          <Form.Item
-            name="driver_id"
-            label="关联驱动"
-            rules={[{ required: true, message: '请选择驱动' }]}
-          >
-            <Input placeholder="请输入驱动 UUID" />
+            <Select
+              placeholder="请选择设备"
+              showSearch
+              optionFilterProp="children"
+            >
+              {devices.map((device) => (
+                <Select.Option key={device.id} value={device.id}>
+                  {device.name} {device.model ? `(${device.model})` : ''}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             name="poll_interval_ms"
@@ -215,18 +219,21 @@ export default function DeviceInstanceList() {
             <Input type="number" placeholder="请输入轮询间隔" />
           </Form.Item>
           <Form.Item
-            name="device_type"
-            label="设备类型"
-            rules={[{ required: true, message: '请输入设备类型' }]}
-          >
-            <Input placeholder="如: electricity-meter" />
-          </Form.Item>
-          <Form.Item
             name="node_id"
             label="部署节点"
             rules={[{ required: true, message: '请选择节点' }]}
           >
-            <Input placeholder="请输入节点 UUID" />
+            <Select
+              placeholder="请选择节点"
+              showSearch
+              optionFilterProp="children"
+            >
+              {nodes.map((node) => (
+                <Select.Option key={node.id} value={node.id}>
+                  {node.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>

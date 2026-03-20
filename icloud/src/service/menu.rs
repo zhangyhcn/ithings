@@ -510,10 +510,21 @@ impl MenuService {
                 component: "@/pages/device/instance/List",
                 icon: Some("DesktopOutlined"),
                 parent_path: Some("/device"),
-                sort_order: 4,
+                sort_order: 5,
                 status: "active",
                 roles: vec!["admin", "editor"],
                 i18n_key: Some("menu.device.instance"),
+            },
+            DefaultMenu {
+                name: "设备定义",
+                path: "/device/device",
+                component: "@/pages/device/device/List",
+                icon: Some("DesktopOutlined"),
+                parent_path: Some("/device"),
+                sort_order: 4,
+                status: "active",
+                roles: vec!["admin", "editor"],
+                i18n_key: Some("menu.device.device"),
             },
         ];
 

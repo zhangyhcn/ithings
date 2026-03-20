@@ -15,7 +15,7 @@ Cargo.lock
 *~
 
 # OS
-.DS_Store
+.DS_Storegit branch -M main
 Thumbs.db
 
 # Environment

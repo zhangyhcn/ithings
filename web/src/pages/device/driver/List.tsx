@@ -5,6 +5,8 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { driverApi } from '@/services/api';
 import type { Driver } from '@/types';
 
+const { TextArea } = Input;
+
 export default function DriverList() {
   const [tableData, setTableData] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(false);
@@ -40,11 +42,15 @@ export default function DriverList() {
   const handleAdd = async (values: any) => {
     if (!tenantId) return;
     try {
+      const payload = {
+        ...values,
+        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},
+      };
       if (editingRecord) {
-        await driverApi.update(tenantId, editingRecord.id, values);
+        await driverApi.update(tenantId, editingRecord.id, payload);
         message.success('更新成功');
       } else {
-        await driverApi.create(tenantId, values);
+        await driverApi.create(tenantId, payload);
         message.success('创建成功');
       }
       setModalVisible(false);
@@ -52,13 +58,17 @@ export default function DriverList() {
       setEditingRecord(null);
       fetchData();
     } catch (error) {
+      message.error('操作失败');
       console.error(error);
     }
   };
 
   const handleEdit = (record: Driver) => {
     setEditingRecord(record);
-    form.setFieldsValue(record);
+    form.setFieldsValue({
+      ...record,
+      device_profile: JSON.stringify(record.device_profile, null, 2),
+    });
     setModalVisible(true);
   };
 
@@ -160,6 +170,7 @@ export default function DriverList() {
           setEditingRecord(null);
         }}
         onOk={form.submit}
+        width={700}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
           <Form.Item
@@ -192,6 +203,16 @@ export default function DriverList() {
           </Form.Item>
           <Form.Item name="description" label="描述">
             <Input.TextArea placeholder="请输入描述" />
+          </Form.Item>
+          <Form.Item
+            name="device_profile"
+            label="设备配置文件 (JSON)"
+            extra="定义设备的连接参数、数据点等配置模板"
+          >
+            <TextArea
+              rows={8}
+              placeholder='{"connection": {}, "dataPoints": []}'
+            />
           </Form.Item>
         </Form>
       </Modal>

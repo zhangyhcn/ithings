@@ -1,5 +1,6 @@
 use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, PaginatorTrait, Set};
 use serde::{Deserialize, Serialize};
+use serde_json::Value as JsonValue;
 use uuid::Uuid;
 
 use crate::entity::{DriverEntity, DriverColumn, DriverModel as Model};
@@ -13,6 +14,8 @@ pub struct CreateDriverRequest {
     pub protocol_type: String,
     pub image: String,
     pub version: String,
+    #[serde(default)]
+    pub device_profile: Option<JsonValue>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,6 +25,7 @@ pub struct UpdateDriverRequest {
     pub protocol_type: Option<String>,
     pub image: Option<String>,
     pub version: Option<String>,
+    pub device_profile: Option<JsonValue>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -33,6 +37,7 @@ pub struct DriverResponse {
     pub protocol_type: String,
     pub image: String,
     pub version: String,
+    pub device_profile: JsonValue,
     pub created_at: String,
     pub updated_at: String,
 }
@@ -47,6 +52,7 @@ impl From<Model> for DriverResponse {
             protocol_type: model.protocol_type.clone(),
             image: model.image.clone(),
             version: model.version.clone(),
+            device_profile: model.device_profile,
             created_at: model.created_at.to_string(),
             updated_at: model.updated_at.to_string(),
         }
@@ -84,6 +90,7 @@ impl DriverService {
             protocol_type: Set(req.protocol_type),
             image: Set(req.image),
             version: Set(req.version),
+            device_profile: Set(req.device_profile.unwrap_or(serde_json::json!({}))),
             ..Default::default()
         };
 
@@ -142,6 +149,9 @@ impl DriverService {
         }
         if let Some(version) = req.version {
             active_model.version = Set(version);
+        }
+        if let Some(device_profile) = req.device_profile {
+            active_model.device_profile = Set(device_profile);
         }
 
         let updated = active_model.update(&self.db).await?;

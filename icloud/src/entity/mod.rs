@@ -12,6 +12,7 @@ pub mod device_instance;
 pub mod namespace;
 pub mod organization;
 pub mod department;
+pub mod device;
 
 pub use tenant::Entity as TenantEntity;
 pub use tenant::Model as TenantModel;
@@ -98,3 +99,7 @@ pub mod secret;
 pub use secret::Entity as SecretEntity;
 pub use secret::Model as SecretModel;
 pub use secret::Column as SecretColumn;
+
+pub use device::Entity as DeviceEntity;
+pub use device::Model as DeviceModel;
+pub use device::Column as DeviceColumn;

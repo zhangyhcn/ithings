@@ -116,6 +116,10 @@ export default defineConfig({
               path: '/device/instance',
               component: '@/pages/device/instance/List',
             },
+            {
+              path: '/device/device',
+              component: '@/pages/device/device/List',
+            },
           ],
         },
         {

@@ -13,6 +13,8 @@ pub struct Model {
     pub description: Option<String>,
     #[sea_orm(column_type = "Json")]
     pub thing_model: Json,
+    #[sea_orm(column_type = "Json")]
+    pub rule: Json,
     #[sea_orm(column_type = "Timestamp")]
     pub created_at: DateTime,
     #[sea_orm(column_type = "Timestamp")]

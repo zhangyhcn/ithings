@@ -5,7 +5,7 @@ use axum::{
     Router,
 };
 use sea_orm::DatabaseConnection;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use uuid::Uuid;
 
 use crate::{
@@ -31,9 +31,9 @@ pub fn create_device_instance_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/device-instances", post(create_device_instance))
         .route("/device-instances", get(list_device_instances))
-        .route("/device-instances/{id}", get(get_device_instance))
-        .route("/device-instances/{id}", put(update_device_instance))
-        .route("/device-instances/{id}", delete(delete_device_instance))
+        .route("/device-instances/:id", get(get_device_instance))
+        .route("/device-instances/:id", put(update_device_instance))
+        .route("/device-instances/:id", delete(delete_device_instance))
         .with_state(db)
 }
 
@@ -43,22 +43,7 @@ async fn create_device_instance(
     Json(req): Json<CreateDeviceInstanceRequest>,
 ) -> Result<Json<Response<DeviceInstanceResponse>>, AppError> {
     let service = DeviceInstanceService::new(db);
-    let device_instance = service.create(
-        tenant_id,
-        org_id,
-        site_id,
-        CreateDeviceInstanceRequest {
-            name: req.name,
-            brand_model: req.brand_model,
-            product_id: req.product_id,
-            driver_id: req.driver_id,
-            poll_interval_ms: req.poll_interval_ms,
-            device_type: req.device_type,
-            driver_config: req.driver_config,
-            thing_model: req.thing_model,
-            node_id: req.node_id,
-        }
-    ).await?;
+    let device_instance = service.create(tenant_id, org_id, site_id, req).await?;
     Ok(Json(Response::success(device_instance)))
 }
 

@@ -16,11 +16,11 @@ use crate::{
 
 pub fn create_department_router(db: DatabaseConnection) -> Router {
     Router::new()
-        .route("/organizations/{org_id}/departments", post(create_department))
-        .route("/organizations/{org_id}/departments", get(list_departments))
-        .route("/organizations/{org_id}/departments/{id}", get(get_department))
-        .route("/organizations/{org_id}/departments/{id}", put(update_department))
-        .route("/organizations/{org_id}/departments/{id}", delete(delete_department))
+        .route("/organizations/:org_id/departments", post(create_department))
+        .route("/organizations/:org_id/departments", get(list_departments))
+        .route("/organizations/:org_id/departments/:id", get(get_department))
+        .route("/organizations/:org_id/departments/:id", put(update_department))
+        .route("/organizations/:org_id/departments/:id", delete(delete_department))
         .with_state(db)
 }
 

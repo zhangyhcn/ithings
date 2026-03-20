@@ -29,9 +29,9 @@ pub fn create_site_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/sites", post(create_site))
         .route("/sites", get(list_sites))
-        .route("/sites/{id}", get(get_site))
-        .route("/sites/{id}", put(update_site))
-        .route("/sites/{id}", delete(delete_site))
+        .route("/sites/:id", get(get_site))
+        .route("/sites/:id", put(update_site))
+        .route("/sites/:id", delete(delete_site))
         .with_state(db)
 }
 

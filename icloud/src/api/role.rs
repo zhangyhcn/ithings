@@ -19,9 +19,9 @@ pub fn create_role_router(db: DatabaseConnection, auth_state: AuthState) -> Rout
     Router::new()
         .route("/roles", post(create_role))
         .route("/roles", get(list_roles))
-        .route("/roles/{id}", get(get_role))
-        .route("/roles/{id}", put(update_role))
-        .route("/roles/{id}", delete(delete_role))
+        .route("/roles/:id", get(get_role))
+        .route("/roles/:id", put(update_role))
+        .route("/roles/:id", delete(delete_role))
         .with_state(db)
         .layer(axum::middleware::from_fn_with_state(
             auth_state,

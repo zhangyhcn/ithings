@@ -4,7 +4,7 @@ import type { Tenant, User, Organization, Department, Menu } from '@/types';
 
 const request = axios.create({
   baseURL: '/api/v1',
-  timeout: 10000,
+  timeout: 30000,
 });
 
 request.interceptors.request.use(
@@ -499,4 +499,45 @@ export const deviceInstanceApi = {
   ) => request.put(`/tenants/${tenantId}/sites/${siteId}/device-instances/${id}`, data),
   delete: (tenantId: string, siteId: string, id: string) =>
     request.delete(`/tenants/${tenantId}/sites/${siteId}/device-instances/${id}`),
+};
+
+import type { Device } from '@/types';
+
+export const deviceApi = {
+  list: (tenantId: string, params?: { page?: number; page_size?: number }) =>
+    request.get<Device[]>(`/tenants/${tenantId}/devices`, { params }),
+  get: (tenantId: string, id: string) =>
+    request.get(`/tenants/${tenantId}/devices/${id}`),
+  create: (
+    tenantId: string,
+    data: {
+      name: string;
+      organization_id?: string;
+      site_id?: string;
+      product_id?: string;
+      model?: string;
+      manufacturer?: string;
+      driver_image?: string;
+      device_profile?: any;
+      description?: string;
+    }
+  ) => request.post(`/tenants/${tenantId}/devices`, data),
+  update: (
+    tenantId: string,
+    id: string,
+    data: {
+      name?: string;
+      organization_id?: string;
+      site_id?: string;
+      product_id?: string;
+      model?: string;
+      manufacturer?: string;
+      driver_image?: string;
+      device_profile?: any;
+      description?: string;
+      status?: string;
+    }
+  ) => request.put(`/tenants/${tenantId}/devices/${id}`, data),
+  delete: (tenantId: string, id: string) =>
+    request.delete(`/tenants/${tenantId}/devices/${id}`),
 };

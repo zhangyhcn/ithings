@@ -41,9 +41,9 @@ pub fn create_user_router(db: sea_orm::DatabaseConnection, auth_state: AuthState
         .route("/users/me", get(get_current_user))
         .route("/users", get(list_users))
         .route("/users", post(create_user))
-        .route("/users/{id}", get(get_user))
-        .route("/users/{id}", put(update_user))
-        .route("/users/{id}", delete(delete_user))
+        .route("/users/:id", get(get_user))
+        .route("/users/:id", put(update_user))
+        .route("/users/:id", delete(delete_user))
         .with_state((db, auth_state))
 }
 

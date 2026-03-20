@@ -5,6 +5,8 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { productApi } from '@/services/api';
 import type { Product } from '@/types';
 
+const { TextArea } = Input;
+
 export default function ProductList() {
   const [tableData, setTableData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -40,11 +42,16 @@ export default function ProductList() {
   const handleAdd = async (values: any) => {
     if (!tenantId) return;
     try {
+      const payload = {
+        ...values,
+        thing_model: values.thing_model ? JSON.parse(values.thing_model) : {},
+        rule: values.rule ? JSON.parse(values.rule) : {},
+      };
       if (editingRecord) {
-        await productApi.update(tenantId, editingRecord.id, values);
+        await productApi.update(tenantId, editingRecord.id, payload);
         message.success('更新成功');
       } else {
-        await productApi.create(tenantId, values);
+        await productApi.create(tenantId, payload);
         message.success('创建成功');
       }
       setModalVisible(false);
@@ -52,13 +59,18 @@ export default function ProductList() {
       setEditingRecord(null);
       fetchData();
     } catch (error) {
+      message.error('操作失败');
       console.error(error);
     }
   };
 
   const handleEdit = (record: Product) => {
     setEditingRecord(record);
-    form.setFieldsValue(record);
+    form.setFieldsValue({
+      ...record,
+      thing_model: JSON.stringify(record.thing_model, null, 2),
+      rule: JSON.stringify(record.rule, null, 2),
+    });
     setModalVisible(true);
   };
 
@@ -145,6 +157,7 @@ export default function ProductList() {
           setEditingRecord(null);
         }}
         onOk={form.submit}
+        width={700}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
           <Form.Item
@@ -156,6 +169,26 @@ export default function ProductList() {
           </Form.Item>
           <Form.Item name="description" label="描述">
             <Input.TextArea placeholder="请输入描述" />
+          </Form.Item>
+          <Form.Item
+            name="thing_model"
+            label="物模型 (JSON)"
+            extra="定义设备的属性、事件和服务"
+          >
+            <TextArea
+              rows={6}
+              placeholder='{"properties": [], "events": [], "services": []}'
+            />
+          </Form.Item>
+          <Form.Item
+            name="rule"
+            label="规则配置 (JSON)"
+            extra="定义设备的数据处理规则"
+          >
+            <TextArea
+              rows={6}
+              placeholder='{"rules": []}'
+            />
           </Form.Item>
         </Form>
       </Modal>
