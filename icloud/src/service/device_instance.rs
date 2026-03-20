@@ -3,26 +3,27 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 use uuid::Uuid;
 
-use crate::entity::{DeviceInstanceEntity, DeviceInstanceColumn, DeviceInstanceModel as Model};
-use crate::entity::{site, tenant, organization};
+use crate::entity::{DeviceInstanceEntity, DeviceInstanceColumn, DeviceInstanceModel as Model, DeviceGroupEntity, DeviceEntity, DeviceColumn};
 use crate::utils::AppError;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDeviceInstanceRequest {
-    pub device_id: Uuid,
-    pub poll_interval_ms: u64,
+    pub group_id: String,
+    pub device_id: String,
+    pub name: String,
     pub driver_config: Option<JsonValue>,
     pub thing_model: Option<JsonValue>,
-    pub node_id: Uuid,
+    pub poll_interval_ms: Option<i32>,
+    pub node_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateDeviceInstanceRequest {
-    pub device_id: Option<Uuid>,
-    pub poll_interval_ms: Option<u64>,
+    pub name: Option<String>,
     pub driver_config: Option<JsonValue>,
     pub thing_model: Option<JsonValue>,
-    pub node_id: Option<Uuid>,
+    pub poll_interval_ms: Option<i32>,
+    pub node_id: Option<String>,
     pub status: Option<String>,
 }
 
@@ -30,13 +31,13 @@ pub struct UpdateDeviceInstanceRequest {
 pub struct DeviceInstanceResponse {
     pub id: String,
     pub tenant_id: String,
-    pub org_id: String,
-    pub site_id: String,
+    pub group_id: String,
     pub device_id: String,
-    pub poll_interval_ms: u64,
+    pub name: String,
     pub driver_config: JsonValue,
     pub thing_model: JsonValue,
-    pub node_id: String,
+    pub poll_interval_ms: i32,
+    pub node_id: Option<String>,
     pub status: String,
     pub created_at: String,
     pub updated_at: String,
@@ -47,14 +48,14 @@ impl From<Model> for DeviceInstanceResponse {
         Self {
             id: model.id.to_string(),
             tenant_id: model.tenant_id.to_string(),
-            org_id: model.org_id.to_string(),
-            site_id: model.site_id.to_string(),
-            device_id: model.device_id.to_string(),
-            poll_interval_ms: model.poll_interval_ms,
+            group_id: model.group_id.to_string(),
+            device_id: model.product_id.to_string(),
+            name: model.name,
             driver_config: model.driver_config,
             thing_model: model.thing_model,
-            node_id: model.node_id.to_string(),
-            status: model.status.clone(),
+            poll_interval_ms: model.poll_interval_ms,
+            node_id: model.node_id.map(|n| n.to_string()),
+            status: model.status,
             created_at: model.created_at.to_string(),
             updated_at: model.updated_at.to_string(),
         }
@@ -73,49 +74,58 @@ impl DeviceInstanceService {
     pub async fn create(
         &self,
         tenant_id: Uuid,
-        org_id: Uuid,
-        site_id: Uuid,
         req: CreateDeviceInstanceRequest,
     ) -> Result<DeviceInstanceResponse, AppError> {
-        let tenant = tenant::Entity::find()
-            .filter(tenant::Column::Id.eq(tenant_id))
-            .one(&self.db)
-            .await?;
+        let group_id = Uuid::parse_str(&req.group_id)
+            .map_err(|_| AppError::BadRequest("Invalid group_id".to_string()))?;
 
-        if tenant.is_none() {
-            return Err(AppError::TenantNotFound);
+        let group = DeviceGroupEntity::find_by_id(group_id)
+            .one(&self.db)
+            .await?
+            .ok_or(AppError::NotFound("Device group not found".to_string()))?;
+
+        if group.tenant_id != tenant_id {
+            return Err(AppError::BadRequest("Device group does not belong to tenant".to_string()));
         }
 
-        let org = organization::Entity::find()
-            .filter(organization::Column::Id.eq(org_id))
+        let device_id = Uuid::parse_str(&req.device_id)
+            .map_err(|_| AppError::BadRequest("Invalid device_id".to_string()))?;
+
+        let device = DeviceEntity::find_by_id(device_id)
             .one(&self.db)
-            .await?;
+            .await?
+            .ok_or(AppError::NotFound("Device not found".to_string()))?;
 
-        if org.is_none() {
-            return Err(AppError::NotFound("Organization not found".to_string()));
-        }
+        let driver_config = req.driver_config.unwrap_or_else(|| {
+            device.device_profile.clone()
+        });
 
-        let site = site::Entity::find()
-            .filter(site::Column::Id.eq(site_id))
-            .one(&self.db)
-            .await?;
+        let thing_model = req.thing_model.unwrap_or_else(|| {
+            serde_json::json!({})
+        });
 
-        if site.is_none() {
-            return Err(AppError::NotFound("Site not found".to_string()));
-        }
+        let node_id = match req.node_id {
+            Some(id) if !id.is_empty() => {
+                Some(Uuid::parse_str(&id)
+                    .map_err(|_| AppError::BadRequest("Invalid node_id".to_string()))?)
+            }
+            _ => None,
+        };
 
-        let mut active_model = crate::entity::device_instance::ActiveModel {
+        let now = chrono::Utc::now().naive_utc();
+        let active_model = crate::entity::device_instance::ActiveModel {
             id: Set(Uuid::new_v4()),
             tenant_id: Set(tenant_id),
-            org_id: Set(org_id),
-            site_id: Set(site_id),
-            device_id: Set(req.device_id),
-            poll_interval_ms: Set(req.poll_interval_ms),
-            driver_config: Set(req.driver_config.unwrap_or(serde_json::json!({}))),
-            thing_model: Set(req.thing_model.unwrap_or(serde_json::json!({}))),
-            node_id: Set(req.node_id),
+            group_id: Set(group_id),
+            product_id: Set(device_id),
+            name: Set(req.name),
+            driver_config: Set(driver_config),
+            thing_model: Set(thing_model),
+            poll_interval_ms: Set(req.poll_interval_ms.unwrap_or(1000)),
+            node_id: Set(node_id),
             status: Set("pending".to_string()),
-            ..Default::default()
+            created_at: Set(now),
+            updated_at: Set(now),
         };
 
         let model = active_model.insert(&self.db).await?;
@@ -123,31 +133,36 @@ impl DeviceInstanceService {
     }
 
     pub async fn find_by_id(&self, id: Uuid) -> Result<DeviceInstanceResponse, AppError> {
-        let model = DeviceInstanceEntity::find()
-            .filter(DeviceInstanceColumn::Id.eq(id))
+        let model = DeviceInstanceEntity::find_by_id(id)
             .one(&self.db)
-            .await?;
+            .await?
+            .ok_or(AppError::NotFound("Device instance not found".to_string()))?;
 
-        match model {
-            Some(model) => Ok(model.into()),
-            None => Err(AppError::NotFound("Device instance not found".to_string())),
-        }
+        Ok(model.into())
     }
 
-    pub async fn list_by_site(
+    pub async fn list_by_tenant(
         &self,
         tenant_id: Uuid,
-        org_id: Uuid,
-        site_id: Uuid,
     ) -> Result<Vec<DeviceInstanceResponse>, AppError> {
         let models = DeviceInstanceEntity::find()
             .filter(DeviceInstanceColumn::TenantId.eq(tenant_id))
-            .filter(DeviceInstanceColumn::OrgId.eq(org_id))
-            .filter(DeviceInstanceColumn::SiteId.eq(site_id))
             .all(&self.db)
             .await?;
 
-        Ok(models.into_iter().map(Into::into).collect())
+        Ok(models.into_iter().map(|m| m.into()).collect())
+    }
+
+    pub async fn list_by_group(
+        &self,
+        group_id: Uuid,
+    ) -> Result<Vec<DeviceInstanceResponse>, AppError> {
+        let models = DeviceInstanceEntity::find()
+            .filter(DeviceInstanceColumn::GroupId.eq(group_id))
+            .all(&self.db)
+            .await?;
+
+        Ok(models.into_iter().map(|m| m.into()).collect())
     }
 
     pub async fn update(
@@ -155,51 +170,47 @@ impl DeviceInstanceService {
         id: Uuid,
         req: UpdateDeviceInstanceRequest,
     ) -> Result<DeviceInstanceResponse, AppError> {
-        let model = DeviceInstanceEntity::find()
-            .filter(DeviceInstanceColumn::Id.eq(id))
+        let mut model = DeviceInstanceEntity::find_by_id(id)
             .one(&self.db)
-            .await?;
+            .await?
+            .ok_or(AppError::NotFound("Device instance not found".to_string()))?
+            .into_active_model();
 
-        let Some(mut model) = model else {
-            return Err(AppError::NotFound("Device instance not found".to_string()));
-        };
-
-        let mut active_model = model.into_active_model();
-
-        if let Some(device_id) = req.device_id {
-            active_model.device_id = Set(device_id);
-        }
-        if let Some(poll_interval_ms) = req.poll_interval_ms {
-            active_model.poll_interval_ms = Set(poll_interval_ms);
+        if let Some(name) = req.name {
+            model.name = Set(name);
         }
         if let Some(driver_config) = req.driver_config {
-            active_model.driver_config = Set(driver_config);
+            model.driver_config = Set(driver_config);
         }
         if let Some(thing_model) = req.thing_model {
-            active_model.thing_model = Set(thing_model);
+            model.thing_model = Set(thing_model);
         }
-        if let Some(node_id) = req.node_id {
-            active_model.node_id = Set(node_id);
+        if let Some(poll_interval_ms) = req.poll_interval_ms {
+            model.poll_interval_ms = Set(poll_interval_ms);
+        }
+        if let Some(node_id_str) = req.node_id {
+            let node_id = if node_id_str.is_empty() {
+                None
+            } else {
+                Some(Uuid::parse_str(&node_id_str)
+                    .map_err(|_| AppError::BadRequest("Invalid node_id".to_string()))?)
+            };
+            model.node_id = Set(node_id);
         }
         if let Some(status) = req.status {
-            active_model.status = Set(status);
+            model.status = Set(status);
         }
+        model.updated_at = Set(chrono::Utc::now().naive_utc());
 
-        let updated = active_model.update(&self.db).await?;
-        Ok(updated.into())
+        let model = model.update(&self.db).await?;
+        Ok(model.into())
     }
 
     pub async fn delete(&self, id: Uuid) -> Result<(), AppError> {
-        let model = DeviceInstanceEntity::find()
-            .filter(DeviceInstanceColumn::Id.eq(id))
-            .one(&self.db)
-            .await?;
-
-        let Some(model) = model else {
+        let result = DeviceInstanceEntity::delete_by_id(id).exec(&self.db).await?;
+        if result.rows_affected == 0 {
             return Err(AppError::NotFound("Device instance not found".to_string()));
-        };
-
-        DeviceInstanceEntity::delete(model.into_active_model()).exec(&self.db).await?;
+        }
         Ok(())
     }
 }

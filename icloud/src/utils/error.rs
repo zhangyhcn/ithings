@@ -38,6 +38,9 @@ pub enum AppError {
 
     #[error("Invalid token")]
     InvalidToken,
+
+    #[error("Validation error: {0}")]
+    Validation(String),
 }
 
 impl AppError {
@@ -55,6 +58,7 @@ impl AppError {
             Self::TenantAlreadyExists => 409,
             Self::TokenExpired => 401,
             Self::InvalidToken => 401,
+            Self::Validation(_) => 400,
         }
     }
 }

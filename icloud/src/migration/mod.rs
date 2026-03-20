@@ -207,6 +207,64 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
+                    .table(Organization::Table)
+                    .col(
+                        ColumnDef::new(Organization::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key()
+                            .default(Expr::cust("gen_random_uuid()")),
+                    )
+                    .col(ColumnDef::new(Organization::TenantId).uuid().not_null())
+                    .col(ColumnDef::new(Organization::ParentId).uuid().null())
+                    .col(ColumnDef::new(Organization::Name).text().not_null())
+                    .col(ColumnDef::new(Organization::Slug).text().not_null())
+                    .col(ColumnDef::new(Organization::Description).text().null())
+                    .col(ColumnDef::new(Organization::SortOrder).integer().null().default(0))
+                    .col(ColumnDef::new(Organization::Status).text().not_null().default("active"))
+                    .col(
+                        ColumnDef::new(Organization::CreatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .col(
+                        ColumnDef::new(Organization::UpdatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(Organization::Table, Organization::TenantId)
+                            .to(Tenant::Table, Tenant::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(Organization::Table, Organization::ParentId)
+                            .to(Organization::Table, Organization::Id)
+                            .on_delete(ForeignKeyAction::SetNull),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_index(
+                Index::create()
+                    .name("idx_organization_tenant_slug")
+                    .table(Organization::Table)
+                    .col(Organization::TenantId)
+                    .col(Organization::Slug)
+                    .unique()
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
                     .table(Site::Table)
                     .col(
                         ColumnDef::new(Site::Id)
@@ -216,6 +274,7 @@ impl MigrationTrait for Migration {
                             .default(Expr::cust("gen_random_uuid()")),
                     )
                     .col(ColumnDef::new(Site::TenantId).uuid().not_null())
+                    .col(ColumnDef::new(Site::OrganizationId).uuid().not_null())
                     .col(ColumnDef::new(Site::Name).text().not_null())
                     .col(ColumnDef::new(Site::Slug).text().not_null().unique_key())
                     .col(ColumnDef::new(Site::Description).text().null())
@@ -238,6 +297,12 @@ impl MigrationTrait for Migration {
                         ForeignKey::create()
                             .from(Site::Table, Site::TenantId)
                             .to(Tenant::Table, Tenant::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(Site::Table, Site::OrganizationId)
+                            .to(Organization::Table, Organization::Id)
                             .on_delete(ForeignKeyAction::Cascade),
                     )
                     .to_owned(),
@@ -308,14 +373,129 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        manager
+            .create_table(
+                Table::create()
+                    .table(DeviceGroup::Table)
+                    .col(
+                        ColumnDef::new(DeviceGroup::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key()
+                            .default(Expr::cust("gen_random_uuid()")),
+                    )
+                    .col(ColumnDef::new(DeviceGroup::TenantId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceGroup::OrgId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceGroup::SiteId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceGroup::Name).text().not_null())
+                    .col(ColumnDef::new(DeviceGroup::DriverImage).text().not_null())
+                    .col(ColumnDef::new(DeviceGroup::Description).text().null())
+                    .col(ColumnDef::new(DeviceGroup::Status).text().not_null().default("active"))
+                    .col(
+                        ColumnDef::new(DeviceGroup::CreatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .col(
+                        ColumnDef::new(DeviceGroup::UpdatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceGroup::Table, DeviceGroup::TenantId)
+                            .to(Tenant::Table, Tenant::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceGroup::Table, DeviceGroup::OrgId)
+                            .to(Organization::Table, Organization::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceGroup::Table, DeviceGroup::SiteId)
+                            .to(Site::Table, Site::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(DeviceInstance::Table)
+                    .col(
+                        ColumnDef::new(DeviceInstance::Id)
+                            .uuid()
+                            .not_null()
+                            .primary_key()
+                            .default(Expr::cust("gen_random_uuid()")),
+                    )
+                    .col(ColumnDef::new(DeviceInstance::TenantId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceInstance::GroupId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceInstance::ProductId).uuid().not_null())
+                    .col(ColumnDef::new(DeviceInstance::Name).text().not_null())
+                    .col(ColumnDef::new(DeviceInstance::DriverConfig).json().not_null().default("{}"))
+                    .col(ColumnDef::new(DeviceInstance::ThingModel).json().not_null().default("{}"))
+                    .col(ColumnDef::new(DeviceInstance::PollIntervalMs).integer().not_null().default(1000))
+                    .col(ColumnDef::new(DeviceInstance::NodeId).uuid().null())
+                    .col(ColumnDef::new(DeviceInstance::Status).text().not_null().default("pending"))
+                    .col(
+                        ColumnDef::new(DeviceInstance::CreatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .col(
+                        ColumnDef::new(DeviceInstance::UpdatedAt)
+                            .timestamp()
+                            .not_null()
+                            .default(Expr::cust("now()")),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceInstance::Table, DeviceInstance::TenantId)
+                            .to(Tenant::Table, Tenant::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceInstance::Table, DeviceInstance::GroupId)
+                            .to(DeviceGroup::Table, DeviceGroup::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(DeviceInstance::Table, DeviceInstance::ProductId)
+                            .to(Product::Table, Product::Id)
+                            .on_delete(ForeignKeyAction::Cascade),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        let stmt = Table::drop().table(DeviceInstance::Table).to_owned();
+        manager.drop_table(stmt).await?;
+        
+        let stmt = Table::drop().table(DeviceGroup::Table).to_owned();
+        manager.drop_table(stmt).await?;
+        
         let stmt = Table::drop().table(Namespace::Table).to_owned();
         manager.drop_table(stmt).await?;
         
         let stmt = Table::drop().table(Site::Table).to_owned();
+        manager.drop_table(stmt).await?;
+        
+        let stmt = Table::drop().table(Organization::Table).to_owned();
         manager.drop_table(stmt).await?;
         
         let stmt = Table::drop().table(UserRole::Table).to_owned();
@@ -356,6 +536,7 @@ enum Organization {
     Name,
     Slug,
     Description,
+    SortOrder,
     Status,
     CreatedAt,
     UpdatedAt,
@@ -422,6 +603,7 @@ enum Site {
     Table,
     Id,
     TenantId,
+    OrganizationId,
     Name,
     Slug,
     Description,
@@ -442,6 +624,52 @@ enum Namespace {
     Description,
     NamespaceType,
     Config,
+    Status,
+    CreatedAt,
+    UpdatedAt,
+}
+
+#[derive(Iden)]
+enum DeviceGroup {
+    Table,
+    Id,
+    TenantId,
+    OrgId,
+    SiteId,
+    Name,
+    DriverImage,
+    Description,
+    Status,
+    CreatedAt,
+    UpdatedAt,
+}
+
+#[derive(Iden)]
+enum Product {
+    Table,
+    Id,
+    TenantId,
+    Name,
+    Description,
+    ThingModel,
+    DeviceProfile,
+    Status,
+    CreatedAt,
+    UpdatedAt,
+}
+
+#[derive(Iden)]
+enum DeviceInstance {
+    Table,
+    Id,
+    TenantId,
+    GroupId,
+    ProductId,
+    Name,
+    DriverConfig,
+    ThingModel,
+    PollIntervalMs,
+    NodeId,
     Status,
     CreatedAt,
     UpdatedAt,

@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::entity::{ProductEntity, ProductColumn, ProductModel as Model};
 use crate::entity::tenant::{self};
 use crate::utils::AppError;
+use device_common::device_core::{ThingModel, Rule};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateProductRequest {
@@ -61,6 +62,38 @@ impl ProductService {
         Self { db }
     }
 
+    fn validate_thing_model(thing_model: &JsonValue) -> Result<(), AppError> {
+        if thing_model.is_null() || thing_model.as_object().map_or(true, |obj| obj.is_empty()) {
+            return Ok(());
+        }
+
+        let model: ThingModel = serde_json::from_value(thing_model.clone())
+            .map_err(|e| AppError::Validation(format!("物模型格式错误: {}", e)))?;
+
+        model.validate()
+            .map_err(|e| AppError::Validation(format!("物模型校验失败: {}", e)))?;
+
+        Ok(())
+    }
+
+    fn validate_rule(rule: &JsonValue) -> Result<(), AppError> {
+        if rule.is_null() || rule.as_object().map_or(true, |obj| obj.is_empty()) {
+            return Ok(());
+        }
+
+        if let Some(rules_array) = rule.as_array() {
+            for rule_value in rules_array {
+                let _: Rule = serde_json::from_value(rule_value.clone())
+                    .map_err(|e| AppError::Validation(format!("规则格式错误: {}", e)))?;
+            }
+        } else {
+            let _: Rule = serde_json::from_value(rule.clone())
+                .map_err(|e| AppError::Validation(format!("规则格式错误: {}", e)))?;
+        }
+
+        Ok(())
+    }
+
     pub async fn create(
         &self,
         tenant_id: Uuid,
@@ -73,6 +106,14 @@ impl ProductService {
 
         if tenant.is_none() {
             return Err(AppError::TenantNotFound);
+        }
+
+        if let Some(ref thing_model) = req.thing_model {
+            Self::validate_thing_model(thing_model)?;
+        }
+
+        if let Some(ref rule) = req.rule {
+            Self::validate_rule(rule)?;
         }
 
         let mut active_model = crate::entity::product::ActiveModel {
@@ -123,6 +164,14 @@ impl ProductService {
         let Some(mut model) = model else {
             return Err(AppError::NotFound("Product not found".to_string()));
         };
+
+        if let Some(ref thing_model) = req.thing_model {
+            Self::validate_thing_model(thing_model)?;
+        }
+
+        if let Some(ref rule) = req.rule {
+            Self::validate_rule(rule)?;
+        }
 
         let mut active_model = model.into_active_model();
 

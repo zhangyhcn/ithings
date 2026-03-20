@@ -57,8 +57,8 @@ export interface Organization {
   tenant_id: string;
   parent_id?: string;
   name: string;
+  slug: string;
   description?: string;
-  sort_order: number;
   status: string;
   created_at: string;
   updated_at: string;
@@ -82,6 +82,7 @@ export interface Department {
 export interface Site {
   id: string;
   tenant_id: string;
+  organization_id: string;
   name: string;
   slug: string;
   description?: string;
@@ -214,16 +215,29 @@ export interface Node {
   updated_at: string;
 }
 
-export interface DeviceInstance {
+export interface DeviceGroup {
   id: string;
   tenant_id: string;
   org_id: string;
   site_id: string;
+  name: string;
+  driver_image: string;
+  description?: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DeviceInstance {
+  id: string;
+  tenant_id: string;
+  group_id: string;
   device_id: string;
-  poll_interval_ms: number;
+  name: string;
   driver_config: any;
   thing_model: any;
-  node_id: string;
+  poll_interval_ms: number;
+  node_id?: string;
   status: string;
   created_at: string;
   updated_at: string;
@@ -245,8 +259,6 @@ export interface Secret {
 export interface Device {
   id: string;
   tenant_id: string;
-  organization_id?: string;
-  site_id?: string;
   product_id?: string;
   name: string;
   model?: string;

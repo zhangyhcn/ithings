@@ -8,6 +8,7 @@ pub mod site;
 pub mod product;
 pub mod driver;
 pub mod node;
+pub mod device_group;
 pub mod device_instance;
 pub mod namespace;
 pub mod organization;
@@ -41,6 +42,10 @@ pub use driver::Column as DriverColumn;
 pub use node::Entity as NodeEntity;
 pub use node::Model as NodeModel;
 pub use node::Column as NodeColumn;
+
+pub use device_group::Entity as DeviceGroupEntity;
+pub use device_group::Model as DeviceGroupModel;
+pub use device_group::Column as DeviceGroupColumn;
 
 pub use device_instance::Entity as DeviceInstanceEntity;
 pub use device_instance::Model as DeviceInstanceModel;

@@ -27,7 +27,7 @@ export default function ProductList() {
     setLoading(true);
     try {
       const data = await productApi.list(user.tenant_id);
-      setTableData(Array.isArray(data.list) ? data.list : []);
+      setTableData(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error(error);
     } finally {

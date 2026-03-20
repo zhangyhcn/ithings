@@ -1,26 +1,22 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "device_instances")]
+#[sea_orm(table_name = "device_groups")]
 pub struct Model {
     #[sea_orm(primary_key, column_type = "Uuid")]
     pub id: Uuid,
     #[sea_orm(column_type = "Uuid")]
     pub tenant_id: Uuid,
     #[sea_orm(column_type = "Uuid")]
-    pub group_id: Uuid,
+    pub org_id: Uuid,
     #[sea_orm(column_type = "Uuid")]
-    pub product_id: Uuid,
+    pub site_id: Uuid,
     #[sea_orm(column_type = "Text")]
     pub name: String,
-    #[sea_orm(column_type = "Json")]
-    pub driver_config: Json,
-    #[sea_orm(column_type = "Json")]
-    pub thing_model: Json,
-    #[sea_orm(column_type = "Integer")]
-    pub poll_interval_ms: i32,
-    #[sea_orm(column_type = "Uuid")]
-    pub node_id: Option<Uuid>,
+    #[sea_orm(column_type = "Text")]
+    pub driver_image: String,
+    #[sea_orm(column_type = "Text")]
+    pub description: Option<String>,
     #[sea_orm(column_type = "Text")]
     pub status: String,
     #[sea_orm(column_type = "Timestamp")]
@@ -38,17 +34,17 @@ pub enum Relation {
     )]
     Tenant,
     #[sea_orm(
-        belongs_to = "super::device_group::Entity",
-        from = "Column::GroupId",
-        to = "super::device_group::Column::Id"
+        belongs_to = "super::organization::Entity",
+        from = "Column::OrgId",
+        to = "super::organization::Column::Id"
     )]
-    DeviceGroup,
+    Organization,
     #[sea_orm(
-        belongs_to = "super::product::Entity",
-        from = "Column::ProductId",
-        to = "super::product::Column::Id"
+        belongs_to = "super::site::Entity",
+        from = "Column::SiteId",
+        to = "super::site::Column::Id"
     )]
-    Product,
+    Site,
 }
 
 impl Related<super::tenant::Entity> for Entity {
@@ -57,15 +53,15 @@ impl Related<super::tenant::Entity> for Entity {
     }
 }
 
-impl Related<super::device_group::Entity> for Entity {
+impl Related<super::organization::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::DeviceGroup.def()
+        Relation::Organization.def()
     }
 }
 
-impl Related<super::product::Entity> for Entity {
+impl Related<super::site::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Product.def()
+        Relation::Site.def()
     }
 }
 

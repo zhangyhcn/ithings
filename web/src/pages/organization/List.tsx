@@ -271,7 +271,7 @@ export default function OrganizationList() {
             label="状态"
             valuePropName="checked"
             initialValue={true}
-            getValueFromEvent={(e) => e.target.checked ? 'active' : 'inactive'}
+            getValueFromEvent={(checked: boolean) => checked ? 'active' : 'inactive'}
             getValueProps={(value) => ({ checked: value === 'active' })}
           >
             <Switch checkedChildren="启用" unCheckedChildren="禁用" />

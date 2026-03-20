@@ -15,16 +15,19 @@ use crate::{
 };
 
 #[derive(Debug, Deserialize)]
-pub struct SitePath {
+pub struct TenantPath {
     pub tenant_id: Uuid,
-    pub org_id: Uuid,
-    pub site_id: Uuid,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PageQuery {
-    pub page: Option<u64>,
-    pub page_size: Option<u64>,
+pub struct DeviceInstancePath {
+    pub tenant_id: Uuid,
+    pub id: Uuid,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct GroupQuery {
+    pub group_id: Option<Uuid>,
 }
 
 pub fn create_device_instance_router(db: DatabaseConnection) -> Router {
@@ -39,46 +42,50 @@ pub fn create_device_instance_router(db: DatabaseConnection) -> Router {
 
 async fn create_device_instance(
     State(db): State<DatabaseConnection>,
-    Path(SitePath { tenant_id, org_id, site_id }): Path<SitePath>,
+    Path(TenantPath { tenant_id }): Path<TenantPath>,
     Json(req): Json<CreateDeviceInstanceRequest>,
 ) -> Result<Json<Response<DeviceInstanceResponse>>, AppError> {
     let service = DeviceInstanceService::new(db);
-    let device_instance = service.create(tenant_id, org_id, site_id, req).await?;
-    Ok(Json(Response::success(device_instance)))
+    let instance = service.create(tenant_id, req).await?;
+    Ok(Json(Response::success(instance)))
 }
 
 async fn get_device_instance(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, _org_id, _site_id, id)): Path<(Uuid, Uuid, Uuid, Uuid)>,
+    Path(DeviceInstancePath { tenant_id: _, id }): Path<DeviceInstancePath>,
 ) -> Result<Json<Response<DeviceInstanceResponse>>, AppError> {
     let service = DeviceInstanceService::new(db);
-    let device_instance = service.find_by_id(id).await?;
-    Ok(Json(Response::success(device_instance)))
+    let instance = service.find_by_id(id).await?;
+    Ok(Json(Response::success(instance)))
 }
 
 async fn list_device_instances(
     State(db): State<DatabaseConnection>,
-    Path(SitePath { tenant_id, org_id, site_id }): Path<SitePath>,
-    Query(_query): Query<PageQuery>,
+    Path(TenantPath { tenant_id }): Path<TenantPath>,
+    Query(query): Query<GroupQuery>,
 ) -> Result<Json<Response<Vec<DeviceInstanceResponse>>>, AppError> {
     let service = DeviceInstanceService::new(db);
-    let devices = service.list_by_site(tenant_id, org_id, site_id).await?;
-    Ok(Json(Response::success(devices)))
+    let instances = if let Some(group_id) = query.group_id {
+        service.list_by_group(group_id).await?
+    } else {
+        service.list_by_tenant(tenant_id).await?
+    };
+    Ok(Json(Response::success(instances)))
 }
 
 async fn update_device_instance(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, _org_id, _site_id, id)): Path<(Uuid, Uuid, Uuid, Uuid)>,
+    Path(DeviceInstancePath { tenant_id: _, id }): Path<DeviceInstancePath>,
     Json(req): Json<UpdateDeviceInstanceRequest>,
 ) -> Result<Json<Response<DeviceInstanceResponse>>, AppError> {
     let service = DeviceInstanceService::new(db);
-    let device_instance = service.update(id, req).await?;
-    Ok(Json(Response::success(device_instance)))
+    let instance = service.update(id, req).await?;
+    Ok(Json(Response::success(instance)))
 }
 
 async fn delete_device_instance(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, _org_id, _site_id, id)): Path<(Uuid, Uuid, Uuid, Uuid)>,
+    Path(DeviceInstancePath { tenant_id: _, id }): Path<DeviceInstancePath>,
 ) -> Result<Json<Response<()>>, AppError> {
     let service = DeviceInstanceService::new(db);
     service.delete(id).await?;

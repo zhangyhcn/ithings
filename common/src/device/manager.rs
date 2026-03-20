@@ -79,12 +79,12 @@ impl DeviceManager {
                     attributes: Default::default(),
                 })
                 .collect(),
-            services: device_config.thing_model.commands.iter()
+            services: device_config.thing_model.services.iter()
                 .map(|c| crate::device_core::Service {
                     identifier: c.identifier.clone(),
                     name: c.name.clone(),
                     description: c.description.clone(),
-                    input_params: c.parameters.iter()
+                    input_params: c.input_params.iter()
                         .map(|p| crate::device_core::ServiceParam {
                             identifier: p.identifier.clone(),
                             name: p.name.clone(),
@@ -94,7 +94,14 @@ impl DeviceManager {
                             default_value: p.default_value.clone(),
                         })
                         .collect(),
-                    output_params: Vec::new(),
+                    output_params: c.output_params.iter()
+                        .map(|p| crate::device_core::ServiceResult {
+                            identifier: p.identifier.clone(),
+                            name: p.name.clone(),
+                            data_type: p.type_.clone(),
+                            description: p.description.clone(),
+                        })
+                        .collect(),
                     call_type: Default::default(),
                     attributes: Default::default(),
                 })
@@ -161,7 +168,7 @@ impl DeviceManager {
             runtime = runtime.with_driver_client(client);
         }
 
-        let rules: Vec<crate::device_core::Rule> = device_config.thing_model.rules.iter()
+        let rules: Vec<crate::device_core::Rule> = device_config.rules.iter()
             .map(|r| crate::device_core::Rule {
                 identifier: r.identifier.clone(),
                 name: r.name.clone(),
@@ -194,7 +201,7 @@ impl DeviceManager {
                             RuleAction::TriggerEvent {
                                 event_identifier: trigger.event_identifier.clone(),
                                 data: trigger.data.iter()
-                                    .map(|(k, v)| (k.clone(), serde_json::Value::from(v.clone())))
+                                    .map(|(k, v): (&String, &String)| (k.clone(), serde_json::Value::String(v.clone())))
                                     .collect(),
                             }
                         } else {

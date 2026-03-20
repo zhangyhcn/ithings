@@ -8,10 +8,6 @@ pub struct Model {
     #[sea_orm(column_type = "Uuid")]
     pub tenant_id: Uuid,
     #[sea_orm(column_type = "Uuid")]
-    pub organization_id: Option<Uuid>,
-    #[sea_orm(column_type = "Uuid")]
-    pub site_id: Option<Uuid>,
-    #[sea_orm(column_type = "Uuid")]
     pub product_id: Option<Uuid>,
     #[sea_orm(column_type = "Text")]
     pub name: String,
@@ -42,18 +38,6 @@ pub enum Relation {
     )]
     Tenant,
     #[sea_orm(
-        belongs_to = "super::organization::Entity",
-        from = "Column::OrganizationId",
-        to = "super::organization::Column::Id"
-    )]
-    Organization,
-    #[sea_orm(
-        belongs_to = "super::site::Entity",
-        from = "Column::SiteId",
-        to = "super::site::Column::Id"
-    )]
-    Site,
-    #[sea_orm(
         belongs_to = "super::product::Entity",
         from = "Column::ProductId",
         to = "super::product::Column::Id"
@@ -64,18 +48,6 @@ pub enum Relation {
 impl Related<super::tenant::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Tenant.def()
-    }
-}
-
-impl Related<super::organization::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Organization.def()
-    }
-}
-
-impl Related<super::site::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Site.def()
     }
 }
 

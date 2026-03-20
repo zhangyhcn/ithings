@@ -13,7 +13,7 @@ DB_CONFIG = {
 }
 
 # 要添加权限的租户ID
-TARGET_TENANT_ID = 'ceca8d9b-82d9-4a9d-a316-0327456919dc'
+TARGET_TENANT_ID = '5a631a2e-b2b1-447f-b2f7-e510a82bdc23'
 
 # 默认菜单定义，和后端代码保持一致
 DEFAULT_MENUS = [
@@ -265,12 +265,34 @@ DEFAULT_MENUS = [
         'i18n_key': 'menu.device.node',
     },
     {
+        'name': '设备定义',
+        'path': '/device/device',
+        'component': '@/pages/device/device/List',
+        'icon': 'ToolOutlined',
+        'parent_path': '/device',
+        'sort_order': 4,
+        'status': 'active',
+        'roles': ['admin', 'editor'],
+        'i18n_key': 'menu.device.device',
+    },
+    {
+        'name': '设备组',
+        'path': '/device/group',
+        'component': '@/pages/device/group/List',
+        'icon': 'GroupOutlined',
+        'parent_path': '/device',
+        'sort_order': 5,
+        'status': 'active',
+        'roles': ['admin', 'editor'],
+        'i18n_key': 'menu.device.group',
+    },
+    {
         'name': '设备实例',
         'path': '/device/instance',
         'component': '@/pages/device/instance/List',
         'icon': 'DesktopOutlined',
         'parent_path': '/device',
-        'sort_order': 4,
+        'sort_order': 6,
         'status': 'active',
         'roles': ['admin', 'editor'],
         'i18n_key': 'menu.device.instance',
@@ -312,8 +334,8 @@ def main():
         """
 
         cursor.execute(sql, (
-            menu_id,
-            parent_id,
+            str(menu_id),
+            str(parent_id) if parent_id else None,
             menu_def['name'],
             menu_def['path'],
             menu_def['component'],
@@ -357,10 +379,9 @@ def main():
 
     for menu_id in path_to_id.values():
         if menu_id not in existing_role_menus:
-            role_menu_id = uuid.uuid4()
             cursor.execute("""
-                INSERT INTO role_menus (id, role_id, menu_id) VALUES (%s, %s, %s);
-            """, (role_menu_id, admin_role_id, menu_id))
+                INSERT INTO role_menus (role_id, menu_id) VALUES (%s, %s);
+            """, (str(admin_role_id), str(menu_id)))
             added_perm_count += 1
             print(f"Added permission for menu: {menu_id}")
 

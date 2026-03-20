@@ -20,6 +20,12 @@ pub struct TenantPath {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct SitePath {
+    pub tenant_id: Uuid,
+    pub id: Uuid,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct PageQuery {
     pub page: Option<u64>,
     pub page_size: Option<u64>,
@@ -41,21 +47,13 @@ async fn create_site(
     Json(req): Json<CreateSiteRequest>,
 ) -> Result<Json<Response<SiteResponse>>, AppError> {
     let service = SiteService::new(db);
-    let site = service.create(
-        tenant_id,
-        CreateSiteRequest {
-            name: req.name,
-            slug: req.slug,
-            description: req.description,
-            location: req.location,
-        }
-    ).await?;
+    let site = service.create(tenant_id, req).await?;
     Ok(Json(Response::success(site)))
 }
 
 async fn get_site(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(SitePath { tenant_id: _, id }): Path<SitePath>,
 ) -> Result<Json<Response<SiteResponse>>, AppError> {
     let service = SiteService::new(db);
     let site = service.find_by_id(id).await?;
@@ -74,7 +72,7 @@ async fn list_sites(
 
 async fn update_site(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(SitePath { tenant_id: _, id }): Path<SitePath>,
     Json(req): Json<UpdateSiteRequest>,
 ) -> Result<Json<Response<SiteResponse>>, AppError> {
     let service = SiteService::new(db);
@@ -84,7 +82,7 @@ async fn update_site(
 
 async fn delete_site(
     State(db): State<DatabaseConnection>,
-    Path((_tenant_id, id)): Path<(Uuid, Uuid)>,
+    Path(SitePath { tenant_id: _, id }): Path<SitePath>,
 ) -> Result<Json<Response<()>>, AppError> {
     let service = SiteService::new(db);
     service.delete(id).await?;

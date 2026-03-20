@@ -10,7 +10,7 @@ use uuid::Uuid;
 
 use crate::{
     response::Response,
-    service::organization::{CreateOrganizationRequest, OrganizationResponse, OrganizationService, UpdateOrganizationRequest},
+    service::organization::{CreateOrganizationBody, CreateOrganizationRequest, OrganizationResponse, OrganizationService, UpdateOrganizationRequest},
     utils::AppError,
 };
 
@@ -38,17 +38,11 @@ pub fn create_organization_router(db: DatabaseConnection) -> Router {
 async fn create_organization(
     State(db): State<DatabaseConnection>,
     Path(TenantPath { tenant_id }): Path<TenantPath>,
-    Json(req): Json<CreateOrganizationRequest>,
+    Json(body): Json<CreateOrganizationBody>,
 ) -> Result<Json<Response<OrganizationResponse>>, AppError> {
     let service = OrganizationService::new(db);
-    let org = service.create(CreateOrganizationRequest {
-        tenant_id,
-        name: req.name,
-        parent_id: req.parent_id,
-        description: req.description,
-        sort_order: req.sort_order,
-        status: req.status,
-    }).await?;
+    let req = CreateOrganizationRequest::from((tenant_id, body));
+    let org = service.create(req).await?;
     Ok(Json(Response::success(org)))
 }
 

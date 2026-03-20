@@ -373,7 +373,7 @@ export const secretApi = {
   publish: (id: string) => request.post(`/secrets/${id}/publish`),
 };
 
-import type { Product, Driver, Node, DeviceInstance } from '@/types';
+import type { Product, Driver, Node, DeviceGroup, DeviceInstance } from '@/types';
 
 export const productApi = {
   list: (tenantId: string, params?: { page?: number; page_size?: number }) =>
@@ -460,45 +460,66 @@ export const nodeApi = {
     request.delete(`/tenants/${tenantId}/nodes/${id}`),
 };
 
-export const deviceInstanceApi = {
-  list: (tenantId: string, orgId: string, siteId: string, params?: { page?: number; page_size?: number }) =>
-    request.get<DeviceInstance[]>(`/tenants/${tenantId}/sites/${siteId}/device-instances`, { params }),
-  get: (tenantId: string, orgId: string, siteId: string, id: string) =>
-    request.get(`/tenants/${tenantId}/sites/${siteId}/device-instances/${id}`),
+export const deviceGroupApi = {
+  list: (tenantId: string) =>
+    request.get<DeviceGroup[]>(`/tenants/${tenantId}/device-groups`),
+  get: (tenantId: string, id: string) =>
+    request.get(`/tenants/${tenantId}/device-groups/${id}`),
   create: (
     tenantId: string,
-    siteId: string,
     data: {
+      org_id: string;
+      site_id: string;
       name: string;
-      brand_model?: string;
-      product_id: string;
-      driver_id: string;
-      poll_interval_ms: number;
-      device_type: string;
-      driver_config: any;
-      thing_model: any;
-      node_id: string;
+      driver_image: string;
+      description?: string;
     }
-  ) => request.post(`/tenants/${tenantId}/sites/${siteId}/device-instances`, data),
+  ) => request.post(`/tenants/${tenantId}/device-groups`, data),
   update: (
     tenantId: string,
-    siteId: string,
     id: string,
     data: {
       name?: string;
-      brand_model?: string;
-      product_id?: string;
-      driver_id?: string;
-      poll_interval_ms?: number;
-      device_type?: string;
+      driver_image?: string;
+      description?: string;
+      status?: string;
+    }
+  ) => request.put(`/tenants/${tenantId}/device-groups/${id}`, data),
+  delete: (tenantId: string, id: string) =>
+    request.delete(`/tenants/${tenantId}/device-groups/${id}`),
+};
+
+export const deviceInstanceApi = {
+  list: (tenantId: string, params?: { group_id?: string }) =>
+    request.get<DeviceInstance[]>(`/tenants/${tenantId}/device-instances`, { params }),
+  get: (tenantId: string, id: string) =>
+    request.get(`/tenants/${tenantId}/device-instances/${id}`),
+  create: (
+    tenantId: string,
+    data: {
+      group_id: string;
+      device_id: string;
+      name: string;
       driver_config?: any;
       thing_model?: any;
+      poll_interval_ms?: number;
+      node_id?: string;
+    }
+  ) => request.post(`/tenants/${tenantId}/device-instances`, data),
+  update: (
+    tenantId: string,
+    id: string,
+    data: {
+      name?: string;
+      driver_config?: any;
+      thing_model?: any;
+      poll_interval_ms?: number;
       node_id?: string;
       status?: string;
     }
-  ) => request.put(`/tenants/${tenantId}/sites/${siteId}/device-instances/${id}`, data),
-  delete: (tenantId: string, siteId: string, id: string) =>
-    request.delete(`/tenants/${tenantId}/sites/${siteId}/device-instances/${id}`),
+  ) => request.put(`/tenants/${tenantId}/device-instances/${id}`, data),
+  delete: (tenantId: string, id: string) =>
+    request.delete(`/tenants/${tenantId}/device-instances/${id}`),
 };
 
 import type { Device } from '@/types';

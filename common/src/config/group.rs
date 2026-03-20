@@ -32,6 +32,8 @@ pub struct DeviceInGroupConfig {
     pub poll_interval_ms: u64,
     pub driver: DriverInDeviceConfig,
     pub thing_model: ThingModelConfig,
+    #[serde(default)]
+    pub rules: Vec<RuleConfig>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -62,15 +64,14 @@ pub struct ThingModelConfig {
     pub model_id: String,
     pub model_version: String,
     pub device_type: String,
+    #[serde(default)]
     pub manufacturer: String,
     pub description: String,
     pub properties: Vec<PropertyConfig>,
     #[serde(default)]
     pub events: Vec<EventConfig>,
     #[serde(default)]
-    pub rules: Vec<RuleConfig>,
-    #[serde(default)]
-    pub commands: Vec<CommandConfig>,
+    pub services: Vec<ServiceConfig>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -155,12 +156,14 @@ pub struct TriggerEventAction {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CommandConfig {
+pub struct ServiceConfig {
     pub identifier: String,
     pub name: String,
     pub description: Option<String>,
     #[serde(default)]
-    pub parameters: Vec<ParameterConfig>,
+    pub input_params: Vec<ParameterConfig>,
+    #[serde(default)]
+    pub output_params: Vec<ParameterConfig>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -169,6 +172,8 @@ pub struct ParameterConfig {
     pub name: String,
     #[serde(rename = "type")]
     pub type_: String,
+    #[serde(default)]
+    pub unit: Option<String>,
     pub required: Option<bool>,
     pub description: Option<String>,
     pub default_value: Option<serde_json::Value>,

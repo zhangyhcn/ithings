@@ -28,5 +28,6 @@ async-trait = "0.1"
 kube = { version = "0.87", features = ["client", "rustls-tls"] }
 k8s-openapi = { version = "0.20", features = ["v1_28"] }
 base64 = "0.21"
+device-common = { path = "../common" }
 
 [dev-dependencies]

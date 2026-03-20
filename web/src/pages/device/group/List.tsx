@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
 import { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deviceApi, productApi, driverApi } from '@/services/api';
-import type { Device, Product, Driver } from '@/types';
+import { deviceGroupApi, organizationApi, siteApi, driverApi } from '@/services/api';
+import type { DeviceGroup, Organization, Site, Driver } from '@/types';
 
-const { TextArea } = Input;
-
-export default function DeviceList() {
-  const [tableData, setTableData] = useState<Device[]>([]);
+export default function DeviceGroupList() {
+  const [tableData, setTableData] = useState<DeviceGroup[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingRecord, setEditingRecord] = useState<Device | null>(null);
+  const [editingRecord, setEditingRecord] = useState<DeviceGroup | null>(null);
   const [tenantId, setTenantId] = useState<string>('');
   const [form] = Form.useForm();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [sites, setSites] = useState<Site[]>([]);
   const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [selectedOrgId, setSelectedOrgId] = useState<string>('');
 
   const fetchData = async () => {
     const userStr = localStorage.getItem('user');
@@ -26,16 +26,17 @@ export default function DeviceList() {
     }
     const user = JSON.parse(userStr);
     setTenantId(user.tenant_id);
+    
     setLoading(true);
     try {
-      const [deviceData, productData, driverData] = await Promise.all([
-        deviceApi.list(user.tenant_id),
-        productApi.list(user.tenant_id),
+      const [orgData, driverData, groupData] = await Promise.all([
+        organizationApi.list(user.tenant_id),
         driverApi.list(user.tenant_id),
+        deviceGroupApi.list(user.tenant_id),
       ]);
-      setTableData(Array.isArray(deviceData) ? deviceData : []);
-      setProducts(Array.isArray(productData) ? productData : []);
+      setOrganizations(Array.isArray(orgData) ? orgData : []);
       setDrivers(Array.isArray(driverData) ? driverData : []);
+      setTableData(Array.isArray(groupData) ? groupData : []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -47,18 +48,27 @@ export default function DeviceList() {
     fetchData();
   }, []);
 
+  const fetchSites = async (orgId: string) => {
+    if (!tenantId || !orgId) return;
+    try {
+      const siteData = await siteApi.list(tenantId);
+      const orgSites = Array.isArray(siteData.list) 
+        ? siteData.list.filter((s: Site) => s.organization_id === orgId)
+        : [];
+      setSites(orgSites);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleAdd = async (values: any) => {
     if (!tenantId) return;
     try {
-      const payload = {
-        ...values,
-        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},
-      };
       if (editingRecord) {
-        await deviceApi.update(tenantId, editingRecord.id, payload);
+        await deviceGroupApi.update(tenantId, editingRecord.id, values);
         message.success('更新成功');
       } else {
-        await deviceApi.create(tenantId, payload);
+        await deviceGroupApi.create(tenantId, values);
         message.success('创建成功');
       }
       setModalVisible(false);
@@ -66,24 +76,22 @@ export default function DeviceList() {
       setEditingRecord(null);
       fetchData();
     } catch (error) {
-      message.error('操作失败');
       console.error(error);
     }
   };
 
-  const handleEdit = (record: Device) => {
+  const handleEdit = (record: DeviceGroup) => {
     setEditingRecord(record);
-    form.setFieldsValue({
-      ...record,
-      device_profile: JSON.stringify(record.device_profile, null, 2),
-    });
+    form.setFieldsValue(record);
+    setSelectedOrgId(record.org_id);
+    fetchSites(record.org_id);
     setModalVisible(true);
   };
 
   const handleDelete = async (id: string) => {
     if (!tenantId) return;
     try {
-      await deviceApi.delete(tenantId, id);
+      await deviceGroupApi.delete(tenantId, id);
       message.success('删除成功');
       fetchData();
     } catch (error) {
@@ -91,21 +99,29 @@ export default function DeviceList() {
     }
   };
 
-  const columns: ProColumns<Device>[] = [
+  const columns: ProColumns<DeviceGroup>[] = [
     {
-      title: '设备名称',
+      title: '设备组名称',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '设备型号',
-      dataIndex: 'model',
-      key: 'model',
+      title: '所属组织',
+      dataIndex: 'org_id',
+      key: 'org_id',
+      render: (orgId: string) => {
+        const org = organizations.find(o => o.id === orgId);
+        return org ? org.name : orgId;
+      },
     },
     {
-      title: '生产厂家',
-      dataIndex: 'manufacturer',
-      key: 'manufacturer',
+      title: '所属站点',
+      dataIndex: 'site_id',
+      key: 'site_id',
+      render: (siteId: string) => {
+        const site = sites.find(s => s.id === siteId);
+        return site ? site.name : siteId;
+      },
     },
     {
       title: '驱动镜像',
@@ -114,14 +130,20 @@ export default function DeviceList() {
       ellipsis: true,
     },
     {
+      title: '描述',
+      dataIndex: 'description',
+      key: 'description',
+      ellipsis: true,
+    },
+    {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
-      valueEnum: {
-        active: { text: '正常', status: 'Success' },
-        inactive: { text: '停用', status: 'Default' },
-        fault: { text: '故障', status: 'Error' },
-      },
+      render: (status: string) => (
+        <span style={{ color: status === 'active' ? 'green' : 'red' }}>
+          {status === 'active' ? '启用' : '禁用'}
+        </span>
+      ),
     },
     {
       title: '创建时间',
@@ -157,7 +179,7 @@ export default function DeviceList() {
   return (
     <div>
       <ProTable
-        headerTitle="设备列表"
+        headerTitle="设备组列表"
         columns={columns}
         dataSource={tableData}
         loading={loading}
@@ -170,54 +192,79 @@ export default function DeviceList() {
             icon={<PlusOutlined />}
             onClick={() => setModalVisible(true)}
           >
-            创建设备
+            创建设备组
           </Button>,
         ]}
       />
 
       <Modal
-        title={editingRecord ? '编辑设备' : '创建设备'}
+        title={editingRecord ? '编辑设备组' : '创建设备组'}
         open={modalVisible}
         onCancel={() => {
           setModalVisible(false);
           form.resetFields();
           setEditingRecord(null);
+          setSelectedOrgId('');
+          setSites([]);
         }}
         onOk={form.submit}
-        width={800}
+        width={600}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
           <Form.Item
-            name="name"
-            label="设备名称"
-            rules={[{ required: true, message: '请输入设备名称' }]}
+            name="org_id"
+            label="所属组织"
+            rules={[{ required: true, message: '请选择组织' }]}
           >
-            <Input placeholder="请输入设备名称" />
-          </Form.Item>
-          <Form.Item name="product_id" label="所属产品">
             <Select
-              placeholder="请选择产品"
-              allowClear
+              placeholder="请选择组织"
               showSearch
               optionFilterProp="children"
+              onChange={(value) => {
+                setSelectedOrgId(value);
+                form.setFieldsValue({ site_id: undefined });
+                fetchSites(value);
+              }}
             >
-              {products.map((product) => (
-                <Select.Option key={product.id} value={product.id}>
-                  {product.name}
+              {organizations.map((org) => (
+                <Select.Option key={org.id} value={org.id}>
+                  {org.name}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="model" label="设备型号">
-            <Input placeholder="请输入设备型号规格" />
+          <Form.Item
+            name="site_id"
+            label="所属站点"
+            rules={[{ required: true, message: '请选择站点' }]}
+          >
+            <Select
+              placeholder="请选择站点"
+              showSearch
+              optionFilterProp="children"
+              disabled={!selectedOrgId}
+            >
+              {sites.map((site) => (
+                <Select.Option key={site.id} value={site.id}>
+                  {site.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
-          <Form.Item name="manufacturer" label="生产厂家">
-            <Input placeholder="请输入生产厂家" />
+          <Form.Item
+            name="name"
+            label="设备组名称"
+            rules={[{ required: true, message: '请输入设备组名称' }]}
+          >
+            <Input placeholder="请输入设备组名称" />
           </Form.Item>
-          <Form.Item name="driver_image" label="驱动镜像">
+          <Form.Item
+            name="driver_image"
+            label="驱动镜像"
+            rules={[{ required: true, message: '请选择驱动镜像' }]}
+          >
             <Select
               placeholder="请选择驱动镜像"
-              allowClear
               showSearch
               optionFilterProp="children"
             >
@@ -228,18 +275,11 @@ export default function DeviceList() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="description" label="描述">
-            <Input.TextArea placeholder="请输入描述" rows={2} />
-          </Form.Item>
           <Form.Item
-            name="device_profile"
-            label="设备配置文件 (JSON)"
-            extra="定义设备的连接参数、数据点等配置"
+            name="description"
+            label="描述"
           >
-            <TextArea
-              rows={8}
-              placeholder='{"connection": {}, "dataPoints": []}'
-            />
+            <Input.TextArea placeholder="请输入描述" rows={3} />
           </Form.Item>
         </Form>
       </Modal>

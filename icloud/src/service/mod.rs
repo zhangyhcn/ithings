@@ -4,6 +4,7 @@ pub mod site;
 pub mod product;
 pub mod driver;
 pub mod node;
+pub mod device_group;
 pub mod device_instance;
 pub mod namespace;
 pub mod organization;

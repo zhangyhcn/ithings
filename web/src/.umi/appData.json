@@ -49,7 +49,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 4
       },
       "enableBy": "register"
     },
@@ -62,7 +62,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 53
       },
       "enableBy": "register"
     },
@@ -79,7 +79,7 @@
             0
           ]
         },
-        "register": 4
+        "register": 17
       },
       "enableBy": "register"
     },
@@ -93,10 +93,10 @@
       "time": {
         "hooks": {
           "onStart": [
-            7
+            6
           ]
         },
-        "register": 4
+        "register": 12
       },
       "enableBy": "register"
     },
@@ -118,13 +118,10 @@
             0,
             0,
             0,
-            0,
-            0,
-            0,
             0
           ]
         },
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -138,22 +135,21 @@
       "time": {
         "hooks": {
           "onDevCompileDone": [
-            11,
-            7,
-            11,
-            71,
-            20,
-            34,
-            14,
-            27,
-            17,
-            11,
+            22,
+            6,
             4,
+            26,
+            25,
+            6,
             8,
-            4
+            8,
+            80,
+            17,
+            12,
+            7
           ]
         },
-        "register": 1
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -167,24 +163,21 @@
       "time": {
         "hooks": {
           "modifyAppData": [
-            14
+            54
           ],
           "onGenerateFiles": [
-            2,
-            56,
-            14,
-            20,
-            201,
-            83,
-            63,
-            47,
-            234,
-            40,
-            7,
-            44
+            32,
+            72,
+            255,
+            15,
+            37,
+            153,
+            32,
+            81,
+            46
           ]
         },
-        "register": 29
+        "register": 171
       },
       "enableBy": "register"
     },
@@ -198,21 +191,18 @@
       "time": {
         "hooks": {
           "addEntryCode": [
+            1,
             0,
             0,
             0,
-            0,
-            0,
-            0,
-            2,
-            0,
+            1,
             0,
             0,
             0,
             0
           ]
         },
-        "register": 1
+        "register": 4
       },
       "enableBy": "register"
     },
@@ -230,11 +220,9 @@
             0
           ],
           "onCheck": [
-            0
+            1
           ],
           "onPrepareBuildSuccess": [
-            0,
-            0,
             0,
             0,
             0,
@@ -259,12 +247,6 @@
             0,
             0,
             0,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
             0,
             0,
             0,
@@ -278,7 +260,7 @@
             0
           ]
         },
-        "register": 2
+        "register": 15
       },
       "enableBy": "register"
     },
@@ -295,7 +277,7 @@
             0
           ]
         },
-        "register": 1
+        "register": 10
       },
       "enableBy": "register"
     },
@@ -308,7 +290,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 8
       },
       "enableBy": "config"
     },
@@ -322,11 +304,11 @@
       "time": {
         "hooks": {
           "modifyConfig": [
-            0,
+            1,
             0
           ]
         },
-        "register": 11
+        "register": 94
       },
       "enableBy": "register"
     },
@@ -526,7 +508,7 @@
       "enableBy": "register",
       "time": {
         "hooks": {},
-        "register": 0
+        "register": 1
       }
     },
     "virtual: config-conventionLayout": {
@@ -1068,7 +1050,7 @@
       "enableBy": "register",
       "time": {
         "hooks": {},
-        "register": 0
+        "register": 1
       }
     },
     "virtual: config-copy": {
@@ -1178,7 +1160,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 5
       },
       "enableBy": "config"
     },
@@ -1192,10 +1174,10 @@
       "time": {
         "hooks": {
           "onStart": [
-            0
+            1
           ]
         },
-        "register": 1
+        "register": 8
       },
       "enableBy": "register"
     },
@@ -1209,10 +1191,10 @@
       "time": {
         "hooks": {
           "addBeforeMiddlewares": [
-            11
+            16
           ]
         },
-        "register": 1
+        "register": 7
       },
       "enableBy": "register"
     },
@@ -1225,7 +1207,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 112
+        "register": 1201
       },
       "enableBy": "register"
     },
@@ -1238,7 +1220,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 66
+        "register": 113
       },
       "enableBy": "config"
     },
@@ -1251,7 +1233,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 24
+        "register": 100
       },
       "enableBy": "config"
     },
@@ -1277,6 +1259,7 @@
             0,
             0,
             0,
+            3,
             0,
             0,
             0,
@@ -1285,28 +1268,13 @@
             0,
             0,
             0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1,
             0,
             0,
             0,
             0
           ]
         },
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -1320,25 +1288,19 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
+            3,
             1,
+            13,
             0,
+            0,
+            9,
             1,
-            0,
-            2,
-            0,
             1,
-            0,
-            1,
-            0,
-            0,
             0
           ],
           "addRuntimePlugin": [
             0,
-            0,
-            0,
-            0,
-            0,
+            1,
             0,
             0,
             0,
@@ -1348,7 +1310,7 @@
             0
           ]
         },
-        "register": 1
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -1361,7 +1323,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 6
       },
       "enableBy": "config"
     },
@@ -1381,7 +1343,7 @@
             3
           ]
         },
-        "register": 42
+        "register": 175
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/mpa/mpa": {
@@ -1393,7 +1355,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 4
       },
       "enableBy": "config"
     },
@@ -1406,7 +1368,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/overrides/overrides": {
@@ -1419,10 +1381,7 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
-            0,
-            0,
-            0,
-            0,
+            1,
             0,
             0,
             0,
@@ -1441,12 +1400,6 @@
             0,
             0,
             0,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
             0,
             0,
             0,
@@ -1459,7 +1412,7 @@
             0
           ]
         },
-        "register": 0
+        "register": 1
       },
       "enableBy": "register"
     },
@@ -1472,7 +1425,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 4
       },
       "enableBy": "config"
     },
@@ -1486,22 +1439,19 @@
       "time": {
         "hooks": {
           "modifyConfig": [
-            0,
-            0
+            1,
+            1
           ],
           "onGenerateFiles": [
-            109,
-            70,
+            186,
+            240,
+            248,
             21,
-            76,
-            416,
-            64,
-            87,
-            98,
-            40,
-            54,
-            11,
-            34
+            116,
+            521,
+            58,
+            139,
+            52
           ],
           "addPolyfillImports": [
             0,
@@ -1512,15 +1462,9 @@
             0,
             0,
             0,
-            1,
             0,
             0,
             0,
-            0,
-            2,
-            0,
-            0,
-            1,
             0,
             0,
             0,
@@ -1530,7 +1474,7 @@
             0
           ]
         },
-        "register": 3
+        "register": 6
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/polyfill/publicPathPolyfill": {
@@ -1543,12 +1487,6 @@
       "time": {
         "hooks": {
           "addPolyfillImports": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
             0,
             0,
             0,
@@ -1583,10 +1521,7 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
-            336,
-            0,
-            0,
-            0,
+            558,
             0,
             0,
             0,
@@ -1597,7 +1532,7 @@
             0
           ]
         },
-        "register": 1
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -1610,7 +1545,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "config"
     },
@@ -1623,7 +1558,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "config"
     },
@@ -1641,20 +1576,17 @@
             0,
             0,
             0,
-            0,
-            0,
+            1,
             1,
             0,
             0,
-            0,
-            0,
-            0
+            1
           ],
           "addBeforeMiddlewares": [
             0
           ]
         },
-        "register": 1
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -1668,33 +1600,27 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
-            20,
-            13,
-            35,
-            2,
-            8,
-            1,
-            49,
-            2,
-            141,
-            11,
-            44,
-            3,
-            147,
-            1,
-            81,
-            3,
-            32,
-            6,
-            24,
-            2,
+            93,
             7,
+            96,
+            8,
+            28,
+            2,
+            12,
             0,
-            21,
-            0
+            85,
+            9,
+            69,
+            5,
+            42,
+            3,
+            46,
+            4,
+            63,
+            5
           ]
         },
-        "register": 6
+        "register": 14
       },
       "enableBy": "register"
     },
@@ -1707,7 +1633,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 6
       },
       "enableBy": "config"
     },
@@ -1720,7 +1646,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/ssr/ssr": {
@@ -1732,7 +1658,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 9
       },
       "enableBy": "config"
     },
@@ -1746,21 +1672,18 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
-            507,
-            42,
-            9,
-            63,
-            116,
-            29,
-            119,
-            50,
-            43,
-            31,
-            7,
-            20
+            1322,
+            84,
+            32,
+            10,
+            51,
+            130,
+            34,
+            53,
+            66
           ]
         },
-        "register": 5
+        "register": 10
       },
       "enableBy": "register"
     },
@@ -1777,7 +1700,7 @@
             0
           ]
         },
-        "register": 4
+        "register": 22
       },
       "enableBy": "register"
     },
@@ -1790,7 +1713,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 22
       },
       "enableBy": "config"
     },
@@ -1803,7 +1726,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "config"
     },
@@ -1816,7 +1739,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 7
+        "register": 19
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/monorepo/redirect": {
@@ -1828,7 +1751,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 24
+        "register": 102
       },
       "enableBy": "config"
     },
@@ -1842,21 +1765,18 @@
       "time": {
         "hooks": {
           "onGenerateFiles": [
+            9,
             6,
             1,
             1,
-            6,
-            16,
-            2,
+            3,
             3,
             1,
-            1,
-            1,
-            1,
+            4,
             1
           ]
         },
-        "register": 1
+        "register": 4
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/clickToComponent/clickToComponent": {
@@ -1868,7 +1788,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 3
       },
       "enableBy": "config"
     },
@@ -1881,7 +1801,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 5
       },
       "enableBy": "config"
     },
@@ -1907,7 +1827,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 4
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/swc/swc": {
@@ -1923,7 +1843,7 @@
             0
           ]
         },
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -1936,7 +1856,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 13
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/mako/mako": {
@@ -1948,7 +1868,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 4
       },
       "enableBy": "config"
     },
@@ -1961,7 +1881,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 4
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/hmrGuardian/hmrGuardian": {
@@ -1973,7 +1893,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 22
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/routePreloadOnLoad/routePreloadOnLoad": {
@@ -1986,9 +1906,6 @@
       "time": {
         "hooks": {
           "addHTMLHeadScripts": [
-            0,
-            0,
-            0,
             1,
             0,
             0,
@@ -2004,24 +1921,13 @@
             0,
             0,
             0,
-            1,
             0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1,
-            1,
             0,
             0,
             0
           ]
         },
-        "register": 28
+        "register": 141
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/forget/forget": {
@@ -2033,7 +1939,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 3
       },
       "enableBy": "config"
     },
@@ -2047,10 +1953,10 @@
       "time": {
         "hooks": {
           "modifyUniBundler": [
-            917
+            1284
           ]
         },
-        "register": 2
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -2063,7 +1969,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 17
       },
       "enableBy": "register"
     },
@@ -2076,7 +1982,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 52
+        "register": 553
       },
       "enableBy": "register"
     },
@@ -2090,10 +1996,10 @@
       "time": {
         "hooks": {
           "modifyAppData": [
-            12
+            81
           ]
         },
-        "register": 54
+        "register": 83
       }
     },
     "./node_modules/@umijs/preset-umi/dist/commands/help": {
@@ -2131,7 +2037,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2144,7 +2050,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2157,7 +2063,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2170,7 +2076,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -2209,7 +2115,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2248,7 +2154,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2274,7 +2180,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2313,7 +2219,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2326,7 +2232,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -2339,7 +2245,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 24
+        "register": 96
       },
       "enableBy": "register"
     },
@@ -2352,7 +2258,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -2365,7 +2271,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -2503,6 +2409,10 @@
               {
                 "path": "/device/instance",
                 "component": "@/pages/device/instance/List"
+              },
+              {
+                "path": "/device/device",
+                "component": "@/pages/device/device/List"
               }
             ]
           },
@@ -2668,6 +2578,10 @@
               {
                 "path": "/device/instance",
                 "component": "@/pages/device/instance/List"
+              },
+              {
+                "path": "/device/device",
+                "component": "@/pages/device/device/List"
               }
             ]
           },
@@ -2791,7 +2705,7 @@
       "parentId": "6",
       "id": "11",
       "absPath": "/site",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { siteApi } from '@/services/api';\nimport type { Site } from '@/types';\n\nexport default function SiteList() {\n  const [tableData, setTableData] = useState<Site[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Site | null>(null);\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await siteApi.list(user.tenant_id, { page: 1, page_size: 100 });\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await siteApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await siteApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Site) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!selectedTenantId) return;\n    try {\n      await siteApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Site>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '位置',\n      dataIndex: 'location',\n      key: 'location',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"站点列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n          >\n            新建\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑站点' : '新建站点'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识 (如: factory-a)\" />\n          </Form.Item>\n          <Form.Item name=\"location\" label=\"位置\">\n            <Input placeholder=\"请输入位置\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { siteApi, organizationApi } from '@/services/api';\nimport type { Site, Organization } from '@/types';\n\nexport default function SiteList() {\n  const [tableData, setTableData] = useState<Site[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Site | null>(null);\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [organizations, setOrganizations] = useState<Organization[]>([]);\n\n  const flattenOrganizations = (orgs: Organization[]): Organization[] => {\n    return orgs.reduce<Organization[]>((acc, org) => {\n      acc.push(org);\n      if (org.children && org.children.length > 0) {\n        acc.push(...flattenOrganizations(org.children));\n      }\n      return acc;\n    }, []);\n  };\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    const tenantId = user.tenant_id;\n    if (!tenantId) {\n      console.error('No tenant_id found');\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    setSelectedTenantId(tenantId);\n    setLoading(true);\n    try {\n      const [siteData, orgData] = await Promise.all([\n        siteApi.list(tenantId, { page: 1, page_size: 100 }),\n        organizationApi.list(tenantId),\n      ]);\n      console.log('siteData:', siteData);\n      console.log('orgData:', orgData);\n      setTableData(Array.isArray(siteData) ? siteData : []);\n      setOrganizations(flattenOrganizations(Array.isArray(orgData) ? orgData : []));\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await siteApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await siteApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Site) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!selectedTenantId) return;\n    try {\n      await siteApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const getOrganizationName = (orgId: string) => {\n    const org = organizations.find(o => o.id === orgId);\n    return org ? org.name : orgId;\n  };\n\n  const columns: ProColumns<Site>[] = [\n    {\n      title: '所属组织',\n      dataIndex: 'organization_id',\n      key: 'organization_id',\n      render: (orgId: string) => getOrganizationName(orgId),\n    },\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '标识',\n      dataIndex: 'slug',\n      key: 'slug',\n    },\n    {\n      title: '位置',\n      dataIndex: 'location',\n      key: 'location',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"站点列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n          >\n            新建\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑站点' : '新建站点'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"organization_id\"\n            label=\"所属组织\"\n            rules={[{ required: true, message: '请选择组织' }]}\n          >\n            <Select\n              placeholder=\"请选择组织\"\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {organizations.map((org) => (\n                <Select.Option key={org.id} value={org.id}>\n                  {org.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"slug\"\n            label=\"标识\"\n            rules={[{ required: true, message: '请输入标识' }]}\n            disabled={!!editingRecord}\n          >\n            <Input placeholder=\"请输入标识 (如: factory-a)\" />\n          </Form.Item>\n          <Form.Item name=\"location\" label=\"位置\">\n            <Input placeholder=\"请输入位置\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/site/List.tsx"
     },
@@ -2811,7 +2725,7 @@
       "parentId": "6",
       "id": "13",
       "absPath": "/organization",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, InputNumber, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { organizationApi } from '@/services/api';\nimport type { Organization } from '@/types';\n\nexport default function OrganizationList() {\n  const [tableData, setTableData] = useState<Organization[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Organization | null>(null);\n  const [form] = Form.useForm();\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await organizationApi.list(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await organizationApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await organizationApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Organization) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await organizationApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleToggleStatus = async (id: string, checked: boolean) => {\n    try {\n      await organizationApi.update(selectedTenantId, id, { status: checked ? 'active' : 'inactive' });\n      message.success('状态更新成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Organization>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 200,\n    },\n    {\n      title: '上级机构',\n      dataIndex: 'parent_id',\n      key: 'parent_id',\n      width: 150,\n      render: (parent_id: string) => {\n        if (!parent_id) return '顶级机构';\n        const findOrg = (list: Organization[]): Organization | undefined => {\n          for (const org of list) {\n            if (org.id === parent_id) return org;\n            if (org.children) {\n              const found = findOrg(org.children);\n              if (found) return found;\n            }\n          }\n          return undefined;\n        };\n        const org = findOrg(tableData);\n        return org ? org.name : parent_id;\n      },\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '排序',\n      dataIndex: 'sort_order',\n      key: 'sort_order',\n      width: 80,\n      align: 'center',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      align: 'center',\n      render: (status: string, record) => (\n        <Switch \n          checked={status === 'active'} \n          onChange={(checked) => handleToggleStatus(record.id, checked)}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n        />\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 180,\n      align: 'center',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            description=\"删除后子机构也会被删除，是否继续?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  const buildTreeOptions = (list: Organization[], level = 0): any[] => {\n    return list.map(item => {\n      const prefix = level > 0 ? '├' + '─'.repeat(level * 2) + ' ' : '';\n      const options = [{\n        value: item.id,\n        label: prefix + item.name,\n      }];\n      if (item.children && item.children.length > 0) {\n        options.push(...buildTreeOptions(item.children, level + 1));\n      }\n      return options;\n    }).flat();\n  };\n\n  const parentOptions = [\n    { value: '', label: '顶级机构' },\n    ...buildTreeOptions(tableData)\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"组织机构管理\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n            disabled={!selectedTenantId}\n          >\n            创建组织机构\n          </Button>,\n        ]}\n        expandable={{ defaultExpandAllRows: true }}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑组织机构' : '创建组织机构'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={500}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入组织机构名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"parent_id\"\n            label=\"上级机构\"\n          >\n            <Select placeholder=\"请选择上级机构\">\n              {parentOptions.map(option => (\n                <Option key={option.value} value={option.value} disabled={editingRecord && option.value === editingRecord.id}>\n                  {option.label}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n          <Form.Item\n            name=\"sort_order\"\n            label=\"排序\"\n            initialValue={0}\n          >\n            <InputNumber min={0} style={{ width: '100%' }} placeholder=\"排序数值，越小越靠前\" />\n          </Form.Item>\n          <Form.Item\n            name=\"status\"\n            label=\"状态\"\n            valuePropName=\"checked\"\n            initialValue={true}\n            getValueFromEvent={(e) => e.target.checked ? 'active' : 'inactive'}\n            getValueProps={(value) => ({ checked: value === 'active' })}\n          >\n            <Switch checkedChildren=\"启用\" unCheckedChildren=\"禁用\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Switch, InputNumber, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { organizationApi } from '@/services/api';\nimport type { Organization } from '@/types';\n\nexport default function OrganizationList() {\n  const [tableData, setTableData] = useState<Organization[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Organization | null>(null);\n  const [form] = Form.useForm();\n  const [selectedTenantId, setSelectedTenantId] = useState<string>('');\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setSelectedTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await organizationApi.list(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    try {\n      const userStr = localStorage.getItem('user');\n      const user = JSON.parse(userStr || '{}');\n      const tenantId = user.tenant_id || selectedTenantId;\n      \n      if (editingRecord) {\n        await organizationApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await organizationApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Organization) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    try {\n      await organizationApi.delete(selectedTenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleToggleStatus = async (id: string, checked: boolean) => {\n    try {\n      await organizationApi.update(selectedTenantId, id, { status: checked ? 'active' : 'inactive' });\n      message.success('状态更新成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Organization>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n      width: 200,\n    },\n    {\n      title: '上级机构',\n      dataIndex: 'parent_id',\n      key: 'parent_id',\n      width: 150,\n      render: (parent_id: string) => {\n        if (!parent_id) return '顶级机构';\n        const findOrg = (list: Organization[]): Organization | undefined => {\n          for (const org of list) {\n            if (org.id === parent_id) return org;\n            if (org.children) {\n              const found = findOrg(org.children);\n              if (found) return found;\n            }\n          }\n          return undefined;\n        };\n        const org = findOrg(tableData);\n        return org ? org.name : parent_id;\n      },\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '排序',\n      dataIndex: 'sort_order',\n      key: 'sort_order',\n      width: 80,\n      align: 'center',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      width: 100,\n      align: 'center',\n      render: (status: string, record) => (\n        <Switch \n          checked={status === 'active'} \n          onChange={(checked) => handleToggleStatus(record.id, checked)}\n          checkedChildren=\"启用\"\n          unCheckedChildren=\"禁用\"\n        />\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      width: 180,\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      width: 180,\n      align: 'center',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            description=\"删除后子机构也会被删除，是否继续?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  const buildTreeOptions = (list: Organization[], level = 0): any[] => {\n    return list.map(item => {\n      const prefix = level > 0 ? '├' + '─'.repeat(level * 2) + ' ' : '';\n      const options = [{\n        value: item.id,\n        label: prefix + item.name,\n      }];\n      if (item.children && item.children.length > 0) {\n        options.push(...buildTreeOptions(item.children, level + 1));\n      }\n      return options;\n    }).flat();\n  };\n\n  const parentOptions = [\n    { value: '', label: '顶级机构' },\n    ...buildTreeOptions(tableData)\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"组织机构管理\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => {\n              setEditingRecord(null);\n              form.resetFields();\n              setModalVisible(true);\n            }}\n            disabled={!selectedTenantId}\n          >\n            创建组织机构\n          </Button>,\n        ]}\n        expandable={{ defaultExpandAllRows: true }}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑组织机构' : '创建组织机构'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={500}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入组织机构名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"parent_id\"\n            label=\"上级机构\"\n          >\n            <Select placeholder=\"请选择上级机构\">\n              {parentOptions.map(option => (\n                <Option key={option.value} value={option.value} disabled={editingRecord && option.value === editingRecord.id}>\n                  {option.label}\n                </Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n          <Form.Item\n            name=\"sort_order\"\n            label=\"排序\"\n            initialValue={0}\n          >\n            <InputNumber min={0} style={{ width: '100%' }} placeholder=\"排序数值，越小越靠前\" />\n          </Form.Item>\n          <Form.Item\n            name=\"status\"\n            label=\"状态\"\n            valuePropName=\"checked\"\n            initialValue={true}\n            getValueFromEvent={(checked: boolean) => checked ? 'active' : 'inactive'}\n            getValueProps={(value) => ({ checked: value === 'active' })}\n          >\n            <Switch checkedChildren=\"启用\" unCheckedChildren=\"禁用\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/organization/List.tsx"
     },
@@ -2919,7 +2833,7 @@
       "parentId": "24",
       "id": "25",
       "absPath": "/device/product",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { productApi } from '@/services/api';\nimport type { Product } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function ProductList() {\n  const [tableData, setTableData] = useState<Product[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Product | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await productApi.list(user.tenant_id);\n      setTableData(Array.isArray(data.list) ? data.list : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        thing_model: values.thing_model ? JSON.parse(values.thing_model) : {},\n        rule: values.rule ? JSON.parse(values.rule) : {},\n      };\n      if (editingRecord) {\n        await productApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await productApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Product) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      thing_model: JSON.stringify(record.thing_model, null, 2),\n      rule: JSON.stringify(record.rule, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await productApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Product>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"产品列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建产品\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑产品' : '创建产品'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={700}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入产品名称\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item\n            name=\"thing_model\"\n            label=\"物模型 (JSON)\"\n            extra=\"定义设备的属性、事件和服务\"\n          >\n            <TextArea\n              rows={6}\n              placeholder='{\"properties\": [], \"events\": [], \"services\": []}'\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"rule\"\n            label=\"规则配置 (JSON)\"\n            extra=\"定义设备的数据处理规则\"\n          >\n            <TextArea\n              rows={6}\n              placeholder='{\"rules\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { productApi } from '@/services/api';\nimport type { Product } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function ProductList() {\n  const [tableData, setTableData] = useState<Product[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Product | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await productApi.list(user.tenant_id);\n      setTableData(Array.isArray(data) ? data : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        thing_model: values.thing_model ? JSON.parse(values.thing_model) : {},\n        rule: values.rule ? JSON.parse(values.rule) : {},\n      };\n      if (editingRecord) {\n        await productApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await productApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Product) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      thing_model: JSON.stringify(record.thing_model, null, 2),\n      rule: JSON.stringify(record.rule, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await productApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Product>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"产品列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建产品\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑产品' : '创建产品'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={700}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入产品名称\" />\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item\n            name=\"thing_model\"\n            label=\"物模型 (JSON)\"\n            extra=\"定义设备的属性、事件和服务\"\n          >\n            <TextArea\n              rows={6}\n              placeholder='{\"properties\": [], \"events\": [], \"services\": []}'\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"rule\"\n            label=\"规则配置 (JSON)\"\n            extra=\"定义设备的数据处理规则\"\n          >\n            <TextArea\n              rows={6}\n              placeholder='{\"rules\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/product/List.tsx"
     },
@@ -2949,7 +2863,7 @@
       "parentId": "24",
       "id": "28",
       "absPath": "/device/instance",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceInstanceApi, deviceApi, nodeApi } from '@/services/api';\nimport type { DeviceInstance, Device, Node } from '@/types';\n\nexport default function DeviceInstanceList() {\n  const [tableData, setTableData] = useState<DeviceInstance[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceInstance | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [siteId, setSiteId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [devices, setDevices] = useState<Device[]>([]);\n  const [nodes, setNodes] = useState<Node[]>([]);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [deviceData, nodeData] = await Promise.all([\n        deviceApi.list(user.tenant_id),\n        nodeApi.list(user.tenant_id),\n      ]);\n      setDevices(Array.isArray(deviceData) ? deviceData : []);\n      setNodes(Array.isArray(nodeData) ? nodeData : []);\n\n      if (!user.tenant_id || !siteId) {\n        setTableData([]);\n      } else {\n        const data = await deviceInstanceApi.list(user.tenant_id, '', siteId);\n        setTableData(Array.isArray(data.list) ? data.list : []);\n      }\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, [siteId]);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId || !siteId) return;\n    try {\n      if (editingRecord) {\n        await deviceInstanceApi.update(tenantId, '', siteId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceInstanceApi.create(tenantId, siteId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceInstance) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId || !siteId) return;\n    try {\n      await deviceInstanceApi.delete(tenantId, '', siteId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<DeviceInstance>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '品牌型号',\n      dataIndex: 'brand_model',\n      key: 'brand_model',\n    },\n    {\n      title: '轮询间隔',\n      dataIndex: 'poll_interval_ms',\n      key: 'poll_interval_ms',\n      render: (val: number) => `${val} ms`,\n    },\n    {\n      title: '设备类型',\n      dataIndex: 'device_type',\n      key: 'device_type',\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'running' ? 'green' : status === 'pending' ? 'orange' : 'red' }}>\n          {\n            {\n              pending: '等待中',\n              running: '运行中',\n              stopped: '已停止',\n              error: '错误',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备实例列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备实例\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备实例' : '创建设备实例'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"device_id\"\n            label=\"选择设备\"\n            rules={[{ required: true, message: '请选择设备' }]}\n          >\n            <Select\n              placeholder=\"请选择设备\"\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {devices.map((device) => (\n                <Select.Option key={device.id} value={device.id}>\n                  {device.name} {device.model ? `(${device.model})` : ''}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"poll_interval_ms\"\n            label=\"轮询间隔(ms)\"\n            initialValue={1000}\n            rules={[{ required: true, message: '请输入轮询间隔' }]}\n          >\n            <Input type=\"number\" placeholder=\"请输入轮询间隔\" />\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"部署节点\"\n            rules={[{ required: true, message: '请选择节点' }]}\n          >\n            <Select\n              placeholder=\"请选择节点\"\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {nodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceInstanceApi, deviceGroupApi, deviceApi, nodeApi } from '@/services/api';\nimport type { DeviceInstance, DeviceGroup, Device, Node } from '@/types';\n\nexport default function DeviceInstanceList() {\n  const [tableData, setTableData] = useState<DeviceInstance[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceInstance | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [groups, setGroups] = useState<DeviceGroup[]>([]);\n  const [devices, setDevices] = useState<Device[]>([]);\n  const [nodes, setNodes] = useState<Node[]>([]);\n  const [selectedGroup, setSelectedGroup] = useState<DeviceGroup | null>(null);\n  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [groupData, deviceData, nodeData, instanceData] = await Promise.all([\n        deviceGroupApi.list(user.tenant_id),\n        deviceApi.list(user.tenant_id),\n        nodeApi.list(user.tenant_id),\n        deviceInstanceApi.list(user.tenant_id),\n      ]);\n      setGroups(Array.isArray(groupData) ? groupData : []);\n      setDevices(Array.isArray(deviceData) ? deviceData : []);\n      setNodes(Array.isArray(nodeData) ? nodeData : []);\n      setTableData(Array.isArray(instanceData) ? instanceData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingRecord) {\n        await deviceInstanceApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceInstanceApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      setSelectedGroup(null);\n      setSelectedDevice(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceInstance) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      node_id: record.node_id || undefined,\n    });\n    const group = groups.find(g => g.id === record.group_id);\n    setSelectedGroup(group || null);\n    const device = devices.find(d => d.id === record.device_id);\n    setSelectedDevice(device || null);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceInstanceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<DeviceInstance>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '所属设备组',\n      dataIndex: 'group_id',\n      key: 'group_id',\n      render: (groupId: string) => {\n        const group = groups.find(g => g.id === groupId);\n        return group ? group.name : groupId;\n      },\n    },\n    {\n      title: '关联设备定义',\n      dataIndex: 'device_id',\n      key: 'device_id',\n      render: (deviceId: string) => {\n        const device = devices.find(d => d.id === deviceId);\n        return device ? device.name : deviceId;\n      },\n    },\n    {\n      title: '轮询间隔',\n      dataIndex: 'poll_interval_ms',\n      key: 'poll_interval_ms',\n      render: (val: number) => `${val} ms`,\n    },\n    {\n      title: '部署节点',\n      dataIndex: 'node_id',\n      key: 'node_id',\n      render: (nodeId: string) => {\n        if (!nodeId) return '-';\n        const node = nodes.find(n => n.id === nodeId);\n        return node ? node.name : nodeId;\n      },\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'running' ? 'green' : status === 'pending' ? 'orange' : 'red' }}>\n          {\n            {\n              pending: '等待中',\n              running: '运行中',\n              stopped: '已停止',\n              error: '错误',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备实例列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备实例\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备实例' : '创建设备实例'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n          setSelectedGroup(null);\n          setSelectedDevice(null);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"group_id\"\n            label=\"所属设备组\"\n            rules={[{ required: true, message: '请选择设备组' }]}\n          >\n            <Select\n              placeholder=\"请选择设备组\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const group = groups.find(g => g.id === value);\n                setSelectedGroup(group || null);\n              }}\n            >\n              {groups.map((group) => (\n                <Select.Option key={group.id} value={group.id}>\n                  {group.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"device_id\"\n            label=\"选择设备定义\"\n            rules={[{ required: true, message: '请选择设备定义' }]}\n          >\n            <Select\n              placeholder=\"请选择设备定义\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const device = devices.find(d => d.id === value);\n                setSelectedDevice(device || null);\n              }}\n            >\n              {devices.map((device) => (\n                <Select.Option key={device.id} value={device.id}>\n                  {device.name} {device.model ? `(${device.model})` : ''}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"poll_interval_ms\"\n            label=\"轮询间隔(ms)\"\n            initialValue={1000}\n            rules={[{ required: true, message: '请输入轮询间隔' }]}\n          >\n            <InputNumber min={100} placeholder=\"请输入轮询间隔\" style={{ width: '100%' }} />\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"部署节点\"\n          >\n            <Select\n              placeholder=\"请选择节点（可选）\"\n              showSearch\n              optionFilterProp=\"children\"\n              allowClear\n            >\n              {nodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          {selectedDevice && selectedDevice.device_profile && (\n            <Form.Item\n              name=\"driver_config\"\n              label=\"驱动配置\"\n              extra=\"从设备定义继承的驱动配置，可修改\"\n            >\n              <Input.TextArea \n                rows={6} \n                placeholder=\"驱动配置JSON\"\n                defaultValue={JSON.stringify(selectedDevice.device_profile, null, 2)}\n              />\n            </Form.Item>\n          )}\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/instance/List.tsx"
     },
@@ -2959,7 +2873,7 @@
       "parentId": "24",
       "id": "29",
       "absPath": "/device/device",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceApi, organizationApi, siteApi, productApi, driverApi } from '@/services/api';\nimport type { Device, Organization, Site, Product, Driver } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function DeviceList() {\n  const [tableData, setTableData] = useState<Device[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Device | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [organizations, setOrganizations] = useState<Organization[]>([]);\n  const [sites, setSites] = useState<Site[]>([]);\n  const [products, setProducts] = useState<Product[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const [deviceData, orgData, siteData, productData, driverData] = await Promise.all([\n        deviceApi.list(user.tenant_id),\n        organizationApi.list(user.tenant_id),\n        siteApi.list(user.tenant_id),\n        productApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n      ]);\n      setTableData(Array.isArray(deviceData) ? deviceData : []);\n      setOrganizations(Array.isArray(orgData) ? orgData : []);\n      setSites(Array.isArray(siteData.list) ? siteData.list : []);\n      setProducts(Array.isArray(productData) ? productData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      if (editingRecord) {\n        await deviceApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await deviceApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Device) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Device>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '设备型号',\n      dataIndex: 'model',\n      key: 'model',\n    },\n    {\n      title: '生产厂家',\n      dataIndex: 'manufacturer',\n      key: 'manufacturer',\n    },\n    {\n      title: '驱动镜像',\n      dataIndex: 'driver_image',\n      key: 'driver_image',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      valueEnum: {\n        active: { text: '正常', status: 'Success' },\n        inactive: { text: '停用', status: 'Default' },\n        fault: { text: '故障', status: 'Error' },\n      },\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备' : '创建设备'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={800}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item name=\"organization_id\" label=\"所属组织\">\n            <Select\n              placeholder=\"请选择组织\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {organizations.map((org) => (\n                <Select.Option key={org.id} value={org.id}>\n                  {org.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"site_id\" label=\"所属站点\">\n            <Select\n              placeholder=\"请选择站点\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {sites.map((site) => (\n                <Select.Option key={site.id} value={site.id}>\n                  {site.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"product_id\" label=\"所属产品\">\n            <Select\n              placeholder=\"请选择产品\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {products.map((product) => (\n                <Select.Option key={product.id} value={product.id}>\n                  {product.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"model\" label=\"设备型号\">\n            <Input placeholder=\"请输入设备型号规格\" />\n          </Form.Item>\n          <Form.Item name=\"manufacturer\" label=\"生产厂家\">\n            <Input placeholder=\"请输入生产厂家\" />\n          </Form.Item>\n          <Form.Item name=\"driver_image\" label=\"驱动镜像\">\n            <Select\n              placeholder=\"请选择驱动镜像\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {drivers.map((driver) => (\n                <Select.Option key={driver.id} value={driver.image}>\n                  {driver.name} ({driver.image})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" rows={2} />\n          </Form.Item>\n          <Form.Item\n            name=\"device_profile\"\n            label=\"设备配置文件 (JSON)\"\n            extra=\"定义设备的连接参数、数据点等配置\"\n          >\n            <TextArea\n              rows={8}\n              placeholder='{\"connection\": {}, \"dataPoints\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceApi, productApi, driverApi } from '@/services/api';\nimport type { Device, Product, Driver } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function DeviceList() {\n  const [tableData, setTableData] = useState<Device[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Device | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [products, setProducts] = useState<Product[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const [deviceData, productData, driverData] = await Promise.all([\n        deviceApi.list(user.tenant_id),\n        productApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n      ]);\n      setTableData(Array.isArray(deviceData) ? deviceData : []);\n      setProducts(Array.isArray(productData) ? productData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      if (editingRecord) {\n        await deviceApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await deviceApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Device) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Device>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '设备型号',\n      dataIndex: 'model',\n      key: 'model',\n    },\n    {\n      title: '生产厂家',\n      dataIndex: 'manufacturer',\n      key: 'manufacturer',\n    },\n    {\n      title: '驱动镜像',\n      dataIndex: 'driver_image',\n      key: 'driver_image',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      valueEnum: {\n        active: { text: '正常', status: 'Success' },\n        inactive: { text: '停用', status: 'Default' },\n        fault: { text: '故障', status: 'Error' },\n      },\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备' : '创建设备'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={800}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item name=\"product_id\" label=\"所属产品\">\n            <Select\n              placeholder=\"请选择产品\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {products.map((product) => (\n                <Select.Option key={product.id} value={product.id}>\n                  {product.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"model\" label=\"设备型号\">\n            <Input placeholder=\"请输入设备型号规格\" />\n          </Form.Item>\n          <Form.Item name=\"manufacturer\" label=\"生产厂家\">\n            <Input placeholder=\"请输入生产厂家\" />\n          </Form.Item>\n          <Form.Item name=\"driver_image\" label=\"驱动镜像\">\n            <Select\n              placeholder=\"请选择驱动镜像\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {drivers.map((driver) => (\n                <Select.Option key={driver.id} value={driver.image}>\n                  {driver.name} ({driver.image})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" rows={2} />\n          </Form.Item>\n          <Form.Item\n            name=\"device_profile\"\n            label=\"设备配置文件 (JSON)\"\n            extra=\"定义设备的连接参数、数据点等配置\"\n          >\n            <TextArea\n              rows={8}\n              placeholder='{\"connection\": {}, \"dataPoints\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/device/List.tsx"
     },
@@ -4297,7 +4211,7 @@
             "format": "esm"
           },
           "src/services/api.ts": {
-            "bytes": 17110,
+            "bytes": 17570,
             "imports": [
               {
                 "path": "axios",
@@ -4586,7 +4500,7 @@
             "format": "esm"
           },
           "src/pages/site/List.tsx": {
-            "bytes": 5457,
+            "bytes": 7149,
             "imports": [
               {
                 "path": "react",
@@ -4658,7 +4572,7 @@
             "format": "esm"
           },
           "src/pages/organization/List.tsx": {
-            "bytes": 8160,
+            "bytes": 8166,
             "imports": [
               {
                 "path": "react",
@@ -4972,7 +4886,7 @@
             "format": "esm"
           },
           "src/pages/device/product/List.tsx": {
-            "bytes": 5348,
+            "bytes": 5338,
             "imports": [
               {
                 "path": "react",
@@ -5080,7 +4994,7 @@
             "format": "esm"
           },
           "src/pages/device/instance/List.tsx": {
-            "bytes": 7092,
+            "bytes": 9635,
             "imports": [
               {
                 "path": "react",
@@ -5116,7 +5030,7 @@
             "format": "esm"
           },
           "src/pages/device/device/List.tsx": {
-            "bytes": 8513,
+            "bytes": 7192,
             "imports": [
               {
                 "path": "react",
@@ -7183,7 +7097,7 @@
                 "bytesInOutput": 363
               },
               "src/services/api.ts": {
-                "bytesInOutput": 9916
+                "bytesInOutput": 10275
               },
               "src/pages/user/Login.tsx": {
                 "bytesInOutput": 3339
@@ -7210,13 +7124,13 @@
                 "bytesInOutput": 8802
               },
               "src/pages/site/List.tsx": {
-                "bytesInOutput": 6532
+                "bytesInOutput": 8285
               },
               "src/pages/namespace/List.tsx": {
                 "bytesInOutput": 7345
               },
               "src/pages/organization/List.tsx": {
-                "bytesInOutput": 9526
+                "bytesInOutput": 9523
               },
               "src/pages/department/List.tsx": {
                 "bytesInOutput": 12591
@@ -7243,7 +7157,7 @@
                 "bytesInOutput": 5593
               },
               "src/pages/device/product/List.tsx": {
-                "bytesInOutput": 6724
+                "bytesInOutput": 6714
               },
               "src/pages/device/driver/List.tsx": {
                 "bytesInOutput": 7610
@@ -7252,10 +7166,10 @@
                 "bytesInOutput": 6775
               },
               "src/pages/device/instance/List.tsx": {
-                "bytesInOutput": 8264
+                "bytesInOutput": 11332
               },
               "src/pages/device/device/List.tsx": {
-                "bytesInOutput": 10100
+                "bytesInOutput": 8749
               },
               "src/pages/config/config_map/List.tsx": {
                 "bytesInOutput": 11384
@@ -7270,7 +7184,7 @@
                 "bytesInOutput": 1860
               }
             },
-            "bytes": 223909
+            "bytes": 227725
           }
         }
       }
@@ -10357,23 +10271,13 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 372,
+          "end": 346,
           "importKind": "value",
           "source": "@/services/api",
           "specifiers": [
             {
               "imported": "deviceApi",
               "local": "deviceApi",
-              "type": "ImportSpecifier"
-            },
-            {
-              "imported": "organizationApi",
-              "local": "organizationApi",
-              "type": "ImportSpecifier"
-            },
-            {
-              "imported": "siteApi",
-              "local": "siteApi",
               "type": "ImportSpecifier"
             },
             {
@@ -10391,23 +10295,13 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 448,
+          "end": 402,
           "importKind": "type",
           "source": "@/types",
           "specifiers": [
             {
               "imported": "Device",
               "local": "Device",
-              "type": "ImportSpecifier"
-            },
-            {
-              "imported": "Organization",
-              "local": "Organization",
-              "type": "ImportSpecifier"
-            },
-            {
-              "imported": "Site",
-              "local": "Site",
               "type": "ImportSpecifier"
             },
             {
@@ -10421,7 +10315,7 @@
               "type": "ImportSpecifier"
             }
           ],
-          "start": 373,
+          "start": 347,
           "type": "ImportDeclaration"
         }
       ],
@@ -10601,7 +10495,7 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 199,
+          "end": 212,
           "importKind": "value",
           "source": "antd",
           "specifiers": [
@@ -10644,13 +10538,18 @@
               "imported": "Select",
               "local": "Select",
               "type": "ImportSpecifier"
+            },
+            {
+              "imported": "InputNumber",
+              "local": "InputNumber",
+              "type": "ImportSpecifier"
             }
           ],
           "start": 113,
           "type": "ImportDeclaration"
         },
         {
-          "end": 279,
+          "end": 292,
           "importKind": "value",
           "source": "@ant-design/icons",
           "specifiers": [
@@ -10670,17 +10569,22 @@
               "type": "ImportSpecifier"
             }
           ],
-          "start": 200,
+          "start": 213,
           "type": "ImportDeclaration"
         },
         {
-          "end": 351,
+          "end": 380,
           "importKind": "value",
           "source": "@/services/api",
           "specifiers": [
             {
               "imported": "deviceInstanceApi",
               "local": "deviceInstanceApi",
+              "type": "ImportSpecifier"
+            },
+            {
+              "imported": "deviceGroupApi",
+              "local": "deviceGroupApi",
               "type": "ImportSpecifier"
             },
             {
@@ -10694,17 +10598,22 @@
               "type": "ImportSpecifier"
             }
           ],
-          "start": 280,
+          "start": 293,
           "type": "ImportDeclaration"
         },
         {
-          "end": 412,
+          "end": 454,
           "importKind": "type",
           "source": "@/types",
           "specifiers": [
             {
               "imported": "DeviceInstance",
               "local": "DeviceInstance",
+              "type": "ImportSpecifier"
+            },
+            {
+              "imported": "DeviceGroup",
+              "local": "DeviceGroup",
               "type": "ImportSpecifier"
             },
             {
@@ -10718,7 +10627,7 @@
               "type": "ImportSpecifier"
             }
           ],
-          "start": 352,
+          "start": 381,
           "type": "ImportDeclaration"
         }
       ],
@@ -12248,7 +12157,7 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 321,
+          "end": 338,
           "importKind": "value",
           "source": "@/services/api",
           "specifiers": [
@@ -12256,13 +12165,18 @@
               "imported": "siteApi",
               "local": "siteApi",
               "type": "ImportSpecifier"
+            },
+            {
+              "imported": "organizationApi",
+              "local": "organizationApi",
+              "type": "ImportSpecifier"
             }
           ],
           "start": 280,
           "type": "ImportDeclaration"
         },
         {
-          "end": 358,
+          "end": 389,
           "importKind": "type",
           "source": "@/types",
           "specifiers": [
@@ -12270,9 +12184,14 @@
               "imported": "Site",
               "local": "Site",
               "type": "ImportSpecifier"
+            },
+            {
+              "imported": "Organization",
+              "local": "Organization",
+              "type": "ImportSpecifier"
             }
           ],
-          "start": 322,
+          "start": 339,
           "type": "ImportDeclaration"
         }
       ],
@@ -13238,7 +13157,7 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 12106,
+          "end": 12119,
           "importKind": "type",
           "source": "@/types",
           "specifiers": [
@@ -13258,6 +13177,11 @@
               "type": "ImportSpecifier"
             },
             {
+              "imported": "DeviceGroup",
+              "local": "DeviceGroup",
+              "type": "ImportSpecifier"
+            },
+            {
               "imported": "DeviceInstance",
               "local": "DeviceInstance",
               "type": "ImportSpecifier"
@@ -13267,7 +13191,7 @@
           "type": "ImportDeclaration"
         },
         {
-          "end": 15988,
+          "end": 16448,
           "importKind": "type",
           "source": "@/types",
           "specifiers": [
@@ -13277,7 +13201,7 @@
               "type": "ImportSpecifier"
             }
           ],
-          "start": 15950,
+          "start": 16410,
           "type": "ImportDeclaration"
         }
       ]

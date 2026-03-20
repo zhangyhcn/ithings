@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
 import { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { siteApi } from '@/services/api';
-import type { Site } from '@/types';
+import { siteApi, organizationApi } from '@/services/api';
+import type { Site, Organization } from '@/types';
 
 export default function SiteList() {
   const [tableData, setTableData] = useState<Site[]>([]);
@@ -12,6 +12,17 @@ export default function SiteList() {
   const [editingRecord, setEditingRecord] = useState<Site | null>(null);
   const [selectedTenantId, setSelectedTenantId] = useState<string>('');
   const [form] = Form.useForm();
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+
+  const flattenOrganizations = (orgs: Organization[]): Organization[] => {
+    return orgs.reduce<Organization[]>((acc, org) => {
+      acc.push(org);
+      if (org.children && org.children.length > 0) {
+        acc.push(...flattenOrganizations(org.children));
+      }
+      return acc;
+    }, []);
+  };
 
   const fetchData = async () => {
     const userStr = localStorage.getItem('user');
@@ -21,11 +32,24 @@ export default function SiteList() {
       return;
     }
     const user = JSON.parse(userStr);
-    setSelectedTenantId(user.tenant_id);
+    const tenantId = user.tenant_id;
+    if (!tenantId) {
+      console.error('No tenant_id found');
+      setTableData([]);
+      setLoading(false);
+      return;
+    }
+    setSelectedTenantId(tenantId);
     setLoading(true);
     try {
-      const data = await siteApi.list(user.tenant_id, { page: 1, page_size: 100 });
-      setTableData(Array.isArray(data) ? data : []);
+      const [siteData, orgData] = await Promise.all([
+        siteApi.list(tenantId, { page: 1, page_size: 100 }),
+        organizationApi.list(tenantId),
+      ]);
+      console.log('siteData:', siteData);
+      console.log('orgData:', orgData);
+      setTableData(Array.isArray(siteData) ? siteData : []);
+      setOrganizations(flattenOrganizations(Array.isArray(orgData) ? orgData : []));
     } catch (error) {
       console.error(error);
     } finally {
@@ -76,7 +100,18 @@ export default function SiteList() {
     }
   };
 
+  const getOrganizationName = (orgId: string) => {
+    const org = organizations.find(o => o.id === orgId);
+    return org ? org.name : orgId;
+  };
+
   const columns: ProColumns<Site>[] = [
+    {
+      title: '所属组织',
+      dataIndex: 'organization_id',
+      key: 'organization_id',
+      render: (orgId: string) => getOrganizationName(orgId),
+    },
     {
       title: '名称',
       dataIndex: 'name',
@@ -174,6 +209,23 @@ export default function SiteList() {
         onOk={form.submit}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
+          <Form.Item
+            name="organization_id"
+            label="所属组织"
+            rules={[{ required: true, message: '请选择组织' }]}
+          >
+            <Select
+              placeholder="请选择组织"
+              showSearch
+              optionFilterProp="children"
+            >
+              {organizations.map((org) => (
+                <Select.Option key={org.id} value={org.id}>
+                  {org.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Form.Item
             name="name"
             label="名称"

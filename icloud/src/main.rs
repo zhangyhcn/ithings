@@ -22,6 +22,7 @@ use api::site::create_site_router;
 use api::product::create_product_router;
 use api::driver::create_driver_router;
 use api::node::create_node_router;
+use api::device_group::create_device_group_router;
 use api::device_instance::create_device_instance_router;
 use api::namespace::create_namespace_router;
 use api::organization::create_organization_router;
@@ -408,9 +409,8 @@ fn create_app(
             .merge(create_node_router(db.clone()))
             .merge(create_namespace_router(db.clone()))
             .merge(create_device_router(db.clone()))
-            .nest("/sites/:site_id", Router::new()
-                .merge(create_device_instance_router(db.clone()))
-            )
+            .merge(create_device_group_router(db.clone()))
+            .merge(create_device_instance_router(db.clone()))
         )
         .merge(Router::new()
             .route("/tenant/:tenant_slug/namespaces", get(list_namespaces_by_tenant_slug))

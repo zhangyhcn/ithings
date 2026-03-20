@@ -7,12 +7,11 @@ use chrono::Utc;
 use crate::entity::{DeviceEntity, DeviceColumn, DeviceModel as Model};
 use crate::entity::tenant;
 use crate::utils::AppError;
+use device_common::config::driver::DriverConfig;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDeviceRequest {
     pub name: String,
-    pub organization_id: Option<String>,
-    pub site_id: Option<String>,
     pub product_id: Option<String>,
     pub model: Option<String>,
     pub manufacturer: Option<String>,
@@ -25,8 +24,6 @@ pub struct CreateDeviceRequest {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateDeviceRequest {
     pub name: Option<String>,
-    pub organization_id: Option<String>,
-    pub site_id: Option<String>,
     pub product_id: Option<String>,
     pub model: Option<String>,
     pub manufacturer: Option<String>,
@@ -40,8 +37,6 @@ pub struct UpdateDeviceRequest {
 pub struct DeviceResponse {
     pub id: String,
     pub tenant_id: String,
-    pub organization_id: Option<String>,
-    pub site_id: Option<String>,
     pub product_id: Option<String>,
     pub name: String,
     pub model: Option<String>,
@@ -59,8 +54,6 @@ impl From<Model> for DeviceResponse {
         Self {
             id: model.id.to_string(),
             tenant_id: model.tenant_id.to_string(),
-            organization_id: model.organization_id.map(|id| id.to_string()),
-            site_id: model.site_id.map(|id| id.to_string()),
             product_id: model.product_id.map(|id| id.to_string()),
             name: model.name,
             model: model.model,
@@ -84,6 +77,17 @@ impl DeviceService {
         Self { db }
     }
 
+    fn validate_device_profile(device_profile: &JsonValue) -> Result<(), AppError> {
+        if device_profile.is_null() || device_profile.as_object().map_or(true, |obj| obj.is_empty()) {
+            return Ok(());
+        }
+
+        let _: DriverConfig = serde_json::from_value(device_profile.clone())
+            .map_err(|e| AppError::Validation(format!("设备配置文件格式错误: {}", e)))?;
+
+        Ok(())
+    }
+
     pub async fn create(
         &self,
         tenant_id: Uuid,
@@ -98,12 +102,14 @@ impl DeviceService {
             return Err(AppError::TenantNotFound);
         }
 
+        if let Some(ref device_profile) = req.device_profile {
+            Self::validate_device_profile(device_profile)?;
+        }
+
         let now = Utc::now().naive_utc();
         let mut active_model = crate::entity::device::ActiveModel {
             id: Set(Uuid::new_v4()),
             tenant_id: Set(tenant_id),
-            organization_id: Set(req.organization_id.and_then(|id| Uuid::parse_str(&id).ok())),
-            site_id: Set(req.site_id.and_then(|id| Uuid::parse_str(&id).ok())),
             product_id: Set(req.product_id.and_then(|id| Uuid::parse_str(&id).ok())),
             name: Set(req.name),
             model: Set(req.model),
@@ -155,16 +161,14 @@ impl DeviceService {
             return Err(AppError::NotFound("Device not found".to_string()));
         };
 
+        if let Some(ref device_profile) = req.device_profile {
+            Self::validate_device_profile(device_profile)?;
+        }
+
         let mut active_model = model.into_active_model();
 
         if let Some(name) = req.name {
             active_model.name = Set(name);
-        }
-        if let Some(organization_id) = req.organization_id {
-            active_model.organization_id = Set(Uuid::parse_str(&organization_id).ok());
-        }
-        if let Some(site_id) = req.site_id {
-            active_model.site_id = Set(Uuid::parse_str(&site_id).ok());
         }
         if let Some(product_id) = req.product_id {
             active_model.product_id = Set(Uuid::parse_str(&product_id).ok());

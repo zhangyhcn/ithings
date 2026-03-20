@@ -8,6 +8,30 @@ use crate::{
     utils::AppError,
 };
 
+fn parse_optional_uuid<'de, D>(deserializer: D) -> Result<Option<Uuid>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let opt: Option<String> = Option::deserialize(deserializer)?;
+    match opt {
+        Some(s) if s.is_empty() => Ok(None),
+        Some(s) => Uuid::parse_str(&s)
+            .map(Some)
+            .map_err(serde::de::Error::custom),
+        None => Ok(None),
+    }
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CreateOrganizationBody {
+    pub name: String,
+    #[serde(deserialize_with = "parse_optional_uuid", default)]
+    pub parent_id: Option<Uuid>,
+    pub description: Option<String>,
+    pub sort_order: Option<i32>,
+    pub status: Option<String>,
+}
+
 #[derive(Debug, Deserialize)]
 pub struct CreateOrganizationRequest {
     pub tenant_id: Uuid,
@@ -18,9 +42,23 @@ pub struct CreateOrganizationRequest {
     pub status: Option<String>,
 }
 
+impl From<(Uuid, CreateOrganizationBody)> for CreateOrganizationRequest {
+    fn from((tenant_id, body): (Uuid, CreateOrganizationBody)) -> Self {
+        Self {
+            tenant_id,
+            name: body.name,
+            parent_id: body.parent_id,
+            description: body.description,
+            sort_order: body.sort_order,
+            status: body.status,
+        }
+    }
+}
+
 #[derive(Debug, Deserialize)]
 pub struct UpdateOrganizationRequest {
     pub name: Option<String>,
+    #[serde(deserialize_with = "parse_optional_uuid", default)]
     pub parent_id: Option<Uuid>,
     pub description: Option<String>,
     pub sort_order: Option<i32>,
@@ -69,7 +107,6 @@ impl OrganizationService {
     }
 
     pub async fn create(&self, req: CreateOrganizationRequest) -> Result<OrganizationResponse, AppError> {
-        // 生成slug，这里简化为名称的小写拼音或直接使用名称，实际项目中可以使用slugify库
         let slug = req.name.to_lowercase().replace(" ", "-");
 
         let org = organization::ActiveModel {
@@ -116,7 +153,6 @@ impl OrganizationService {
     fn build_tree(&self, orgs: Vec<organization::Model>) -> Vec<OrganizationResponse> {
         let mut org_responses: Vec<OrganizationResponse> = orgs.into_iter().map(OrganizationResponse::from).collect();
         
-        // 构建树形结构
         let mut tree = Vec::new();
         let mut children_map = std::collections::HashMap::new();
         
@@ -124,15 +160,11 @@ impl OrganizationService {
             children_map.entry(org.parent_id).or_insert_with(Vec::new).push(org);
         }
         
-        // 从顶层节点开始构建
         let mut stack = children_map.remove(&None).unwrap_or_default();
         
         while let Some(mut org) = stack.pop() {
-            if let Some(mut children) = children_map.remove(&Some(org.id)) {
-                for child in children.into_iter().rev() {
-                    stack.push(child);
-                }
-                org.children = children_map.remove(&Some(org.id)).unwrap_or_default();
+            if let Some(children) = children_map.remove(&Some(org.id)) {
+                org.children = children;
             }
             tree.push(org);
         }
@@ -169,7 +201,6 @@ impl OrganizationService {
     }
 
     pub async fn delete(&self, id: Uuid) -> Result<(), AppError> {
-        // 先查询所有子组织ID
         let mut all_ids = vec![id];
         let mut current_level = vec![id];
         
@@ -189,7 +220,6 @@ impl OrganizationService {
             current_level = next_level;
         }
 
-        // 从最底层开始删除
         all_ids.reverse();
         for org_id in all_ids {
             let result = organization::Entity::delete_by_id(org_id)

@@ -4,7 +4,7 @@
 import React from 'react';
 
 export async function getRoutes() {
-  const routes = {"1":{"path":"/user","id":"1"},"2":{"path":"/user/login","parentId":"1","id":"2"},"3":{"path":"/user/register","parentId":"1","id":"3"},"4":{"path":"/user/forgot-password","parentId":"1","id":"4"},"5":{"path":"/create_tenant","id":"5"},"6":{"path":"/","id":"6"},"7":{"path":"/","redirect":"/dashboard","parentId":"6","id":"7"},"8":{"path":"/dashboard","parentId":"6","id":"8"},"9":{"path":"/tenant","parentId":"6","id":"9"},"10":{"path":"/users","parentId":"6","id":"10"},"11":{"path":"/site","parentId":"6","id":"11"},"12":{"path":"/namespace","parentId":"6","id":"12"},"13":{"path":"/organization","parentId":"6","id":"13"},"14":{"path":"/department","parentId":"6","id":"14"},"15":{"path":"/resources","parentId":"6","id":"15"},"16":{"path":"/resources/crd","parentId":"15","id":"16"},"17":{"path":"/resources/operator","parentId":"15","id":"17"},"18":{"path":"/resources/controller","parentId":"15","id":"18"},"19":{"path":"/settings","parentId":"6","id":"19"},"20":{"path":"/settings/system","parentId":"19","id":"20"},"21":{"path":"/settings/role","parentId":"19","id":"21"},"22":{"path":"/settings/user-role","parentId":"19","id":"22"},"23":{"path":"/settings/role-menu","parentId":"19","id":"23"},"24":{"path":"/device","parentId":"6","id":"24"},"25":{"path":"/device/product","parentId":"24","id":"25"},"26":{"path":"/device/driver","parentId":"24","id":"26"},"27":{"path":"/device/node","parentId":"24","id":"27"},"28":{"path":"/device/instance","parentId":"24","id":"28"},"29":{"path":"/device/device","parentId":"24","id":"29"},"30":{"path":"/config","parentId":"6","id":"30"},"31":{"path":"/config/configmap","parentId":"30","id":"31"}} as const;
+  const routes = {"1":{"path":"/user","id":"1"},"2":{"path":"/user/login","parentId":"1","id":"2"},"3":{"path":"/user/register","parentId":"1","id":"3"},"4":{"path":"/user/forgot-password","parentId":"1","id":"4"},"5":{"path":"/create_tenant","id":"5"},"6":{"path":"/","id":"6"},"7":{"path":"/","redirect":"/dashboard","parentId":"6","id":"7"},"8":{"path":"/dashboard","parentId":"6","id":"8"},"9":{"path":"/tenant","parentId":"6","id":"9"},"10":{"path":"/users","parentId":"6","id":"10"},"11":{"path":"/site","parentId":"6","id":"11"},"12":{"path":"/namespace","parentId":"6","id":"12"},"13":{"path":"/organization","parentId":"6","id":"13"},"14":{"path":"/department","parentId":"6","id":"14"},"15":{"path":"/resources","parentId":"6","id":"15"},"16":{"path":"/resources/crd","parentId":"15","id":"16"},"17":{"path":"/resources/operator","parentId":"15","id":"17"},"18":{"path":"/resources/controller","parentId":"15","id":"18"},"19":{"path":"/settings","parentId":"6","id":"19"},"20":{"path":"/settings/system","parentId":"19","id":"20"},"21":{"path":"/settings/role","parentId":"19","id":"21"},"22":{"path":"/settings/user-role","parentId":"19","id":"22"},"23":{"path":"/settings/role-menu","parentId":"19","id":"23"},"24":{"path":"/device","parentId":"6","id":"24"},"25":{"path":"/device/product","parentId":"24","id":"25"},"26":{"path":"/device/driver","parentId":"24","id":"26"},"27":{"path":"/device/node","parentId":"24","id":"27"},"28":{"path":"/device/device","parentId":"24","id":"28"},"29":{"path":"/device/group","parentId":"24","id":"29"},"30":{"path":"/device/instance","parentId":"24","id":"30"},"31":{"path":"/config","parentId":"6","id":"31"},"32":{"path":"/config/configmap","parentId":"31","id":"32"}} as const;
   return {
     routes,
     routeComponents: {
@@ -35,10 +35,11 @@ export async function getRoutes() {
 '25': React.lazy(() => import(/* webpackChunkName: "p__device__product__List" */'@/pages/device/product/List.tsx')),
 '26': React.lazy(() => import(/* webpackChunkName: "p__device__driver__List" */'@/pages/device/driver/List.tsx')),
 '27': React.lazy(() => import(/* webpackChunkName: "p__device__node__List" */'@/pages/device/node/List.tsx')),
-'28': React.lazy(() => import(/* webpackChunkName: "p__device__instance__List" */'@/pages/device/instance/List.tsx')),
-'29': React.lazy(() => import(/* webpackChunkName: "p__device__device__List" */'@/pages/device/device/List.tsx')),
-'30': React.lazy(() => import('./EmptyRoute')),
-'31': React.lazy(() => import(/* webpackChunkName: "p__config__config_map__List" */'@/pages/config/config_map/List.tsx')),
+'28': React.lazy(() => import(/* webpackChunkName: "p__device__device__List" */'@/pages/device/device/List.tsx')),
+'29': React.lazy(() => import(/* webpackChunkName: "p__device__group__List" */'@/pages/device/group/List.tsx')),
+'30': React.lazy(() => import(/* webpackChunkName: "p__device__instance__List" */'@/pages/device/instance/List.tsx')),
+'31': React.lazy(() => import('./EmptyRoute')),
+'32': React.lazy(() => import(/* webpackChunkName: "p__config__config_map__List" */'@/pages/config/config_map/List.tsx')),
 },
   };
 }
