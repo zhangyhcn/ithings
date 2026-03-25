@@ -301,17 +301,28 @@ async fn main() {
         r#"ALTER TABLE drivers ADD COLUMN IF NOT EXISTS device_profile JSON NOT NULL DEFAULT '{}'"#,
         r#"CREATE TABLE IF NOT EXISTS nodes (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            tenant_id UUID NOT NULL,
-            name TEXT NOT NULL,
-            address TEXT,
-            k8s_context TEXT,
-            is_shared BOOLEAN NOT NULL DEFAULT false,
-            status TEXT NOT NULL DEFAULT 'offline',
-            last_sync TIMESTAMP,
+            name TEXT NOT NULL UNIQUE,
+            status TEXT NOT NULL DEFAULT 'Unknown',
+            labels JSON NOT NULL DEFAULT '{}',
+            roles JSON NOT NULL DEFAULT '[]',
+            internal_ip TEXT,
+            os TEXT,
+            kernel_version TEXT,
+            container_runtime TEXT,
             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-            FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+            updated_at TIMESTAMP NOT NULL DEFAULT NOW()
         )"#,
+        r#"ALTER TABLE nodes DROP COLUMN IF EXISTS tenant_id"#,
+        r#"ALTER TABLE nodes DROP COLUMN IF EXISTS address"#,
+        r#"ALTER TABLE nodes DROP COLUMN IF EXISTS k8s_context"#,
+        r#"ALTER TABLE nodes DROP COLUMN IF EXISTS is_shared"#,
+        r#"ALTER TABLE nodes DROP COLUMN IF EXISTS last_sync"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS labels JSON NOT NULL DEFAULT '{}'"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS roles JSON NOT NULL DEFAULT '[]'"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS internal_ip TEXT"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS os TEXT"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS kernel_version TEXT"#,
+        r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS container_runtime TEXT"#,
         r#"CREATE TABLE IF NOT EXISTS device_instances (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             tenant_id UUID NOT NULL,
@@ -370,6 +381,9 @@ async fn main() {
 
     // 初始化默认菜单
     service::menu::MenuService::init_default_menus(&db).await.expect("Failed to initialize default menus");
+
+    // 初始化租户缓存
+    service::tenant::TenantCache::load_from_db(&db).await.expect("Failed to initialize tenant cache");
 
     tracing::info!("Database migration completed");
 

@@ -204,13 +204,14 @@ export interface Driver {
 
 export interface Node {
   id: string;
-  tenant_id: string;
   name: string;
-  address?: string;
-  k8s_context?: string;
-  is_shared: boolean;
   status: string;
-  last_sync?: string;
+  labels: Record<string, string>;
+  roles: string[];
+  internal_ip?: string;
+  os?: string;
+  kernel_version?: string;
+  container_runtime?: string;
   created_at: string;
   updated_at: string;
 }

@@ -33,7 +33,18 @@ export default function TenantList() {
   const handleAdd = async (values: any) => {
     try {
       if (editingRecord) {
-        await tenantApi.update(editingRecord.id, values);
+        const config = editingRecord.config || {};
+        const payload = {
+          name: values.name,
+          description: values.description,
+          status: editingRecord.status,
+          config: {
+            ...config,
+            registry_url: values.registry_url,
+            virtual_cluster_name: values.virtual_cluster_name,
+          },
+        };
+        await tenantApi.update(editingRecord.id, payload);
         message.success('更新成功');
       } else {
         await tenantApi.create(values);
@@ -79,6 +90,22 @@ export default function TenantList() {
       title: '描述',
       dataIndex: 'description',
       key: 'description',
+    },
+    {
+      title: '镜像仓库',
+      dataIndex: 'config',
+      key: 'config',
+      render: (config: any) => (
+        <span>{config?.registry_url || '-'}</span>
+      ),
+    },
+    {
+      title: '虚拟集群',
+      dataIndex: 'config',
+      key: 'config',
+      render: (config: any) => (
+        <span>{config?.virtual_cluster_name || '-'}</span>
+      ),
     },
     {
       title: '状态',
@@ -170,6 +197,12 @@ export default function TenantList() {
           </Form.Item>
           <Form.Item name="description" label="描述">
             <Input.TextArea placeholder="请输入描述" />
+          </Form.Item>
+          <Form.Item name="registry_url" label="镜像仓库地址">
+            <Input placeholder="如: https://registry.example.com" />
+          </Form.Item>
+          <Form.Item name="virtual_cluster_name" label="虚拟集群名">
+            <Input placeholder="虚拟集群名称" />
           </Form.Item>
         </Form>
       </Modal>

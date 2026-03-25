@@ -429,35 +429,24 @@ export const driverApi = {
   ) => request.put(`/tenants/${tenantId}/drivers/${id}`, data),
   delete: (tenantId: string, id: string) =>
     request.delete(`/tenants/${tenantId}/drivers/${id}`),
+  listTags: (tenantId: string, registry: string | undefined, image: string) =>
+    request.get<{ code: number; message: string; data: string[] }>(
+      `/tenants/${tenantId}/drivers/tags?image=${encodeURIComponent(image)}${registry ? `&registry=${encodeURIComponent(registry)}` : ''}`
+    ),
 };
 
 export const nodeApi = {
-  list: (tenantId: string, params?: { page?: number; page_size?: number }) =>
-    request.get<Node[]>(`/tenants/${tenantId}/nodes`, { params }),
+  list: (tenantId: string) =>
+    request.get<{ code: number; message: string; data: Node[] }>(`/tenants/${tenantId}/nodes`),
+  sync: (tenantId: string) =>
+    request.get<{ code: number; message: string; data: Node[] }>(`/tenants/${tenantId}/nodes/sync`),
   get: (tenantId: string, id: string) =>
     request.get(`/tenants/${tenantId}/nodes/${id}`),
-  create: (
-    tenantId: string,
-    data: {
-      name: string;
-      address?: string;
-      k8s_context?: string;
-      is_shared: boolean;
-    }
-  ) => request.post(`/tenants/${tenantId}/nodes`, data),
-  update: (
+  updateLabels: (
     tenantId: string,
     id: string,
-    data: {
-      name?: string;
-      address?: string;
-      k8s_context?: string;
-      is_shared?: boolean;
-      status?: string;
-    }
-  ) => request.put(`/tenants/${tenantId}/nodes/${id}`, data),
-  delete: (tenantId: string, id: string) =>
-    request.delete(`/tenants/${tenantId}/nodes/${id}`),
+    data: { labels: Record<string, string> }
+  ) => request.put(`/tenants/${tenantId}/nodes/${id}/labels`, data),
 };
 
 export const deviceGroupApi = {

@@ -1,0 +1,98 @@
+digraph ERDiagram {
+    graph [rankdir=TB, splines=polyline, nodesep=0.8, ranksep=1.2];
+    node [shape=record, fontsize=10];
+    edge [fontsize=9];
+
+    subgraph cluster_product {
+        label="Product Management";
+        style=dashed;
+        color=lightgrey;
+        
+        Product [label="{Product|id: UUID\ltenant_id: UUID\lproduct_no: String\lproduct_name: String\lspecification: String\lunit: String\lproduct_type: Enum\lstatus: Enum\l}" fillcolor="#E8F5E9" style=filled];
+    }
+
+    subgraph cluster_workorder {
+        label="Work Order Management";
+        style=dashed;
+        color=lightgrey;
+        
+        WorkOrder [label="{WorkOrder|id: UUID\lorder_no: String\lproduct_id: FK\lquantity: Decimal\lstatus: Enum\lplan_start: DateTime\l}" fillcolor="#E3F2FD" style=filled];
+        SchedulePlan [label="{SchedulePlan|id: UUID\lwork_order_id: FK\lprocess_id: FK\lequipment_id: FK\lstart_time: DateTime\l}" fillcolor="#F3E5F5" style=filled];
+    }
+
+    subgraph cluster_process {
+        label="Process Route";
+        style=dashed;
+        color=lightgrey;
+        
+        ProcessRoute [label="{ProcessRoute|id: UUID\lproduct_id: FK\lroute_name: String\lversion: String\lstatus: Enum\l}" fillcolor="#FFF3E0" style=filled];
+        Process [label="{Process|id: UUID\lroute_id: FK\lprocess_name: String\lsequence: Int\lstandard_time: Decimal\l}" fillcolor="#FFF3E0" style=filled];
+    }
+
+    subgraph cluster_material {
+        label="Material Management";
+        style=dashed;
+        color=lightgrey;
+        
+        Material [label="{Material|id: UUID\lmaterial_no: String\lname: String\lspecification: String\lunit: String\lmaterial_type: Enum\l}" fillcolor="#E0F7FA" style=filled];
+        Inventory [label="{Inventory|id: UUID\lmaterial_id: FK\lwarehouse_id: FK\lbatch_no: String\lquantity: Decimal\l}" fillcolor="#E0F7FA" style=filled];
+        Warehouse [label="{Warehouse|id: UUID\lwarehouse_no: String\lname: String\ltype: Enum\l}" fillcolor="#E0F7FA" style=filled];
+    }
+
+    subgraph cluster_production {
+        label="Production Process";
+        style=dashed;
+        color=lightgrey;
+        
+        ProductionRecord [label="{ProductionRecord|id: UUID\lwork_order_id: FK\lprocess_id: FK\lquantity: Decimal\lgood_qty: Decimal\ldefect_qty: Decimal\l}" fillcolor="#FCE4EC" style=filled];
+        WorkStation [label="{WorkStation|id: UUID\lstation_no: String\lstation_name: String\lworkshop_id: FK\l}" fillcolor="#FCE4EC" style=filled];
+    }
+
+    subgraph cluster_quality {
+        label="Quality Management";
+        style=dashed;
+        color=lightgrey;
+        
+        InspectionOrder [label="{InspectionOrder|id: UUID\linspection_no: String\linspection_type: Enum\lwork_order_id: FK\lresult: Enum\l}" fillcolor="#FFEBEE" style=filled];
+        DefectRecord [label="{DefectRecord|id: UUID\linspection_id: FK\ldefect_type_id: FK\lquantity: Int\ldisposition: Enum\l}" fillcolor="#FFEBEE" style=filled];
+        DefectType [label="{DefectType|id: UUID\ltype_code: String\ltype_name: String\l}" fillcolor="#FFEBEE" style=filled];
+    }
+
+    subgraph cluster_equipment {
+        label="Equipment Management";
+        style=dashed;
+        color=lightgrey;
+        
+        Equipment [label="{Equipment|id: UUID\lequipment_no: String\lname: String\ltype: String\lstatus: Enum\l}" fillcolor="#F1F8E9" style=filled];
+        MaintenancePlan [label="{MaintenancePlan|id: UUID\lequipment_id: FK\lplan_type: Enum\lplan_date: Date\l}" fillcolor="#F1F8E9" style=filled];
+    }
+
+    subgraph cluster_employee {
+        label="Employee Management";
+        style=dashed;
+        color=lightgrey;
+        
+        Employee [label="{Employee|id: UUID\lemployee_no: String\lname: String\ldepartment_id: FK\lstatus: Enum\l}" fillcolor="#FFFDE7" style=filled];
+        Department [label="{Department|id: UUID\ldept_no: String\ldept_name: String\l}" fillcolor="#FFFDE7" style=filled];
+        SkillCertificate [label="{SkillCertificate|id: UUID\lemployee_id: FK\lskill_type: String\lcertificate_no: String\l}" fillcolor="#FFFDE7" style=filled];
+    }
+
+    Product -> WorkOrder [label="1:N"];
+    Product -> ProcessRoute [label="1:N"];
+    ProcessRoute -> Process [label="1:N"];
+    WorkOrder -> SchedulePlan [label="1:N"];
+    Process -> SchedulePlan [label="1:N"];
+    Material -> Inventory [label="1:N"];
+    Warehouse -> Inventory [label="1:N"];
+    WorkOrder -> ProductionRecord [label="1:N"];
+    Process -> ProductionRecord [label="1:N"];
+    ProductionRecord -> InspectionOrder [label="1:N"];
+    InspectionOrder -> DefectRecord [label="1:N"];
+    DefectType -> DefectRecord [label="1:N"];
+    Equipment -> MaintenancePlan [label="1:N"];
+    Equipment -> SchedulePlan [label="1:N"];
+    Department -> Employee [label="1:N"];
+    Employee -> SkillCertificate [label="1:N"];
+    Employee -> MaintenancePlan [label="1:N"];
+    Employee -> InspectionOrder [label="1:N"];
+}

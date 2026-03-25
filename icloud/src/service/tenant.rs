@@ -242,3 +242,52 @@ impl TenantService {
         Ok(())
     }
 }
+
+pub struct TenantCache;
+
+impl TenantCache {
+    pub async fn get(tenant_id: Uuid) -> Option<Model> {
+        crate::service::cache::GlobalCache::get_tenant(tenant_id).await
+    }
+
+    pub async fn get_registry_url(tenant_id: Uuid) -> Option<String> {
+        let tenant = Self::get(tenant_id).await?;
+        tenant.config.and_then(|c| {
+            c.get("registry_url")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string())
+        })
+    }
+
+    pub async fn set(tenant: Model) {
+        crate::service::cache::GlobalCache::set_tenant(tenant).await;
+    }
+
+    pub async fn remove(tenant_id: Uuid) {
+        crate::service::cache::GlobalCache::remove_tenant(tenant_id).await;
+    }
+
+    pub async fn load_from_db(db: &DatabaseConnection) -> Result<(), AppError> {
+        let tenants = TenantEntity::find().all(db).await?;
+        
+        for tenant in tenants {
+            Self::set(tenant).await;
+        }
+        
+        Ok(())
+    }
+
+    pub async fn reload_tenant(db: &DatabaseConnection, tenant_id: Uuid) -> Result<(), AppError> {
+        let tenant = TenantEntity::find_by_id(tenant_id)
+            .one(db)
+            .await?
+            .ok_or(AppError::TenantNotFound)?;
+        
+        Self::set(tenant).await;
+        Ok(())
+    }
+
+    pub async fn clear() {
+        crate::service::cache::GlobalCache::clear().await;
+    }
+}

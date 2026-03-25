@@ -5,20 +5,22 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key, column_type = "Uuid")]
     pub id: Uuid,
-    #[sea_orm(column_type = "Uuid")]
-    pub tenant_id: Uuid,
     #[sea_orm(column_type = "Text")]
     pub name: String,
     #[sea_orm(column_type = "Text")]
-    pub address: Option<String>,
-    #[sea_orm(column_type = "Text")]
-    pub k8s_context: Option<String>,
-    #[sea_orm(column_type = "Boolean")]
-    pub is_shared: bool,
-    #[sea_orm(column_type = "Text")]
     pub status: String,
-    #[sea_orm(column_type = "Timestamp")]
-    pub last_sync: Option<DateTime>,
+    #[sea_orm(column_type = "Json")]
+    pub labels: Json,
+    #[sea_orm(column_type = "Json")]
+    pub roles: Json,
+    #[sea_orm(column_type = "Text")]
+    pub internal_ip: Option<String>,
+    #[sea_orm(column_type = "Text")]
+    pub os: Option<String>,
+    #[sea_orm(column_type = "Text")]
+    pub kernel_version: Option<String>,
+    #[sea_orm(column_type = "Text")]
+    pub container_runtime: Option<String>,
     #[sea_orm(column_type = "Timestamp")]
     pub created_at: DateTime,
     #[sea_orm(column_type = "Timestamp")]

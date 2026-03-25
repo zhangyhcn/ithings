@@ -19,3 +19,4 @@ pub mod controller;
 pub mod config_map;
 pub mod secret;
 pub mod device;
+pub mod cache;

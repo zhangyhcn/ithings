@@ -7,6 +7,8 @@ interface CreateTenantFormValues {
   name: string;
   slug: string;
   description: string;
+  registry_url?: string;
+  virtual_cluster_name?: string;
   admin_username: string;
   admin_email: string;
   admin_password: string;
@@ -25,6 +27,10 @@ export default function CreateTenant() {
     }
     setLoading(true);
     try {
+      const config = {
+        registry_url: values.registry_url,
+        virtual_cluster_name: values.virtual_cluster_name,
+      };
       await tenantApi.create({
         name: values.name,
         slug: values.slug,
@@ -32,6 +38,7 @@ export default function CreateTenant() {
         admin_username: values.admin_username,
         admin_email: values.admin_email,
         admin_password: values.admin_password,
+        config,
       });
       message.success('租户创建成功，管理员用户已创建');
       navigate('/tenant');
@@ -80,6 +87,14 @@ export default function CreateTenant() {
               placeholder="请输入租户描述" 
               rows={4}
             />
+          </Form.Item>
+
+          <Form.Item name="registry_url" label="镜像仓库地址">
+            <Input placeholder="如: https://registry.example.com" />
+          </Form.Item>
+
+          <Form.Item name="virtual_cluster_name" label="虚拟集群名">
+            <Input placeholder="虚拟集群名称" />
           </Form.Item>
 
           <div style={{ marginBottom: '24px', marginTop: '32px' }}>

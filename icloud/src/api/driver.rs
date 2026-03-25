@@ -31,6 +31,12 @@ pub struct PageQuery {
     pub page_size: Option<u64>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct ListTagsQuery {
+    pub registry: Option<String>,
+    pub image: String,
+}
+
 pub fn create_driver_router(db: DatabaseConnection) -> Router {
     Router::new()
         .route("/drivers", post(create_driver))
@@ -38,7 +44,28 @@ pub fn create_driver_router(db: DatabaseConnection) -> Router {
         .route("/drivers/:id", get(get_driver))
         .route("/drivers/:id", put(update_driver))
         .route("/drivers/:id", delete(delete_driver))
+        .route("/drivers/tags", get(list_image_tags))
+        .route("/drivers/images", get(list_registry_images))
         .with_state(db)
+}
+
+async fn list_image_tags(
+    State(db): State<DatabaseConnection>,
+    Path(TenantPath { tenant_id }): Path<TenantPath>,
+    Query(query): Query<ListTagsQuery>,
+) -> Result<Json<Response<Vec<String>>>, AppError> {
+    let service = DriverService::new(db);
+    let tags = service.list_image_tags(tenant_id, query.registry, query.image).await?;
+    Ok(Json(Response::success(tags)))
+}
+
+async fn list_registry_images(
+    State(db): State<DatabaseConnection>,
+    Path(TenantPath { tenant_id }): Path<TenantPath>,
+) -> Result<Json<Response<Vec<DriverResponse>>>, AppError> {
+    let service = DriverService::new(db);
+    let images = service.list_registry_images(tenant_id).await?;
+    Ok(Json(Response::success(images)))
 }
 
 async fn create_driver(
@@ -65,8 +92,10 @@ async fn list_drivers(
     Path(TenantPath { tenant_id }): Path<TenantPath>,
     Query(_query): Query<PageQuery>,
 ) -> Result<Json<Response<Vec<DriverResponse>>>, AppError> {
+    tracing::info!("API list_drivers called with tenant_id: {}", tenant_id);
     let service = DriverService::new(db);
     let drivers = service.list_by_tenant(tenant_id).await?;
+    tracing::info!("API list_drivers returning {} drivers", drivers.len());
     Ok(Json(Response::success(drivers)))
 }
 

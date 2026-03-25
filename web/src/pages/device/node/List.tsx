@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
-import { Button, Modal, Form, Input, Switch, message, Space, Popconfirm } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Modal, Input, message, Space, Tag, Popconfirm } from 'antd';
+import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { nodeApi } from '@/services/api';
 import type { Node } from '@/types';
 
 export default function NodeList() {
   const [tableData, setTableData] = useState<Node[]>([]);
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editingRecord, setEditingRecord] = useState<Node | null>(null);
+  const [labelModalVisible, setLabelModalVisible] = useState(false);
+  const [editingNode, setEditingNode] = useState<Node | null>(null);
+  const [labels, setLabels] = useState<{ key: string; value: string }[]>([]);
   const [tenantId, setTenantId] = useState<string>('');
-  const [form] = Form.useForm();
 
   const fetchData = async () => {
     const userStr = localStorage.getItem('user');
@@ -25,8 +25,26 @@ export default function NodeList() {
     setLoading(true);
     try {
       const data = await nodeApi.list(user.tenant_id);
-      setTableData(Array.isArray(data.list) ? data.list : []);
+      console.log('Node list response (axios returns):', data);
+      console.log('data is array:', Array.isArray(data));
+      console.log('data.data:', data.data);
+      setTableData(Array.isArray(data) ? data : []);
     } catch (error) {
+      console.error('Fetch nodes error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSync = async () => {
+    if (!tenantId) return;
+    setLoading(true);
+    try {
+      const data = await nodeApi.sync(tenantId);
+      setTableData(Array.isArray(data.data) ? data.data : []);
+      message.success('节点同步成功');
+    } catch (error) {
+      message.error('节点同步失败');
       console.error(error);
     } finally {
       setLoading(false);
@@ -37,38 +55,46 @@ export default function NodeList() {
     fetchData();
   }, []);
 
-  const handleAdd = async (values: any) => {
-    if (!tenantId) return;
-    try {
-      if (editingRecord) {
-        await nodeApi.update(tenantId, editingRecord.id, values);
-        message.success('更新成功');
-      } else {
-        await nodeApi.create(tenantId, values);
-        message.success('创建成功');
+  const handleManageLabels = (record: Node) => {
+    setEditingNode(record);
+    const labelList = record.labels
+      ? Object.entries(record.labels).map(([key, value]) => ({ key, value }))
+      : [];
+    setLabels(labelList);
+    setLabelModalVisible(true);
+  };
+
+  const handleAddLabel = () => {
+    setLabels([...labels, { key: '', value: '' }]);
+  };
+
+  const handleRemoveLabel = (index: number) => {
+    const newLabels = labels.filter((_, i) => i !== index);
+    setLabels(newLabels);
+  };
+
+  const handleLabelChange = (index: number, field: 'key' | 'value', value: string) => {
+    const newLabels = [...labels];
+    newLabels[index][field] = value;
+    setLabels(newLabels);
+  };
+
+  const handleSaveLabels = async () => {
+    if (!editingNode || !tenantId) return;
+    const labelObj: Record<string, string> = {};
+    labels.forEach(label => {
+      if (label.key.trim()) {
+        labelObj[label.key.trim()] = label.value.trim();
       }
-      setModalVisible(false);
-      form.resetFields();
-      setEditingRecord(null);
-      fetchData();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleEdit = (record: Node) => {
-    setEditingRecord(record);
-    form.setFieldsValue(record);
-    setModalVisible(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!tenantId) return;
+    });
     try {
-      await nodeApi.delete(tenantId, id);
-      message.success('删除成功');
+      await nodeApi.updateLabels(tenantId, editingNode.id, { labels: labelObj });
+      message.success('标签更新成功');
+      setLabelModalVisible(false);
+      setEditingNode(null);
       fetchData();
     } catch (error) {
+      message.error('标签更新失败');
       console.error(error);
     }
   };
@@ -80,41 +106,61 @@ export default function NodeList() {
       key: 'name',
     },
     {
-      title: '地址',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '共享节点',
-      dataIndex: 'is_shared',
-      key: 'is_shared',
-      render: (is_shared: boolean) => (
-        <span style={{ color: is_shared ? 'green' : 'gray' }}>
-          {is_shared ? '是' : '否'}
-        </span>
-      ),
-    },
-    {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => (
-        <span style={{ color: status === 'online' ? 'green' : 'red' }}>
-          {status === 'online' ? '在线' : '离线'}
-        </span>
+        <Tag color={status === 'Ready' ? 'green' : 'red'}>
+          {status === 'Ready' ? '就绪' : status}
+        </Tag>
       ),
     },
     {
-      title: '最后同步',
-      dataIndex: 'last_sync',
-      key: 'last_sync',
-      render: (text: string) => text ? new Date(text).toLocaleString() : '-',
+      title: '角色',
+      dataIndex: 'roles',
+      key: 'roles',
+      render: (roles: string[]) => (
+        <Space>
+          {roles?.map(role => (
+            <Tag key={role} color="blue">{role}</Tag>
+          ))}
+        </Space>
+      ),
     },
     {
-      title: '创建时间',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (text: string) => new Date(text).toLocaleString(),
+      title: '标签',
+      dataIndex: 'labels',
+      key: 'labels',
+      width: 300,
+      render: (labels: Record<string, string>) => (
+        <Space wrap>
+          {labels && Object.entries(labels).map(([key, value]) => (
+            <Tag key={key} color="geekblue">
+              {key}={value}
+            </Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: '内部IP',
+      dataIndex: 'internal_ip',
+      key: 'internal_ip',
+    },
+    {
+      title: '操作系统',
+      dataIndex: 'os',
+      key: 'os',
+    },
+    {
+      title: '内核版本',
+      dataIndex: 'kernel_version',
+      key: 'kernel_version',
+    },
+    {
+      title: '容器运行时',
+      dataIndex: 'container_runtime',
+      key: 'container_runtime',
     },
     {
       title: '操作',
@@ -124,18 +170,10 @@ export default function NodeList() {
           <Button
             type="link"
             icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
+            onClick={() => handleManageLabels(record)}
           >
-            编辑
+            管理标签
           </Button>
-          <Popconfirm
-            title="确认删除?"
-            onConfirm={() => handleDelete(record.id)}
-          >
-            <Button type="link" danger icon={<DeleteOutlined />}>
-              删除
-            </Button>
-          </Popconfirm>
         </Space>
       ),
     },
@@ -143,7 +181,7 @@ export default function NodeList() {
 
   return (
     <div>
-      <ProTable
+      <ProTable<Node>
         headerTitle="节点列表"
         columns={columns}
         dataSource={tableData}
@@ -153,54 +191,57 @@ export default function NodeList() {
         toolBarRender={() => [
           <Button
             type="primary"
-            key="add"
-            icon={<PlusOutlined />}
-            onClick={() => setModalVisible(true)}
+            key="sync"
+            onClick={handleSync}
+            loading={loading}
           >
-            创建节点
+            同步节点
           </Button>,
         ]}
       />
 
       <Modal
-        title={editingRecord ? '编辑节点' : '创建节点'}
-        open={modalVisible}
+        title={`管理节点标签 - ${editingNode?.name || ''}`}
+        open={labelModalVisible}
         onCancel={() => {
-          setModalVisible(false);
-          form.resetFields();
-          setEditingRecord(null);
+          setLabelModalVisible(false);
+          setEditingNode(null);
         }}
-        onOk={form.submit}
+        onOk={handleSaveLabels}
+        width={600}
       >
-        <Form form={form} layout="vertical" onFinish={handleAdd}>
-          <Form.Item
-            name="name"
-            label="名称"
-            rules={[{ required: true, message: '请输入节点名称' }]}
-          >
-            <Input placeholder="请输入节点名称" />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            label="节点地址"
-          >
-            <Input placeholder="请输入节点地址" />
-          </Form.Item>
-          <Form.Item
-            name="k8s_context"
-            label="K8s 上下文"
-          >
-            <Input placeholder="请输入 K8s 上下文名称" />
-          </Form.Item>
-          <Form.Item
-            name="is_shared"
-            label="共享节点"
-            valuePropName="checked"
-            initialValue={false}
-          >
-            <Switch checkedChildren="是" unCheckedChildren="否" />
-          </Form.Item>
-        </Form>
+        <div style={{ marginBottom: 16 }}>
+          <Button type="dashed" onClick={handleAddLabel} icon={<PlusOutlined />}>
+            添加标签
+          </Button>
+        </div>
+        {labels.map((label, index) => (
+          <Space key={index} style={{ display: 'flex', marginBottom: 8 }}>
+            <Input
+              placeholder="标签键"
+              value={label.key}
+              onChange={(e) => handleLabelChange(index, 'key', e.target.value)}
+              style={{ width: 200 }}
+            />
+            <Input
+              placeholder="标签值"
+              value={label.value}
+              onChange={(e) => handleLabelChange(index, 'value', e.target.value)}
+              style={{ width: 200 }}
+            />
+            <Popconfirm
+              title="确认删除此标签?"
+              onConfirm={() => handleRemoveLabel(index)}
+            >
+              <Button danger icon={<DeleteOutlined />} />
+            </Popconfirm>
+          </Space>
+        ))}
+        {labels.length === 0 && (
+          <div style={{ color: '#999', textAlign: 'center', padding: '20px 0' }}>
+            暂无标签，点击上方按钮添加
+          </div>
+        )}
       </Modal>
     </div>
   );

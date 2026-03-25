@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
-import { Button, Modal, Form, Input, message, Space, Popconfirm } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { driverApi } from '@/services/api';
-import type { Driver } from '@/types';
+import { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { driverApi, tenantApi } from '@/services/api';
+import type { Driver, Tenant } from '@/types';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 export default function DriverList() {
   const [tableData, setTableData] = useState<Driver[]>([]);
@@ -13,6 +14,8 @@ export default function DriverList() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState<Driver | null>(null);
   const [tenantId, setTenantId] = useState<string>('');
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [loadingTags, setLoadingTags] = useState(false);
   const [form] = Form.useForm();
 
   const fetchData = async () => {
@@ -27,7 +30,8 @@ export default function DriverList() {
     setLoading(true);
     try {
       const data = await driverApi.list(user.tenant_id);
-      setTableData(Array.isArray(data.list) ? data.list : []);
+      const drivers = Array.isArray(data) ? data : [];
+      setTableData(drivers);
     } catch (error) {
       console.error(error);
     } finally {
@@ -35,33 +39,28 @@ export default function DriverList() {
     }
   };
 
+  const fetchTags = async () => {
+    const imageName = form.getFieldValue('image');
+    if (!imageName) {
+      setAvailableTags([]);
+      return;
+    }
+    setLoadingTags(true);
+    try {
+      const resp = await driverApi.listTags(tenantId, undefined, imageName);
+      setAvailableTags(Array.isArray(resp) ? resp : []);
+    } catch (error) {
+      console.error('Failed to fetch tags:', error);
+      message.error('获取镜像标签失败');
+      setAvailableTags([]);
+    } finally {
+      setLoadingTags(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
-
-  const handleAdd = async (values: any) => {
-    if (!tenantId) return;
-    try {
-      const payload = {
-        ...values,
-        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},
-      };
-      if (editingRecord) {
-        await driverApi.update(tenantId, editingRecord.id, payload);
-        message.success('更新成功');
-      } else {
-        await driverApi.create(tenantId, payload);
-        message.success('创建成功');
-      }
-      setModalVisible(false);
-      form.resetFields();
-      setEditingRecord(null);
-      fetchData();
-    } catch (error) {
-      message.error('操作失败');
-      console.error(error);
-    }
-  };
 
   const handleEdit = (record: Driver) => {
     setEditingRecord(record);
@@ -70,6 +69,26 @@ export default function DriverList() {
       device_profile: JSON.stringify(record.device_profile, null, 2),
     });
     setModalVisible(true);
+    fetchTags();
+  };
+
+  const handleEditSubmit = async (values: any) => {
+    if (!tenantId || !editingRecord) return;
+    try {
+      const payload = {
+        ...values,
+        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},
+      };
+      await driverApi.update(tenantId, editingRecord.id, payload);
+      message.success('更新成功');
+      setModalVisible(false);
+      form.resetFields();
+      setEditingRecord(null);
+      fetchData();
+    } catch (error) {
+      message.error('操作失败');
+      console.error(error);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -95,7 +114,7 @@ export default function DriverList() {
       key: 'protocol_type',
     },
     {
-      title: '镜像',
+      title: '镜像名称',
       dataIndex: 'image',
       key: 'image',
     },
@@ -149,20 +168,11 @@ export default function DriverList() {
         loading={loading}
         rowKey="id"
         search={false}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="add"
-            icon={<PlusOutlined />}
-            onClick={() => setModalVisible(true)}
-          >
-            创建驱动
-          </Button>,
-        ]}
+        toolBarRender={() => []}
       />
 
       <Modal
-        title={editingRecord ? '编辑驱动' : '创建驱动'}
+        title="编辑驱动"
         open={modalVisible}
         onCancel={() => {
           setModalVisible(false);
@@ -172,7 +182,7 @@ export default function DriverList() {
         onOk={form.submit}
         width={700}
       >
-        <Form form={form} layout="vertical" onFinish={handleAdd}>
+        <Form form={form} layout="vertical" onFinish={handleEditSubmit}>
           <Form.Item
             name="name"
             label="名称"
@@ -189,17 +199,28 @@ export default function DriverList() {
           </Form.Item>
           <Form.Item
             name="image"
-            label="镜像地址"
-            rules={[{ required: true, message: '请输入镜像地址' }]}
+            label="镜像名称"
+            rules={[{ required: true, message: '请输入镜像名称' }]}
           >
-            <Input placeholder="如: registry.example.com/modbus-driver:latest" />
+            <Input 
+              placeholder="如: modbus-driver" 
+              onChange={() => fetchTags()}
+            />
           </Form.Item>
           <Form.Item
             name="version"
             label="版本"
-            rules={[{ required: true, message: '请输入版本' }]}
+            rules={[{ required: true, message: '请选择版本' }]}
           >
-            <Input placeholder="如: v1.0.0" />
+            <Select 
+              placeholder="选择版本/标签" 
+              loading={loadingTags}
+              allowClear
+            >
+              {availableTags.map(tag => (
+                <Option key={tag} value={tag}>{tag}</Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item name="description" label="描述">
             <Input.TextArea placeholder="请输入描述" />

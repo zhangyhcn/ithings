@@ -1,0 +1,93 @@
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, ActiveModelTrait, Set};
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
+use chrono::Utc;
+
+use crate::entity::{EmployeeEntity, EmployeeColumn, EmployeeModel as Model};
+use crate::utils::AppError;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreateEmployeeRequest {
+    pub employee_no: String,
+    pub name: String,
+    pub department_id: Option<Uuid>,
+    pub position: Option<String>,
+    pub phone: Option<String>,
+    pub entry_date: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct EmployeeResponse {
+    pub id: String,
+    pub tenant_id: String,
+    pub employee_no: String,
+    pub name: String,
+    pub department_id: Option<String>,
+    pub position: Option<String>,
+    pub phone: Option<String>,
+    pub status: String,
+    pub entry_date: Option<String>,
+    pub created_at: String,
+    pub updated_at: String,
+}
+
+impl From<Model> for EmployeeResponse {
+    fn from(model: Model) -> Self {
+        Self {
+            id: model.id.to_string(),
+            tenant_id: model.tenant_id.to_string(),
+            employee_no: model.employee_no,
+            name: model.name,
+            department_id: model.department_id.map(|id| id.to_string()),
+            position: model.position,
+            phone: model.phone,
+            status: model.status,
+            entry_date: model.entry_date.map(|d| d.to_string()),
+            created_at: model.created_at.to_string(),
+            updated_at: model.updated_at.to_string(),
+        }
+    }
+}
+
+pub struct EmployeeService {
+    db: DatabaseConnection,
+}
+
+impl EmployeeService {
+    pub fn new(db: DatabaseConnection) -> Self {
+        Self { db }
+    }
+
+    pub async fn create(
+        &self,
+        tenant_id: Uuid,
+        req: CreateEmployeeRequest,
+    ) -> Result<EmployeeResponse, AppError> {
+        let now = Utc::now().naive_utc();
+        let active_model = crate::entity::employee::ActiveModel {
+            id: Set(Uuid::new_v4()),
+            tenant_id: Set(tenant_id),
+            employee_no: Set(req.employee_no),
+            name: Set(req.name),
+            department_id: Set(req.department_id),
+            position: Set(req.position),
+            phone: Set(req.phone),
+            status: Set("active".to_string()),
+            entry_date: Set(req.entry_date.and_then(|d| chrono::NaiveDate::parse_from_str(&d, "%Y-%m-%d").ok())),
+            created_at: Set(now),
+            updated_at: Set(now),
+        };
+
+        let model = active_model.insert(&self.db).await?;
+        Ok(model.into())
+    }
+
+    pub async fn list_all(&self, tenant_id: Uuid) -> Result<Vec<EmployeeResponse>, AppError> {
+        let models = EmployeeEntity::find()
+            .filter(EmployeeColumn::TenantId.eq(tenant_id))
+            .all(&self.db)
+            .await?;
+
+        Ok(models.into_iter().map(Into::into).collect())
+    }
+}

@@ -1,7 +1,7 @@
 use axum::{
-    extract::{Path, State, Query},
+    extract::{Path, State},
     response::Json,
-    routing::{delete, get, post, put},
+    routing::{get, put},
     Router,
 };
 use sea_orm::DatabaseConnection;
@@ -10,7 +10,7 @@ use uuid::Uuid;
 
 use crate::{
     response::Response,
-    service::node::{CreateNodeRequest, NodeResponse, NodeService, UpdateNodeRequest},
+    service::node::{NodeResponse, NodeService, UpdateLabelsRequest},
     utils::AppError,
 };
 
@@ -25,74 +25,48 @@ pub struct NodePath {
     pub id: Uuid,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct PageQuery {
-    pub page: Option<u64>,
-    pub page_size: Option<u64>,
-}
-
 pub fn create_node_router(db: DatabaseConnection) -> Router {
     Router::new()
-        .route("/nodes", post(create_node))
         .route("/nodes", get(list_nodes))
+        .route("/nodes/sync", get(sync_nodes))
         .route("/nodes/:id", get(get_node))
-        .route("/nodes/:id", put(update_node))
-        .route("/nodes/:id", delete(delete_node))
+        .route("/nodes/:id/labels", put(update_node_labels))
         .with_state(db)
 }
 
-async fn create_node(
+async fn list_nodes(
     State(db): State<DatabaseConnection>,
     Path(TenantPath { tenant_id }): Path<TenantPath>,
-    Json(req): Json<CreateNodeRequest>,
-) -> Result<Json<Response<NodeResponse>>, AppError> {
+) -> Result<Json<Response<Vec<NodeResponse>>>, AppError> {
     let service = NodeService::new(db);
-    let node = service.create(
-        tenant_id,
-        CreateNodeRequest {
-            name: req.name,
-            address: req.address,
-            k8s_context: req.k8s_context,
-            is_shared: req.is_shared,
-        }
-    ).await?;
-    Ok(Json(Response::success(node)))
+    let nodes = service.list_all().await?;
+    Ok(Json(Response::success(nodes)))
+}
+
+async fn sync_nodes(
+    State(db): State<DatabaseConnection>,
+    Path(TenantPath { tenant_id }): Path<TenantPath>,
+) -> Result<Json<Response<Vec<NodeResponse>>>, AppError> {
+    let service = NodeService::new(db);
+    let nodes = service.sync_from_k8s().await?;
+    Ok(Json(Response::success(nodes)))
 }
 
 async fn get_node(
     State(db): State<DatabaseConnection>,
-    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
+    Path(NodePath { tenant_id, id }): Path<NodePath>,
 ) -> Result<Json<Response<NodeResponse>>, AppError> {
     let service = NodeService::new(db);
     let node = service.find_by_id(id).await?;
     Ok(Json(Response::success(node)))
 }
 
-async fn list_nodes(
+async fn update_node_labels(
     State(db): State<DatabaseConnection>,
-    Path(TenantPath { tenant_id }): Path<TenantPath>,
-    Query(_query): Query<PageQuery>,
-) -> Result<Json<Response<Vec<NodeResponse>>>, AppError> {
-    let service = NodeService::new(db);
-    let nodes = service.list_by_tenant(tenant_id).await?;
-    Ok(Json(Response::success(nodes)))
-}
-
-async fn update_node(
-    State(db): State<DatabaseConnection>,
-    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
-    Json(req): Json<UpdateNodeRequest>,
+    Path(NodePath { tenant_id, id }): Path<NodePath>,
+    Json(req): Json<UpdateLabelsRequest>,
 ) -> Result<Json<Response<NodeResponse>>, AppError> {
     let service = NodeService::new(db);
-    let node = service.update(id, req).await?;
+    let node = service.update_labels(id, req).await?;
     Ok(Json(Response::success(node)))
-}
-
-async fn delete_node(
-    State(db): State<DatabaseConnection>,
-    Path(NodePath { tenant_id: _, id }): Path<NodePath>,
-) -> Result<Json<Response<()>>, AppError> {
-    let service = NodeService::new(db);
-    service.delete(id).await?;
-    Ok(Json(Response::success(())))
 }
