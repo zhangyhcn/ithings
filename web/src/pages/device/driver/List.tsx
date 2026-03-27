@@ -225,16 +225,6 @@ export default function DriverList() {
           <Form.Item name="description" label="描述">
             <Input.TextArea placeholder="请输入描述" />
           </Form.Item>
-          <Form.Item
-            name="device_profile"
-            label="设备配置文件 (JSON)"
-            extra="定义设备的连接参数、数据点等配置模板"
-          >
-            <TextArea
-              rows={8}
-              placeholder='{"connection": {}, "dataPoints": []}'
-            />
-          </Form.Item>
         </Form>
       </Modal>
     </div>

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
 import { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deviceInstanceApi, deviceGroupApi, deviceApi, nodeApi } from '@/services/api';
-import type { DeviceInstance, DeviceGroup, Device, Node } from '@/types';
+import { deviceInstanceApi, deviceGroupApi, deviceApi, driverApi } from '@/services/api';
+import type { DeviceInstance, DeviceGroup, Device, Driver } from '@/types';
 
 export default function DeviceInstanceList() {
   const [tableData, setTableData] = useState<DeviceInstance[]>([]);
@@ -14,9 +14,10 @@ export default function DeviceInstanceList() {
   const [form] = Form.useForm();
   const [groups, setGroups] = useState<DeviceGroup[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
-  const [nodes, setNodes] = useState<Node[]>([]);
+  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<DeviceGroup | null>(null);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
+  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
 
   const fetchData = async () => {
     const userStr = localStorage.getItem('user');
@@ -30,15 +31,15 @@ export default function DeviceInstanceList() {
     
     setLoading(true);
     try {
-      const [groupData, deviceData, nodeData, instanceData] = await Promise.all([
+      const [groupData, deviceData, driverData, instanceData] = await Promise.all([
         deviceGroupApi.list(user.tenant_id),
         deviceApi.list(user.tenant_id),
-        nodeApi.list(user.tenant_id),
+        driverApi.list(user.tenant_id),
         deviceInstanceApi.list(user.tenant_id),
       ]);
       setGroups(Array.isArray(groupData) ? groupData : []);
       setDevices(Array.isArray(deviceData) ? deviceData : []);
-      setNodes(Array.isArray(nodeData) ? nodeData : []);
+      setDrivers(Array.isArray(driverData) ? driverData : []);
       setTableData(Array.isArray(instanceData) ? instanceData : []);
     } catch (error) {
       console.error(error);
@@ -112,7 +113,7 @@ export default function DeviceInstanceList() {
       },
     },
     {
-      title: '关联设备定义',
+      title: '设备定义',
       dataIndex: 'device_id',
       key: 'device_id',
       render: (deviceId: string) => {
@@ -214,9 +215,10 @@ export default function DeviceInstanceList() {
           setEditingRecord(null);
           setSelectedGroup(null);
           setSelectedDevice(null);
+          setSelectedDriver(null);
         }}
         onOk={form.submit}
-        width={600}
+        width={800}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
           <Form.Item
@@ -252,6 +254,11 @@ export default function DeviceInstanceList() {
               onChange={(value) => {
                 const device = devices.find(d => d.id === value);
                 setSelectedDevice(device || null);
+                if (device && device.device_profile) {
+                  form.setFieldsValue({
+                    driver_config: JSON.stringify(device.device_profile, null, 2),
+                  });
+                }
               }}
             >
               {devices.map((device) => (
@@ -263,10 +270,10 @@ export default function DeviceInstanceList() {
           </Form.Item>
           <Form.Item
             name="name"
-            label="设备名称"
-            rules={[{ required: true, message: '请输入设备名称' }]}
+            label="设备实例名称"
+            rules={[{ required: true, message: '请输入设备实例名称' }]}
           >
-            <Input placeholder="请输入设备名称" />
+            <Input placeholder="请输入设备实例名称" />
           </Form.Item>
           <Form.Item
             name="poll_interval_ms"
@@ -293,19 +300,17 @@ export default function DeviceInstanceList() {
               ))}
             </Select>
           </Form.Item>
-          {selectedDevice && selectedDevice.device_profile && (
-            <Form.Item
-              name="driver_config"
-              label="驱动配置"
-              extra="从设备定义继承的驱动配置，可修改"
-            >
-              <Input.TextArea 
-                rows={6} 
-                placeholder="驱动配置JSON"
-                defaultValue={JSON.stringify(selectedDevice.device_profile, null, 2)}
-              />
-            </Form.Item>
-          )}
+          <Form.Item
+            name="driver_config"
+            label="驱动配置"
+            extra="完整的驱动配置JSON，包含driver_name, driver_type, zmq, logging等，可以根据需要修改地址等参数"
+            rules={[{ required: true, message: '请输入驱动配置' }]}
+          >
+            <Input.TextArea 
+              rows={12} 
+              placeholder="驱动配置JSON"
+            />
+          </Form.Item>
         </Form>
       </Modal>
     </div>

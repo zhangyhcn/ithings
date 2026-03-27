@@ -1,0 +1,1 @@
+ALTER TABLE device_groups ADD COLUMN IF NOT EXISTS node_id UUID;

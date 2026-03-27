@@ -511,7 +511,7 @@ impl MenuService {
                 icon: Some("DesktopOutlined"),
                 parent_path: Some("/device"),
                 sort_order: 5,
-                status: "active",
+                status: "inactive",
                 roles: vec!["admin", "editor"],
                 i18n_key: Some("menu.device.instance"),
             },
@@ -546,6 +546,15 @@ impl MenuService {
         // 按层级顺序处理菜单（先一级，后二级）
              for menu_def in default_menus {
                  if existing_paths.contains(menu_def.path) {
+                     // 更新现有菜单的状态
+                     if let Some(existing_menu) = existing_menus.iter().find(|m| m.path == menu_def.path) {
+                         if existing_menu.status != menu_def.status {
+                             tracing::info!("Updating menu status: {} - {} -> {}", menu_def.path, existing_menu.status, menu_def.status);
+                             let mut active_model: menu::ActiveModel = existing_menu.clone().into();
+                             active_model.status = Set(menu_def.status.to_string());
+                             active_model.update(db).await?;
+                         }
+                     }
                      continue;
                  }
 

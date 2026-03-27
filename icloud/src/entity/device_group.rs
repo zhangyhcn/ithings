@@ -14,11 +14,11 @@ pub struct Model {
     #[sea_orm(column_type = "Text")]
     pub name: String,
     #[sea_orm(column_type = "Text")]
-    pub driver_image: String,
-    #[sea_orm(column_type = "Text")]
     pub description: Option<String>,
     #[sea_orm(column_type = "Text")]
     pub status: String,
+    #[sea_orm(column_type = "Uuid")]
+    pub node_id: Option<Uuid>,
     #[sea_orm(column_type = "Timestamp")]
     pub created_at: DateTime,
     #[sea_orm(column_type = "Timestamp")]

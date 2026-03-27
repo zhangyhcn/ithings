@@ -14,7 +14,6 @@ pub struct CreateDeviceInstanceRequest {
     pub driver_config: Option<JsonValue>,
     pub thing_model: Option<JsonValue>,
     pub poll_interval_ms: Option<i32>,
-    pub node_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -33,6 +32,7 @@ pub struct DeviceInstanceResponse {
     pub tenant_id: String,
     pub group_id: String,
     pub device_id: String,
+    pub product_id: Option<String>,
     pub name: String,
     pub driver_config: JsonValue,
     pub thing_model: JsonValue,
@@ -49,7 +49,8 @@ impl From<Model> for DeviceInstanceResponse {
             id: model.id.to_string(),
             tenant_id: model.tenant_id.to_string(),
             group_id: model.group_id.to_string(),
-            device_id: model.product_id.to_string(),
+            device_id: model.device_id.to_string(),
+            product_id: model.product_id.map(|id| id.to_string()),
             name: model.name,
             driver_config: model.driver_config,
             thing_model: model.thing_model,
@@ -96,33 +97,26 @@ impl DeviceInstanceService {
             .await?
             .ok_or(AppError::NotFound("Device not found".to_string()))?;
 
-        let driver_config = req.driver_config.unwrap_or_else(|| {
-            device.device_profile.clone()
-        });
+        let product_id = device.product_id;
 
+        let driver_config = req.driver_config.unwrap_or_else(|| device.device_profile.clone());
         let thing_model = req.thing_model.unwrap_or_else(|| {
-            serde_json::json!({})
+            product_id.map(|p| serde_json::json!({}))
+                .unwrap_or_else(|| serde_json::json!({}))
         });
-
-        let node_id = match req.node_id {
-            Some(id) if !id.is_empty() => {
-                Some(Uuid::parse_str(&id)
-                    .map_err(|_| AppError::BadRequest("Invalid node_id".to_string()))?)
-            }
-            _ => None,
-        };
 
         let now = chrono::Utc::now().naive_utc();
         let active_model = crate::entity::device_instance::ActiveModel {
             id: Set(Uuid::new_v4()),
             tenant_id: Set(tenant_id),
             group_id: Set(group_id),
-            product_id: Set(device_id),
+            device_id: Set(device_id),
+            product_id: Set(product_id),
             name: Set(req.name),
             driver_config: Set(driver_config),
             thing_model: Set(thing_model),
             poll_interval_ms: Set(req.poll_interval_ms.unwrap_or(1000)),
-            node_id: Set(node_id),
+            node_id: Set(None),
             status: Set("pending".to_string()),
             created_at: Set(now),
             updated_at: Set(now),

@@ -462,6 +462,7 @@ export const deviceGroupApi = {
       name: string;
       driver_image: string;
       description?: string;
+      node_id?: string;
     }
   ) => request.post(`/tenants/${tenantId}/device-groups`, data),
   update: (
@@ -472,10 +473,19 @@ export const deviceGroupApi = {
       driver_image?: string;
       description?: string;
       status?: string;
+      node_id?: string;
     }
   ) => request.put(`/tenants/${tenantId}/device-groups/${id}`, data),
   delete: (tenantId: string, id: string) =>
     request.delete(`/tenants/${tenantId}/device-groups/${id}`),
+  publish: (
+    tenantId: string,
+    id: string,
+    data: {
+      node_id: string;
+      labels: Record<string, string>;
+    }
+  ) => request.post(`/tenants/${tenantId}/device-groups/${id}/publish`, data),
 };
 
 export const deviceInstanceApi = {

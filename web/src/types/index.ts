@@ -222,9 +222,9 @@ export interface DeviceGroup {
   org_id: string;
   site_id: string;
   name: string;
-  driver_image: string;
   description?: string;
   status: string;
+  node_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -234,6 +234,7 @@ export interface DeviceInstance {
   tenant_id: string;
   group_id: string;
   device_id: string;
+  product_id: string;
   name: string;
   driver_config: any;
   thing_model: any;
@@ -264,6 +265,7 @@ export interface Device {
   name: string;
   model?: string;
   manufacturer?: string;
+  device_image: string;
   driver_image?: string;
   device_profile: any;
   description?: string;

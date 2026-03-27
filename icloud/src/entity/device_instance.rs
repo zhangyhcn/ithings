@@ -10,7 +10,9 @@ pub struct Model {
     #[sea_orm(column_type = "Uuid")]
     pub group_id: Uuid,
     #[sea_orm(column_type = "Uuid")]
-    pub product_id: Uuid,
+    pub device_id: Uuid,
+    #[sea_orm(column_type = "Uuid")]
+    pub product_id: Option<Uuid>,
     #[sea_orm(column_type = "Text")]
     pub name: String,
     #[sea_orm(column_type = "Json")]
@@ -44,6 +46,12 @@ pub enum Relation {
     )]
     DeviceGroup,
     #[sea_orm(
+        belongs_to = "super::device::Entity",
+        from = "Column::DeviceId",
+        to = "super::device::Column::Id"
+    )]
+    Device,
+    #[sea_orm(
         belongs_to = "super::product::Entity",
         from = "Column::ProductId",
         to = "super::product::Column::Id"
@@ -60,6 +68,12 @@ impl Related<super::tenant::Entity> for Entity {
 impl Related<super::device_group::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::DeviceGroup.def()
+    }
+}
+
+impl Related<super::device::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Device.def()
     }
 }
 

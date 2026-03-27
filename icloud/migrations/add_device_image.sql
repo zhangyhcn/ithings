@@ -1,0 +1,1 @@
+ALTER TABLE device_groups ADD COLUMN IF NOT EXISTS device_image TEXT NOT NULL DEFAULT '';

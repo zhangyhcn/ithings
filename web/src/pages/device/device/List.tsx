@@ -108,6 +108,12 @@ export default function DeviceList() {
       key: 'manufacturer',
     },
     {
+      title: '设备镜像',
+      dataIndex: 'device_image',
+      key: 'device_image',
+      ellipsis: true,
+    },
+    {
       title: '驱动镜像',
       dataIndex: 'driver_image',
       key: 'driver_image',
@@ -213,6 +219,9 @@ export default function DeviceList() {
           </Form.Item>
           <Form.Item name="manufacturer" label="生产厂家">
             <Input placeholder="请输入生产厂家" />
+          </Form.Item>
+          <Form.Item name="device_image" label="设备镜像" rules={[{ required: true, message: '请输入设备镜像地址' }]}>
+            <Input placeholder="例如: device-meter:latest" />
           </Form.Item>
           <Form.Item name="driver_image" label="驱动镜像">
             <Select

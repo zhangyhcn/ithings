@@ -49,7 +49,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 9
       },
       "enableBy": "register"
     },
@@ -62,7 +62,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 60
+        "register": 44
       },
       "enableBy": "register"
     },
@@ -79,7 +79,7 @@
             0
           ]
         },
-        "register": 15
+        "register": 29
       },
       "enableBy": "register"
     },
@@ -93,10 +93,10 @@
       "time": {
         "hooks": {
           "onStart": [
-            14
+            28
           ]
         },
-        "register": 14
+        "register": 26
       },
       "enableBy": "register"
     },
@@ -110,10 +110,10 @@
       "time": {
         "hooks": {
           "modifyRoutes": [
-            0
+            1
           ]
         },
-        "register": 3
+        "register": 6
       },
       "enableBy": "register"
     },
@@ -126,7 +126,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -140,10 +140,10 @@
       "time": {
         "hooks": {
           "modifyAppData": [
-            81
+            298
           ]
         },
-        "register": 169
+        "register": 194
       },
       "enableBy": "register"
     },
@@ -156,7 +156,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -173,10 +173,10 @@
             0
           ],
           "onCheck": [
-            1
+            10
           ]
         },
-        "register": 6
+        "register": 12
       },
       "enableBy": "register"
     },
@@ -190,10 +190,10 @@
       "time": {
         "hooks": {
           "onCheck": [
-            2
+            1
           ]
         },
-        "register": 3
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -206,7 +206,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 7
       },
       "enableBy": "config"
     },
@@ -220,10 +220,10 @@
       "time": {
         "hooks": {
           "modifyConfig": [
-            0
+            3
           ]
         },
-        "register": 29
+        "register": 88
       },
       "enableBy": "register"
     },
@@ -235,7 +235,7 @@
       "enableBy": "register",
       "time": {
         "hooks": {},
-        "register": 0
+        "register": 1
       }
     },
     "virtual: config-styles": {
@@ -246,7 +246,7 @@
       "enableBy": "register",
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 0
       }
     },
     "virtual: config-scripts": {
@@ -1075,7 +1075,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 8
       },
       "enableBy": "config"
     },
@@ -1089,10 +1089,10 @@
       "time": {
         "hooks": {
           "onStart": [
-            2
+            7
           ]
         },
-        "register": 5
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -1105,7 +1105,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -1118,7 +1118,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 524
+        "register": 1098
       },
       "enableBy": "register"
     },
@@ -1131,7 +1131,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 155
+        "register": 358
       },
       "enableBy": "config"
     },
@@ -1144,7 +1144,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 77
+        "register": 146
       },
       "enableBy": "config"
     },
@@ -1158,10 +1158,10 @@
       "time": {
         "hooks": {
           "modifyAppData": [
-            0
+            2
           ]
         },
-        "register": 2
+        "register": 12
       },
       "enableBy": "register"
     },
@@ -1174,7 +1174,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -1187,7 +1187,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 9
+        "register": 12
       },
       "enableBy": "config"
     },
@@ -1201,10 +1201,10 @@
       "time": {
         "hooks": {
           "onStart": [
-            7
+            17
           ]
         },
-        "register": 120
+        "register": 275
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/mpa/mpa": {
@@ -1216,7 +1216,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 11
       },
       "enableBy": "config"
     },
@@ -1229,7 +1229,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 6
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/overrides/overrides": {
@@ -1241,7 +1241,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 2
       },
       "enableBy": "register"
     },
@@ -1254,7 +1254,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 18
       },
       "enableBy": "config"
     },
@@ -1268,10 +1268,10 @@
       "time": {
         "hooks": {
           "modifyConfig": [
-            3
+            10
           ]
         },
-        "register": 7
+        "register": 22
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/polyfill/publicPathPolyfill": {
@@ -1283,7 +1283,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 4
       },
       "enableBy": "register"
     },
@@ -1296,7 +1296,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 20
       },
       "enableBy": "register"
     },
@@ -1309,7 +1309,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 7
       },
       "enableBy": "config"
     },
@@ -1322,7 +1322,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 4
       },
       "enableBy": "config"
     },
@@ -1335,7 +1335,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 5
       },
       "enableBy": "register"
     },
@@ -1348,7 +1348,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 14
+        "register": 58
       },
       "enableBy": "register"
     },
@@ -1361,7 +1361,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 29
       },
       "enableBy": "config"
     },
@@ -1374,7 +1374,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 8
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/ssr/ssr": {
@@ -1386,7 +1386,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 7
+        "register": 20
       },
       "enableBy": "config"
     },
@@ -1399,7 +1399,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 10
+        "register": 16
       },
       "enableBy": "register"
     },
@@ -1412,7 +1412,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 14
+        "register": 59
       },
       "enableBy": "register"
     },
@@ -1425,7 +1425,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 14
+        "register": 34
       },
       "enableBy": "config"
     },
@@ -1438,7 +1438,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 11
       },
       "enableBy": "config"
     },
@@ -1451,7 +1451,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 16
+        "register": 38
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/monorepo/redirect": {
@@ -1463,7 +1463,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 105
+        "register": 250
       },
       "enableBy": "config"
     },
@@ -1476,7 +1476,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 8
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/clickToComponent/clickToComponent": {
@@ -1488,7 +1488,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 12
       },
       "enableBy": "config"
     },
@@ -1501,7 +1501,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 24
       },
       "enableBy": "config"
     },
@@ -1514,7 +1514,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 6
       },
       "enableBy": "config"
     },
@@ -1527,7 +1527,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 12
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/swc/swc": {
@@ -1540,10 +1540,10 @@
       "time": {
         "hooks": {
           "addOnDemandDeps": [
-            1
+            0
           ]
         },
-        "register": 2
+        "register": 4
       },
       "enableBy": "register"
     },
@@ -1556,7 +1556,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 15
+        "register": 40
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/mako/mako": {
@@ -1568,7 +1568,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 40
       },
       "enableBy": "config"
     },
@@ -1581,7 +1581,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 20
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/hmrGuardian/hmrGuardian": {
@@ -1593,7 +1593,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 12
+        "register": 42
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/routePreloadOnLoad/routePreloadOnLoad": {
@@ -1605,7 +1605,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 127
+        "register": 712
       }
     },
     "./node_modules/@umijs/preset-umi/dist/features/forget/forget": {
@@ -1617,7 +1617,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 39
       },
       "enableBy": "config"
     },
@@ -1630,7 +1630,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 6
+        "register": 24
       },
       "enableBy": "register"
     },
@@ -1643,7 +1643,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 10
+        "register": 76
       },
       "enableBy": "register"
     },
@@ -1656,7 +1656,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 246
+        "register": 522
       },
       "enableBy": "register"
     },
@@ -1670,10 +1670,10 @@
       "time": {
         "hooks": {
           "modifyAppData": [
-            95
+            255
           ]
         },
-        "register": 99
+        "register": 462
       }
     },
     "./node_modules/@umijs/preset-umi/dist/commands/help": {
@@ -1685,7 +1685,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1698,7 +1698,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 26
       },
       "enableBy": "register"
     },
@@ -1711,7 +1711,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 10
       },
       "enableBy": "register"
     },
@@ -1724,7 +1724,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 24
       },
       "enableBy": "register"
     },
@@ -1737,7 +1737,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 8
       },
       "enableBy": "register"
     },
@@ -1750,7 +1750,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 5
+        "register": 32
       },
       "enableBy": "register"
     },
@@ -1763,7 +1763,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 10
       },
       "enableBy": "register"
     },
@@ -1776,7 +1776,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 16
       },
       "enableBy": "register"
     },
@@ -1789,7 +1789,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 12
       },
       "enableBy": "register"
     },
@@ -1802,7 +1802,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1815,7 +1815,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1828,7 +1828,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 4
       },
       "enableBy": "register"
     },
@@ -1841,7 +1841,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 1
+        "register": 3
       },
       "enableBy": "register"
     },
@@ -1854,7 +1854,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1867,7 +1867,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1880,7 +1880,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 22
       },
       "enableBy": "register"
     },
@@ -1893,7 +1893,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 2
+        "register": 13
       },
       "enableBy": "register"
     },
@@ -1906,7 +1906,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 13
       },
       "enableBy": "register"
     },
@@ -1919,7 +1919,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 117
+        "register": 295
       },
       "enableBy": "register"
     },
@@ -1932,7 +1932,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 4
+        "register": 11
       },
       "enableBy": "register"
     },
@@ -1945,7 +1945,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 9
+        "register": 37
       },
       "enableBy": "register"
     },
@@ -1958,7 +1958,7 @@
       "config": {},
       "time": {
         "hooks": {},
-        "register": 3
+        "register": 17
       },
       "enableBy": "register"
     }
@@ -2109,7 +2109,7 @@
     "npmClient": "npm",
     "proxy": {
       "/api": {
-        "target": "http://localhost:9001",
+        "target": "http://localhost:9005",
         "changeOrigin": true
       }
     }
@@ -2282,7 +2282,7 @@
     "npmClient": "npm",
     "proxy": {
       "/api": {
-        "target": "http://localhost:9001",
+        "target": "http://localhost:9005",
         "changeOrigin": true
       }
     },
@@ -2525,7 +2525,7 @@
       "parentId": "24",
       "id": "26",
       "absPath": "/device/driver",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { driverApi, tenantApi } from '@/services/api';\nimport type { Driver, Tenant } from '@/types';\n\nconst { TextArea } = Input;\nconst { Option } = Select;\n\nexport default function DriverList() {\n  const [tableData, setTableData] = useState<Driver[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Driver | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [availableTags, setAvailableTags] = useState<string[]>([]);\n  const [loadingTags, setLoadingTags] = useState(false);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await driverApi.list(user.tenant_id);\n      const drivers = Array.isArray(data) ? data : [];\n      setTableData(drivers);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchTags = async () => {\n    const imageName = form.getFieldValue('image');\n    if (!imageName) {\n      setAvailableTags([]);\n      return;\n    }\n    setLoadingTags(true);\n    try {\n      const resp = await driverApi.listTags(tenantId, undefined, imageName);\n      setAvailableTags(Array.isArray(resp) ? resp : []);\n    } catch (error) {\n      console.error('Failed to fetch tags:', error);\n      message.error('获取镜像标签失败');\n      setAvailableTags([]);\n    } finally {\n      setLoadingTags(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleEdit = (record: Driver) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n    fetchTags();\n  };\n\n  const handleEditSubmit = async (values: any) => {\n    if (!tenantId || !editingRecord) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      await driverApi.update(tenantId, editingRecord.id, payload);\n      message.success('更新成功');\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await driverApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Driver>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '协议类型',\n      dataIndex: 'protocol_type',\n      key: 'protocol_type',\n    },\n    {\n      title: '镜像名称',\n      dataIndex: 'image',\n      key: 'image',\n    },\n    {\n      title: '版本',\n      dataIndex: 'version',\n      key: 'version',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"驱动列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => []}\n      />\n\n      <Modal\n        title=\"编辑驱动\"\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={700}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleEditSubmit}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入驱动名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"protocol_type\"\n            label=\"协议类型\"\n            rules={[{ required: true, message: '请输入协议类型' }]}\n          >\n            <Input placeholder=\"如: modbus-tcp, opc-ua\" />\n          </Form.Item>\n          <Form.Item\n            name=\"image\"\n            label=\"镜像名称\"\n            rules={[{ required: true, message: '请输入镜像名称' }]}\n          >\n            <Input \n              placeholder=\"如: modbus-driver\" \n              onChange={() => fetchTags()}\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"version\"\n            label=\"版本\"\n            rules={[{ required: true, message: '请选择版本' }]}\n          >\n            <Select \n              placeholder=\"选择版本/标签\" \n              loading={loadingTags}\n              allowClear\n            >\n              {availableTags.map(tag => (\n                <Option key={tag} value={tag}>{tag}</Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n          <Form.Item\n            name=\"device_profile\"\n            label=\"设备配置文件 (JSON)\"\n            extra=\"定义设备的连接参数、数据点等配置模板\"\n          >\n            <TextArea\n              rows={8}\n              placeholder='{\"connection\": {}, \"dataPoints\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { driverApi, tenantApi } from '@/services/api';\nimport type { Driver, Tenant } from '@/types';\n\nconst { TextArea } = Input;\nconst { Option } = Select;\n\nexport default function DriverList() {\n  const [tableData, setTableData] = useState<Driver[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Driver | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [availableTags, setAvailableTags] = useState<string[]>([]);\n  const [loadingTags, setLoadingTags] = useState(false);\n  const [form] = Form.useForm();\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const data = await driverApi.list(user.tenant_id);\n      const drivers = Array.isArray(data) ? data : [];\n      setTableData(drivers);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  const fetchTags = async () => {\n    const imageName = form.getFieldValue('image');\n    if (!imageName) {\n      setAvailableTags([]);\n      return;\n    }\n    setLoadingTags(true);\n    try {\n      const resp = await driverApi.listTags(tenantId, undefined, imageName);\n      setAvailableTags(Array.isArray(resp) ? resp : []);\n    } catch (error) {\n      console.error('Failed to fetch tags:', error);\n      message.error('获取镜像标签失败');\n      setAvailableTags([]);\n    } finally {\n      setLoadingTags(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleEdit = (record: Driver) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n    fetchTags();\n  };\n\n  const handleEditSubmit = async (values: any) => {\n    if (!tenantId || !editingRecord) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      await driverApi.update(tenantId, editingRecord.id, payload);\n      message.success('更新成功');\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await driverApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Driver>[] = [\n    {\n      title: '名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '协议类型',\n      dataIndex: 'protocol_type',\n      key: 'protocol_type',\n    },\n    {\n      title: '镜像名称',\n      dataIndex: 'image',\n      key: 'image',\n    },\n    {\n      title: '版本',\n      dataIndex: 'version',\n      key: 'version',\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"驱动列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => []}\n      />\n\n      <Modal\n        title=\"编辑驱动\"\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={700}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleEditSubmit}>\n          <Form.Item\n            name=\"name\"\n            label=\"名称\"\n            rules={[{ required: true, message: '请输入名称' }]}\n          >\n            <Input placeholder=\"请输入驱动名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"protocol_type\"\n            label=\"协议类型\"\n            rules={[{ required: true, message: '请输入协议类型' }]}\n          >\n            <Input placeholder=\"如: modbus-tcp, opc-ua\" />\n          </Form.Item>\n          <Form.Item\n            name=\"image\"\n            label=\"镜像名称\"\n            rules={[{ required: true, message: '请输入镜像名称' }]}\n          >\n            <Input \n              placeholder=\"如: modbus-driver\" \n              onChange={() => fetchTags()}\n            />\n          </Form.Item>\n          <Form.Item\n            name=\"version\"\n            label=\"版本\"\n            rules={[{ required: true, message: '请选择版本' }]}\n          >\n            <Select \n              placeholder=\"选择版本/标签\" \n              loading={loadingTags}\n              allowClear\n            >\n              {availableTags.map(tag => (\n                <Option key={tag} value={tag}>{tag}</Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/driver/List.tsx"
     },
@@ -2545,7 +2545,7 @@
       "parentId": "24",
       "id": "28",
       "absPath": "/device/device",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceApi, productApi, driverApi } from '@/services/api';\nimport type { Device, Product, Driver } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function DeviceList() {\n  const [tableData, setTableData] = useState<Device[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Device | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [products, setProducts] = useState<Product[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const [deviceData, productData, driverData] = await Promise.all([\n        deviceApi.list(user.tenant_id),\n        productApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n      ]);\n      setTableData(Array.isArray(deviceData) ? deviceData : []);\n      setProducts(Array.isArray(productData) ? productData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      if (editingRecord) {\n        await deviceApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await deviceApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Device) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Device>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '设备型号',\n      dataIndex: 'model',\n      key: 'model',\n    },\n    {\n      title: '生产厂家',\n      dataIndex: 'manufacturer',\n      key: 'manufacturer',\n    },\n    {\n      title: '驱动镜像',\n      dataIndex: 'driver_image',\n      key: 'driver_image',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      valueEnum: {\n        active: { text: '正常', status: 'Success' },\n        inactive: { text: '停用', status: 'Default' },\n        fault: { text: '故障', status: 'Error' },\n      },\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备' : '创建设备'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={800}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item name=\"product_id\" label=\"所属产品\">\n            <Select\n              placeholder=\"请选择产品\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {products.map((product) => (\n                <Select.Option key={product.id} value={product.id}>\n                  {product.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"model\" label=\"设备型号\">\n            <Input placeholder=\"请输入设备型号规格\" />\n          </Form.Item>\n          <Form.Item name=\"manufacturer\" label=\"生产厂家\">\n            <Input placeholder=\"请输入生产厂家\" />\n          </Form.Item>\n          <Form.Item name=\"driver_image\" label=\"驱动镜像\">\n            <Select\n              placeholder=\"请选择驱动镜像\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {drivers.map((driver) => (\n                <Select.Option key={driver.id} value={driver.image}>\n                  {driver.name} ({driver.image})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" rows={2} />\n          </Form.Item>\n          <Form.Item\n            name=\"device_profile\"\n            label=\"设备配置文件 (JSON)\"\n            extra=\"定义设备的连接参数、数据点等配置\"\n          >\n            <TextArea\n              rows={8}\n              placeholder='{\"connection\": {}, \"dataPoints\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceApi, productApi, driverApi } from '@/services/api';\nimport type { Device, Product, Driver } from '@/types';\n\nconst { TextArea } = Input;\n\nexport default function DeviceList() {\n  const [tableData, setTableData] = useState<Device[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<Device | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [products, setProducts] = useState<Product[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    setLoading(true);\n    try {\n      const [deviceData, productData, driverData] = await Promise.all([\n        deviceApi.list(user.tenant_id),\n        productApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n      ]);\n      setTableData(Array.isArray(deviceData) ? deviceData : []);\n      setProducts(Array.isArray(productData) ? productData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      const payload = {\n        ...values,\n        device_profile: values.device_profile ? JSON.parse(values.device_profile) : {},\n      };\n      if (editingRecord) {\n        await deviceApi.update(tenantId, editingRecord.id, payload);\n        message.success('更新成功');\n      } else {\n        await deviceApi.create(tenantId, payload);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      message.error('操作失败');\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: Device) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      device_profile: JSON.stringify(record.device_profile, null, 2),\n    });\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<Device>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '设备型号',\n      dataIndex: 'model',\n      key: 'model',\n    },\n    {\n      title: '生产厂家',\n      dataIndex: 'manufacturer',\n      key: 'manufacturer',\n    },\n    {\n      title: '设备镜像',\n      dataIndex: 'device_image',\n      key: 'device_image',\n      ellipsis: true,\n    },\n    {\n      title: '驱动镜像',\n      dataIndex: 'driver_image',\n      key: 'driver_image',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      valueEnum: {\n        active: { text: '正常', status: 'Success' },\n        inactive: { text: '停用', status: 'Default' },\n        fault: { text: '故障', status: 'Error' },\n      },\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备' : '创建设备'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n        }}\n        onOk={form.submit}\n        width={800}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item name=\"product_id\" label=\"所属产品\">\n            <Select\n              placeholder=\"请选择产品\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {products.map((product) => (\n                <Select.Option key={product.id} value={product.id}>\n                  {product.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"model\" label=\"设备型号\">\n            <Input placeholder=\"请输入设备型号规格\" />\n          </Form.Item>\n          <Form.Item name=\"manufacturer\" label=\"生产厂家\">\n            <Input placeholder=\"请输入生产厂家\" />\n          </Form.Item>\n          <Form.Item name=\"device_image\" label=\"设备镜像\" rules={[{ required: true, message: '请输入设备镜像地址' }]}>\n            <Input placeholder=\"例如: device-meter:latest\" />\n          </Form.Item>\n          <Form.Item name=\"driver_image\" label=\"驱动镜像\">\n            <Select\n              placeholder=\"请选择驱动镜像\"\n              allowClear\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {drivers.map((driver) => (\n                <Select.Option key={driver.id} value={driver.image}>\n                  {driver.name} ({driver.image})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item name=\"description\" label=\"描述\">\n            <Input.TextArea placeholder=\"请输入描述\" rows={2} />\n          </Form.Item>\n          <Form.Item\n            name=\"device_profile\"\n            label=\"设备配置文件 (JSON)\"\n            extra=\"定义设备的连接参数、数据点等配置\"\n          >\n            <TextArea\n              rows={8}\n              placeholder='{\"connection\": {}, \"dataPoints\": []}'\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/device/List.tsx"
     },
@@ -2555,7 +2555,7 @@
       "parentId": "24",
       "id": "29",
       "absPath": "/device/group",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceGroupApi, organizationApi, siteApi, driverApi } from '@/services/api';\nimport type { DeviceGroup, Organization, Site, Driver } from '@/types';\n\nexport default function DeviceGroupList() {\n  const [tableData, setTableData] = useState<DeviceGroup[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceGroup | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [organizations, setOrganizations] = useState<Organization[]>([]);\n  const [sites, setSites] = useState<Site[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n  const [selectedOrgId, setSelectedOrgId] = useState<string>('');\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [orgData, driverData, groupData] = await Promise.all([\n        organizationApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n        deviceGroupApi.list(user.tenant_id),\n      ]);\n      setOrganizations(Array.isArray(orgData) ? orgData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n      setTableData(Array.isArray(groupData) ? groupData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const fetchSites = async (orgId: string) => {\n    if (!tenantId || !orgId) return;\n    try {\n      const siteData = await siteApi.list(tenantId);\n      const orgSites = Array.isArray(siteData.list) \n        ? siteData.list.filter((s: Site) => s.organization_id === orgId)\n        : [];\n      setSites(orgSites);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingRecord) {\n        await deviceGroupApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceGroupApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceGroup) => {\n    setEditingRecord(record);\n    form.setFieldsValue(record);\n    setSelectedOrgId(record.org_id);\n    fetchSites(record.org_id);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceGroupApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<DeviceGroup>[] = [\n    {\n      title: '设备组名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '所属组织',\n      dataIndex: 'org_id',\n      key: 'org_id',\n      render: (orgId: string) => {\n        const org = organizations.find(o => o.id === orgId);\n        return org ? org.name : orgId;\n      },\n    },\n    {\n      title: '所属站点',\n      dataIndex: 'site_id',\n      key: 'site_id',\n      render: (siteId: string) => {\n        const site = sites.find(s => s.id === siteId);\n        return site ? site.name : siteId;\n      },\n    },\n    {\n      title: '驱动镜像',\n      dataIndex: 'driver_image',\n      key: 'driver_image',\n      ellipsis: true,\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' ? 'green' : 'red' }}>\n          {status === 'active' ? '启用' : '禁用'}\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备组列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备组\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备组' : '创建设备组'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n          setSelectedOrgId('');\n          setSites([]);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"org_id\"\n            label=\"所属组织\"\n            rules={[{ required: true, message: '请选择组织' }]}\n          >\n            <Select\n              placeholder=\"请选择组织\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                setSelectedOrgId(value);\n                form.setFieldsValue({ site_id: undefined });\n                fetchSites(value);\n              }}\n            >\n              {organizations.map((org) => (\n                <Select.Option key={org.id} value={org.id}>\n                  {org.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"site_id\"\n            label=\"所属站点\"\n            rules={[{ required: true, message: '请选择站点' }]}\n          >\n            <Select\n              placeholder=\"请选择站点\"\n              showSearch\n              optionFilterProp=\"children\"\n              disabled={!selectedOrgId}\n            >\n              {sites.map((site) => (\n                <Select.Option key={site.id} value={site.id}>\n                  {site.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备组名称\"\n            rules={[{ required: true, message: '请输入设备组名称' }]}\n          >\n            <Input placeholder=\"请输入设备组名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"driver_image\"\n            label=\"驱动镜像\"\n            rules={[{ required: true, message: '请选择驱动镜像' }]}\n          >\n            <Select\n              placeholder=\"请选择驱动镜像\"\n              showSearch\n              optionFilterProp=\"children\"\n            >\n              {drivers.map((driver) => (\n                <Select.Option key={driver.id} value={driver.image}>\n                  {driver.name} ({driver.image})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns, ProRowSelection } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber, Row, Col, Dropdown } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined, DownOutlined, UpOutlined, CheckCircleOutlined } from '@ant-design/icons';\nimport { deviceGroupApi, organizationApi, siteApi, productApi, driverApi, deviceInstanceApi, deviceApi, nodeApi } from '@/services/api';\nimport type { DeviceGroup, Organization, Site, Device, Driver, DeviceInstance, Node } from '@/types';\n\nexport default function DeviceGroupList() {\n  const [tableData, setTableData] = useState<DeviceGroup[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceGroup | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [organizations, setOrganizations] = useState<Organization[]>([]);\n  const [selectedOrgId, setSelectedOrgId] = useState<string>('');\n  const [sites, setSites] = useState<Site[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n  const [devices, setDevices] = useState<Device[]>([]);\n  const [nodes, setNodes] = useState<Node[]>([]);\n  const [instances, setInstances] = useState<DeviceInstance[]>([]);\n  const [instanceModalVisible, setInstanceModalVisible] = useState(false);\n  const [editingInstance, setEditingInstance] = useState<DeviceInstance | null>(null);\n  const [selectedGroup, setSelectedGroup] = useState<DeviceGroup | null>(null);\n  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);\n  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);\n  const [instanceForm] = Form.useForm();\n  \n  // 发布相关状态\n  const [publishModalVisible, setPublishModalVisible] = useState(false);\n  const [publishingGroup, setPublishingGroup] = useState<DeviceGroup | null>(null);\n  const [selectedNode, setSelectedNode] = useState<Node | null>(null);\n  const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({});\n  const [filteredNodes, setFilteredNodes] = useState<Node[]>([]);\n  const [publishForm] = Form.useForm();\n  const [labelInput, setLabelInput] = useState<string>('');\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [orgData, productData, driverData, deviceData, nodeData, instanceData, groupData] = await Promise.all([\n        organizationApi.list(user.tenant_id),\n        productApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n        deviceApi.list(user.tenant_id),\n        nodeApi.list(user.tenant_id),\n        deviceInstanceApi.list(user.tenant_id),\n        deviceGroupApi.list(user.tenant_id),\n      ]);\n      setOrganizations(Array.isArray(orgData) ? orgData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n      setDevices(Array.isArray(deviceData) ? deviceData : []);\n      setNodes(Array.isArray(nodeData) ? nodeData : []);\n      setInstances(Array.isArray(instanceData) ? instanceData : []);\n      setTableData(Array.isArray(groupData) ? groupData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const fetchSites = async (orgId: string) => {\n    if (!tenantId || !orgId) return;\n    try {\n      const siteData = await siteApi.list(tenantId);\n      const orgSites = Array.isArray(siteData) \n        ? siteData.filter((s: Site) => s.organization_id === orgId)\n        : [];\n      setSites(orgSites);\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingRecord) {\n        await deviceGroupApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceGroupApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceGroup) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      node_id: record.node_id || undefined,\n    });\n    setSelectedOrgId(record.org_id);\n    fetchSites(record.org_id);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceGroupApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handlePublish = (group: DeviceGroup) => {\n    setPublishingGroup(group);\n    setSelectedNode(group.node_id ? nodes.find(n => n.id === group.node_id) : null);\n    setNodeLabels({});\n    setFilteredNodes(nodes);\n    setLabelInput('');\n    publishForm.resetFields();\n    if (group.node_id) {\n      publishForm.setFieldsValue({ node_id: group.node_id });\n    }\n    setPublishModalVisible(true);\n  };\n\n  const handleLabelInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {\n    const text = e.target.value;\n    setLabelInput(text);\n  };\n\n  const handleLabelSearch = () => {\n    // 解析输入的value（逗号分隔）\n    const values = labelInput\n      .split(',')\n      .map(v => v.trim())\n      .filter(v => v);\n    \n    // 根据value筛选节点\n    const filtered = nodes.filter(node => {\n      // 检查节点的任何标签值是否包含输入的value\n      return Object.values(node.labels).some(labelValue => \n        values.some(value => labelValue.includes(value))\n      );\n    });\n    setFilteredNodes(filtered);\n  };\n\n  const handlePublishSubmit = async (values: any) => {\n    if (!tenantId || !publishingGroup) return;\n    try {\n      // 解析标签\n      const labels: Record<string, string> = {};\n      labelInput.split('\\n').forEach(line => {\n        const parts = line.split('=');\n        if (parts.length === 2) {\n          labels[parts[0].trim()] = parts[1].trim();\n        }\n      });\n      \n      await deviceGroupApi.publish(tenantId, publishingGroup.id, {\n        ...values,\n        labels\n      });\n      message.success('发布成功');\n      setPublishModalVisible(false);\n      setPublishingGroup(null);\n      setSelectedNode(null);\n      setLabelInput('');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  // 设备实例相关操作\n  const handleAddInstance = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingInstance) {\n        await deviceInstanceApi.update(tenantId, editingInstance.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceInstanceApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setInstanceModalVisible(false);\n      instanceForm.resetFields();\n      setEditingInstance(null);\n      setSelectedGroup(null);\n      setSelectedDevice(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEditInstance = (record: DeviceInstance) => {\n    setEditingInstance(record);\n    instanceForm.setFieldsValue({\n      ...record,\n      node_id: record.node_id || undefined,\n      driver_config: JSON.stringify(record.driver_config, null, 2),\n    });\n    const group = tableData.find(g => g.id === record.group_id);\n    setSelectedGroup(group || null);\n    const device = devices.find(d => d.id === record.device_id);\n    setSelectedDevice(device || null);\n    setInstanceModalVisible(true);\n  };\n\n  const handleDeleteInstance = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceInstanceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const openInstanceModal = (group: DeviceGroup) => {\n    setSelectedGroup(group);\n    setEditingInstance(null);\n    instanceForm.resetFields();\n    instanceForm.setFieldsValue({ group_id: group.id });\n    setInstanceModalVisible(true);\n  };\n\n  // 设备实例列定义\n  const instanceColumns: ProColumns<DeviceInstance>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '设备定义',\n      dataIndex: 'device_id',\n      key: 'device_id',\n      render: (deviceId: string) => {\n        const device = devices.find(d => d.id === deviceId);\n        return device ? device.name : deviceId;\n      },\n    },\n    {\n      title: '轮询间隔',\n      dataIndex: 'poll_interval_ms',\n      key: 'poll_interval_ms',\n      render: (val: number) => `${val} ms`,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'running' ? 'green' : status === 'pending' ? 'orange' : 'red' }}>\n          {\n            {\n              pending: '等待中',\n              running: '运行中',\n              stopped: '已停止',\n              error: '错误',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEditInstance(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDeleteInstance(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  const columns: ProColumns<DeviceGroup>[] = [\n    {\n      title: '设备组名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '所属组织',\n      dataIndex: 'org_id',\n      key: 'org_id',\n      render: (orgId: string) => {\n        const org = organizations.find(o => o.id === orgId);\n        return org ? org.name : orgId;\n      },\n    },\n    {\n      title: '所属站点',\n      dataIndex: 'site_id',\n      key: 'site_id',\n      render: (siteId: string) => {\n        const site = sites.find(s => s.id === siteId);\n        return site ? site.name : siteId;\n      },\n    },\n    {\n      title: '部署节点',\n      dataIndex: 'node_id',\n      key: 'node_id',\n      render: (nodeId: string) => {\n        if (!nodeId) return '-';\n        const node = nodes.find(n => n.id === nodeId);\n        return node ? node.name : nodeId;\n      },\n    },\n    {\n      title: '描述',\n      dataIndex: 'description',\n      key: 'description',\n      ellipsis: true,\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'active' || status === 'published' ? 'green' : 'red' }}>\n          {\n            {\n              active: '启用',\n              published: '已发布',\n              disabled: '禁用',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Dropdown menu={{\n          items: [\n            {\n              key: 'addInstance',\n              label: (\n                <Button type=\"link\" icon={<PlusOutlined />} onClick={() => openInstanceModal(record)}>\n                  添加\n                </Button>\n              ),\n            },\n            {\n              key: 'edit',\n              label: (\n                <Button type=\"link\" icon={<EditOutlined />} onClick={() => handleEdit(record)}>\n                  编辑\n                </Button>\n              ),\n            },\n            {\n              key: 'publish',\n              label: (\n                <Button type=\"link\" icon={<CheckCircleOutlined />} onClick={() => handlePublish(record)}>\n                  发布\n                </Button>\n              ),\n            },\n            {\n              key: 'delete',\n              label: (\n                <Popconfirm\n                  title=\"确认删除?\"\n                  onConfirm={() => handleDelete(record.id)}\n                >\n                  <Button type=\"link\" danger icon={<DeleteOutlined />}>\n                    删除\n                  </Button>\n                </Popconfirm>\n              ),\n            },\n          ],\n        }}>\n          <Button type=\"primary\">\n            操作 <DownOutlined />\n          </Button>\n        </Dropdown>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备组列表\"\n        columns={columns}\n        expandable={{\n          expandedRowRender: (record) => {\n            const groupInstances = instances.filter(instance => instance.group_id === record.id);\n            return (\n              <div style={{ padding: '16px' }}>\n                <ProTable\n                  headerTitle=\"设备实例列表\"\n                  columns={instanceColumns}\n                  dataSource={groupInstances}\n                  rowKey=\"id\"\n                  search={false}\n                  pagination={{ showSizeChanger: false, pageSize: 5 }}\n                />\n              </div>\n            );\n          },\n        }}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备组\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备组' : '创建设备组'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n          setSelectedOrgId('');\n          setSites([]);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"org_id\"\n            label=\"所属组织\"\n            rules={[{ required: true, message: '请选择组织' }]}\n          >\n            <Select\n              placeholder=\"请选择组织\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                setSelectedOrgId(value);\n                form.setFieldsValue({ site_id: undefined });\n                fetchSites(value);\n              }}\n            >\n              {organizations.map((org) => (\n                <Select.Option key={org.id} value={org.id}>\n                  {org.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"site_id\"\n            label=\"所属站点\"\n            rules={[{ required: true, message: '请选择站点' }]}\n          >\n            <Select\n              placeholder=\"请选择站点\"\n              showSearch\n              optionFilterProp=\"children\"\n              disabled={!selectedOrgId}\n            >\n              {sites.map((site) => (\n                <Select.Option key={site.id} value={site.id}>\n                  {site.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备组名称\"\n            rules={[{ required: true, message: '请输入设备组名称' }]}\n          >\n            <Input placeholder=\"请输入设备组名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"部署节点\"\n          >\n            <Select\n              placeholder=\"请选择部署节点（可选）\"\n              showSearch\n              optionFilterProp=\"children\"\n              allowClear\n            >\n              {nodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"description\"\n            label=\"描述\"\n          >\n            <Input.TextArea placeholder=\"请输入描述\" rows={3} />\n          </Form.Item>\n        </Form>\n      </Modal>\n\n      <Modal\n        title={editingInstance ? '编辑设备实例' : '添加设备实例'}\n        open={instanceModalVisible}\n        onCancel={() => {\n          setInstanceModalVisible(false);\n          instanceForm.resetFields();\n          setEditingInstance(null);\n          setSelectedGroup(null);\n          setSelectedDevice(null);\n          setSelectedDriver(null);\n        }}\n        onOk={instanceForm.submit}\n        width={800}\n      >\n        <Form form={instanceForm} layout=\"vertical\" onFinish={handleAddInstance}>\n          <Form.Item\n            name=\"group_id\"\n            label=\"所属设备组\"\n            rules={[{ required: true, message: '请选择设备组' }]}\n          >\n            <Select\n              placeholder=\"请选择设备组\"\n              showSearch\n              optionFilterProp=\"children\"\n              disabled={!!selectedGroup}\n            >\n              {tableData.map((group) => (\n                <Select.Option key={group.id} value={group.id}>\n                  {group.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"device_id\"\n            label=\"选择设备定义\"\n            rules={[{ required: true, message: '请选择设备定义' }]}\n          >\n            <Select\n              placeholder=\"请选择设备定义\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const device = devices.find(d => d.id === value);\n                setSelectedDevice(device || null);\n                if (device && device.device_profile) {\n                  instanceForm.setFieldsValue({\n                    driver_config: JSON.stringify(device.device_profile, null, 2),\n                  });\n                }\n              }}\n            >\n              {devices.map((device) => (\n                <Select.Option key={device.id} value={device.id}>\n                  {device.name} {device.model ? `(${device.model})` : ''}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备实例名称\"\n            rules={[{ required: true, message: '请输入设备实例名称' }]}\n          >\n            <Input placeholder=\"请输入设备实例名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"poll_interval_ms\"\n            label=\"轮询间隔(ms)\"\n            initialValue={1000}\n            rules={[{ required: true, message: '请输入轮询间隔' }]}\n          >\n            <InputNumber min={100} placeholder=\"请输入轮询间隔\" style={{ width: '100%' }} />\n          </Form.Item>\n          <Form.Item\n            name=\"driver_config\"\n            label=\"驱动配置\"\n            extra=\"完整的驱动配置JSON，包含driver_name, driver_type, zmq, logging等，可以根据需要修改地址等参数\"\n            rules={[{ required: true, message: '请输入驱动配置' }]}\n          >\n            <Input.TextArea \n              rows={10} \n              placeholder=\"驱动配置JSON\"\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n\n      <Modal\n        title=\"发布设备组\"\n        open={publishModalVisible}\n        onCancel={() => {\n          setPublishModalVisible(false);\n          setPublishingGroup(null);\n          setSelectedNode(null);\n          setNodeLabels({});\n          setLabelInput('');\n          publishForm.resetFields();\n        }}\n        onOk={publishForm.submit}\n        width={600}\n      >\n        <Form form={publishForm} layout=\"vertical\" onFinish={handlePublishSubmit}>\n          <Form.Item\n            label=\"节点标签筛选\"\n          >\n            <Row gutter={16}>\n              <Col span={18}>\n                <Input.TextArea \n                  rows={3} \n                  placeholder=\"输入标签值，多个值用逗号隔开\"\n                  value={labelInput}\n                  onChange={handleLabelInputChange}\n                />\n              </Col>\n              <Col span={6}>\n                <Button \n                  type=\"primary\" \n                  onClick={handleLabelSearch}\n                  style={{ marginTop: 8 }}\n                >\n                  搜索\n                </Button>\n              </Col>\n            </Row>\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"选择节点\"\n            rules={[{ required: true, message: '请选择节点' }]}\n          >\n            <Select\n              placeholder=\"请选择节点\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const node = filteredNodes.find(n => n.id === value);\n                setSelectedNode(node || null);\n              }}\n            >\n              {filteredNodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name} ({Object.entries(node.labels).map(([k, v]) => `${k}=${v}`).join(', ')})\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/group/List.tsx"
     },
@@ -2565,7 +2565,7 @@
       "parentId": "24",
       "id": "30",
       "absPath": "/device/instance",
-      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceInstanceApi, deviceGroupApi, deviceApi, nodeApi } from '@/services/api';\nimport type { DeviceInstance, DeviceGroup, Device, Node } from '@/types';\n\nexport default function DeviceInstanceList() {\n  const [tableData, setTableData] = useState<DeviceInstance[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceInstance | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [groups, setGroups] = useState<DeviceGroup[]>([]);\n  const [devices, setDevices] = useState<Device[]>([]);\n  const [nodes, setNodes] = useState<Node[]>([]);\n  const [selectedGroup, setSelectedGroup] = useState<DeviceGroup | null>(null);\n  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [groupData, deviceData, nodeData, instanceData] = await Promise.all([\n        deviceGroupApi.list(user.tenant_id),\n        deviceApi.list(user.tenant_id),\n        nodeApi.list(user.tenant_id),\n        deviceInstanceApi.list(user.tenant_id),\n      ]);\n      setGroups(Array.isArray(groupData) ? groupData : []);\n      setDevices(Array.isArray(deviceData) ? deviceData : []);\n      setNodes(Array.isArray(nodeData) ? nodeData : []);\n      setTableData(Array.isArray(instanceData) ? instanceData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingRecord) {\n        await deviceInstanceApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceInstanceApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      setSelectedGroup(null);\n      setSelectedDevice(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceInstance) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      node_id: record.node_id || undefined,\n    });\n    const group = groups.find(g => g.id === record.group_id);\n    setSelectedGroup(group || null);\n    const device = devices.find(d => d.id === record.device_id);\n    setSelectedDevice(device || null);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceInstanceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<DeviceInstance>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '所属设备组',\n      dataIndex: 'group_id',\n      key: 'group_id',\n      render: (groupId: string) => {\n        const group = groups.find(g => g.id === groupId);\n        return group ? group.name : groupId;\n      },\n    },\n    {\n      title: '关联设备定义',\n      dataIndex: 'device_id',\n      key: 'device_id',\n      render: (deviceId: string) => {\n        const device = devices.find(d => d.id === deviceId);\n        return device ? device.name : deviceId;\n      },\n    },\n    {\n      title: '轮询间隔',\n      dataIndex: 'poll_interval_ms',\n      key: 'poll_interval_ms',\n      render: (val: number) => `${val} ms`,\n    },\n    {\n      title: '部署节点',\n      dataIndex: 'node_id',\n      key: 'node_id',\n      render: (nodeId: string) => {\n        if (!nodeId) return '-';\n        const node = nodes.find(n => n.id === nodeId);\n        return node ? node.name : nodeId;\n      },\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'running' ? 'green' : status === 'pending' ? 'orange' : 'red' }}>\n          {\n            {\n              pending: '等待中',\n              running: '运行中',\n              stopped: '已停止',\n              error: '错误',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备实例列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备实例\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备实例' : '创建设备实例'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n          setSelectedGroup(null);\n          setSelectedDevice(null);\n        }}\n        onOk={form.submit}\n        width={600}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"group_id\"\n            label=\"所属设备组\"\n            rules={[{ required: true, message: '请选择设备组' }]}\n          >\n            <Select\n              placeholder=\"请选择设备组\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const group = groups.find(g => g.id === value);\n                setSelectedGroup(group || null);\n              }}\n            >\n              {groups.map((group) => (\n                <Select.Option key={group.id} value={group.id}>\n                  {group.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"device_id\"\n            label=\"选择设备定义\"\n            rules={[{ required: true, message: '请选择设备定义' }]}\n          >\n            <Select\n              placeholder=\"请选择设备定义\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const device = devices.find(d => d.id === value);\n                setSelectedDevice(device || null);\n              }}\n            >\n              {devices.map((device) => (\n                <Select.Option key={device.id} value={device.id}>\n                  {device.name} {device.model ? `(${device.model})` : ''}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备名称\"\n            rules={[{ required: true, message: '请输入设备名称' }]}\n          >\n            <Input placeholder=\"请输入设备名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"poll_interval_ms\"\n            label=\"轮询间隔(ms)\"\n            initialValue={1000}\n            rules={[{ required: true, message: '请输入轮询间隔' }]}\n          >\n            <InputNumber min={100} placeholder=\"请输入轮询间隔\" style={{ width: '100%' }} />\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"部署节点\"\n          >\n            <Select\n              placeholder=\"请选择节点（可选）\"\n              showSearch\n              optionFilterProp=\"children\"\n              allowClear\n            >\n              {nodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          {selectedDevice && selectedDevice.device_profile && (\n            <Form.Item\n              name=\"driver_config\"\n              label=\"驱动配置\"\n              extra=\"从设备定义继承的驱动配置，可修改\"\n            >\n              <Input.TextArea \n                rows={6} \n                placeholder=\"驱动配置JSON\"\n                defaultValue={JSON.stringify(selectedDevice.device_profile, null, 2)}\n              />\n            </Form.Item>\n          )}\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
+      "__content": "import { useState, useEffect } from 'react';\nimport { ProTable, ProColumns } from '@ant-design/pro-components';\nimport { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber } from 'antd';\nimport { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';\nimport { deviceInstanceApi, deviceGroupApi, deviceApi, driverApi } from '@/services/api';\nimport type { DeviceInstance, DeviceGroup, Device, Driver } from '@/types';\n\nexport default function DeviceInstanceList() {\n  const [tableData, setTableData] = useState<DeviceInstance[]>([]);\n  const [loading, setLoading] = useState(false);\n  const [modalVisible, setModalVisible] = useState(false);\n  const [editingRecord, setEditingRecord] = useState<DeviceInstance | null>(null);\n  const [tenantId, setTenantId] = useState<string>('');\n  const [form] = Form.useForm();\n  const [groups, setGroups] = useState<DeviceGroup[]>([]);\n  const [devices, setDevices] = useState<Device[]>([]);\n  const [drivers, setDrivers] = useState<Driver[]>([]);\n  const [selectedGroup, setSelectedGroup] = useState<DeviceGroup | null>(null);\n  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);\n  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);\n\n  const fetchData = async () => {\n    const userStr = localStorage.getItem('user');\n    if (!userStr) {\n      setTableData([]);\n      setLoading(false);\n      return;\n    }\n    const user = JSON.parse(userStr);\n    setTenantId(user.tenant_id);\n    \n    setLoading(true);\n    try {\n      const [groupData, deviceData, driverData, instanceData] = await Promise.all([\n        deviceGroupApi.list(user.tenant_id),\n        deviceApi.list(user.tenant_id),\n        driverApi.list(user.tenant_id),\n        deviceInstanceApi.list(user.tenant_id),\n      ]);\n      setGroups(Array.isArray(groupData) ? groupData : []);\n      setDevices(Array.isArray(deviceData) ? deviceData : []);\n      setDrivers(Array.isArray(driverData) ? driverData : []);\n      setTableData(Array.isArray(instanceData) ? instanceData : []);\n    } catch (error) {\n      console.error(error);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  useEffect(() => {\n    fetchData();\n  }, []);\n\n  const handleAdd = async (values: any) => {\n    if (!tenantId) return;\n    try {\n      if (editingRecord) {\n        await deviceInstanceApi.update(tenantId, editingRecord.id, values);\n        message.success('更新成功');\n      } else {\n        await deviceInstanceApi.create(tenantId, values);\n        message.success('创建成功');\n      }\n      setModalVisible(false);\n      form.resetFields();\n      setEditingRecord(null);\n      setSelectedGroup(null);\n      setSelectedDevice(null);\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const handleEdit = (record: DeviceInstance) => {\n    setEditingRecord(record);\n    form.setFieldsValue({\n      ...record,\n      node_id: record.node_id || undefined,\n    });\n    const group = groups.find(g => g.id === record.group_id);\n    setSelectedGroup(group || null);\n    const device = devices.find(d => d.id === record.device_id);\n    setSelectedDevice(device || null);\n    setModalVisible(true);\n  };\n\n  const handleDelete = async (id: string) => {\n    if (!tenantId) return;\n    try {\n      await deviceInstanceApi.delete(tenantId, id);\n      message.success('删除成功');\n      fetchData();\n    } catch (error) {\n      console.error(error);\n    }\n  };\n\n  const columns: ProColumns<DeviceInstance>[] = [\n    {\n      title: '设备名称',\n      dataIndex: 'name',\n      key: 'name',\n    },\n    {\n      title: '所属设备组',\n      dataIndex: 'group_id',\n      key: 'group_id',\n      render: (groupId: string) => {\n        const group = groups.find(g => g.id === groupId);\n        return group ? group.name : groupId;\n      },\n    },\n    {\n      title: '设备定义',\n      dataIndex: 'device_id',\n      key: 'device_id',\n      render: (deviceId: string) => {\n        const device = devices.find(d => d.id === deviceId);\n        return device ? device.name : deviceId;\n      },\n    },\n    {\n      title: '轮询间隔',\n      dataIndex: 'poll_interval_ms',\n      key: 'poll_interval_ms',\n      render: (val: number) => `${val} ms`,\n    },\n    {\n      title: '部署节点',\n      dataIndex: 'node_id',\n      key: 'node_id',\n      render: (nodeId: string) => {\n        if (!nodeId) return '-';\n        const node = nodes.find(n => n.id === nodeId);\n        return node ? node.name : nodeId;\n      },\n    },\n    {\n      title: '状态',\n      dataIndex: 'status',\n      key: 'status',\n      render: (status: string) => (\n        <span style={{ color: status === 'running' ? 'green' : status === 'pending' ? 'orange' : 'red' }}>\n          {\n            {\n              pending: '等待中',\n              running: '运行中',\n              stopped: '已停止',\n              error: '错误',\n            }[status] || status\n          }\n        </span>\n      ),\n    },\n    {\n      title: '创建时间',\n      dataIndex: 'created_at',\n      key: 'created_at',\n      render: (text: string) => new Date(text).toLocaleString(),\n    },\n    {\n      title: '操作',\n      key: 'action',\n      render: (_, record) => (\n        <Space>\n          <Button\n            type=\"link\"\n            icon={<EditOutlined />}\n            onClick={() => handleEdit(record)}\n          >\n            编辑\n          </Button>\n          <Popconfirm\n            title=\"确认删除?\"\n            onConfirm={() => handleDelete(record.id)}\n          >\n            <Button type=\"link\" danger icon={<DeleteOutlined />}>\n              删除\n            </Button>\n          </Popconfirm>\n        </Space>\n      ),\n    },\n  ];\n\n  return (\n    <div>\n      <ProTable\n        headerTitle=\"设备实例列表\"\n        columns={columns}\n        dataSource={tableData}\n        loading={loading}\n        rowKey=\"id\"\n        search={false}\n        toolBarRender={() => [\n          <Button\n            type=\"primary\"\n            key=\"add\"\n            icon={<PlusOutlined />}\n            onClick={() => setModalVisible(true)}\n          >\n            创建设备实例\n          </Button>,\n        ]}\n      />\n\n      <Modal\n        title={editingRecord ? '编辑设备实例' : '创建设备实例'}\n        open={modalVisible}\n        onCancel={() => {\n          setModalVisible(false);\n          form.resetFields();\n          setEditingRecord(null);\n          setSelectedGroup(null);\n          setSelectedDevice(null);\n          setSelectedDriver(null);\n        }}\n        onOk={form.submit}\n        width={800}\n      >\n        <Form form={form} layout=\"vertical\" onFinish={handleAdd}>\n          <Form.Item\n            name=\"group_id\"\n            label=\"所属设备组\"\n            rules={[{ required: true, message: '请选择设备组' }]}\n          >\n            <Select\n              placeholder=\"请选择设备组\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const group = groups.find(g => g.id === value);\n                setSelectedGroup(group || null);\n              }}\n            >\n              {groups.map((group) => (\n                <Select.Option key={group.id} value={group.id}>\n                  {group.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"device_id\"\n            label=\"选择设备定义\"\n            rules={[{ required: true, message: '请选择设备定义' }]}\n          >\n            <Select\n              placeholder=\"请选择设备定义\"\n              showSearch\n              optionFilterProp=\"children\"\n              onChange={(value) => {\n                const device = devices.find(d => d.id === value);\n                setSelectedDevice(device || null);\n                if (device && device.device_profile) {\n                  form.setFieldsValue({\n                    driver_config: JSON.stringify(device.device_profile, null, 2),\n                  });\n                }\n              }}\n            >\n              {devices.map((device) => (\n                <Select.Option key={device.id} value={device.id}>\n                  {device.name} {device.model ? `(${device.model})` : ''}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"name\"\n            label=\"设备实例名称\"\n            rules={[{ required: true, message: '请输入设备实例名称' }]}\n          >\n            <Input placeholder=\"请输入设备实例名称\" />\n          </Form.Item>\n          <Form.Item\n            name=\"poll_interval_ms\"\n            label=\"轮询间隔(ms)\"\n            initialValue={1000}\n            rules={[{ required: true, message: '请输入轮询间隔' }]}\n          >\n            <InputNumber min={100} placeholder=\"请输入轮询间隔\" style={{ width: '100%' }} />\n          </Form.Item>\n          <Form.Item\n            name=\"node_id\"\n            label=\"部署节点\"\n          >\n            <Select\n              placeholder=\"请选择节点（可选）\"\n              showSearch\n              optionFilterProp=\"children\"\n              allowClear\n            >\n              {nodes.map((node) => (\n                <Select.Option key={node.id} value={node.id}>\n                  {node.name}\n                </Select.Option>\n              ))}\n            </Select>\n          </Form.Item>\n          <Form.Item\n            name=\"driver_config\"\n            label=\"驱动配置\"\n            extra=\"完整的驱动配置JSON，包含driver_name, driver_type, zmq, logging等，可以根据需要修改地址等参数\"\n            rules={[{ required: true, message: '请输入驱动配置' }]}\n          >\n            <Input.TextArea \n              rows={12} \n              placeholder=\"驱动配置JSON\"\n            />\n          </Form.Item>\n        </Form>\n      </Modal>\n    </div>\n  );\n}\n",
       "__isJSFile": true,
       "__absFile": "/root/source/rust/ithings/web/src/pages/device/instance/List.tsx"
     },

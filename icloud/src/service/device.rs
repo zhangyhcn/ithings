@@ -15,6 +15,7 @@ pub struct CreateDeviceRequest {
     pub product_id: Option<String>,
     pub model: Option<String>,
     pub manufacturer: Option<String>,
+    pub device_image: String,
     pub driver_image: Option<String>,
     #[serde(default)]
     pub device_profile: Option<JsonValue>,
@@ -27,6 +28,7 @@ pub struct UpdateDeviceRequest {
     pub product_id: Option<String>,
     pub model: Option<String>,
     pub manufacturer: Option<String>,
+    pub device_image: Option<String>,
     pub driver_image: Option<String>,
     pub device_profile: Option<JsonValue>,
     pub description: Option<String>,
@@ -41,6 +43,7 @@ pub struct DeviceResponse {
     pub name: String,
     pub model: Option<String>,
     pub manufacturer: Option<String>,
+    pub device_image: String,
     pub driver_image: Option<String>,
     pub device_profile: JsonValue,
     pub description: Option<String>,
@@ -58,6 +61,7 @@ impl From<Model> for DeviceResponse {
             name: model.name,
             model: model.model,
             manufacturer: model.manufacturer,
+            device_image: model.device_image,
             driver_image: model.driver_image,
             device_profile: model.device_profile,
             description: model.description,
@@ -114,6 +118,7 @@ impl DeviceService {
             name: Set(req.name),
             model: Set(req.model),
             manufacturer: Set(req.manufacturer),
+            device_image: Set(req.device_image),
             driver_image: Set(req.driver_image),
             device_profile: Set(req.device_profile.unwrap_or(serde_json::json!({}))),
             description: Set(req.description),
@@ -178,6 +183,9 @@ impl DeviceService {
         }
         if let Some(manufacturer) = req.manufacturer {
             active_model.manufacturer = Set(Some(manufacturer));
+        }
+        if let Some(device_image) = req.device_image {
+            active_model.device_image = Set(device_image);
         }
         if let Some(driver_image) = req.driver_image {
             active_model.driver_image = Set(Some(driver_image));

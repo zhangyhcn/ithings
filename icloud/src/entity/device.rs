@@ -16,6 +16,8 @@ pub struct Model {
     #[sea_orm(column_type = "Text")]
     pub manufacturer: Option<String>,
     #[sea_orm(column_type = "Text")]
+    pub device_image: String,
+    #[sea_orm(column_type = "Text")]
     pub driver_image: Option<String>,
     #[sea_orm(column_type = "Json")]
     pub device_profile: Json,

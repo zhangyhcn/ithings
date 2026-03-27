@@ -1,6 +1,7 @@
 mod api;
 mod config;
 mod entity;
+mod k8s;
 mod middleware;
 mod migration;
 mod response;
@@ -323,6 +324,23 @@ async fn main() {
         r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS os TEXT"#,
         r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS kernel_version TEXT"#,
         r#"ALTER TABLE nodes ADD COLUMN IF NOT EXISTS container_runtime TEXT"#,
+        r#"CREATE TABLE IF NOT EXISTS device_groups (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            tenant_id UUID NOT NULL,
+            org_id UUID NOT NULL,
+            site_id UUID NOT NULL,
+            name TEXT NOT NULL,
+            driver_image TEXT NOT NULL,
+            description TEXT,
+            status TEXT NOT NULL DEFAULT 'active',
+            node_id UUID,
+            created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+            updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+            FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
+            FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE CASCADE,
+            FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
+        )"#,
+        r#"ALTER TABLE device_groups ADD COLUMN IF NOT EXISTS node_id UUID"#,
         r#"CREATE TABLE IF NOT EXISTS device_instances (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             tenant_id UUID NOT NULL,
@@ -351,6 +369,7 @@ async fn main() {
             name TEXT NOT NULL,
             model TEXT,
             manufacturer TEXT,
+            device_image TEXT NOT NULL DEFAULT 'device-meter:latest',
             driver_image TEXT,
             device_profile JSON NOT NULL DEFAULT '{}',
             description TEXT,
@@ -362,6 +381,9 @@ async fn main() {
             FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE SET NULL,
             FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
         )"#,
+        r#"ALTER TABLE device_groups ADD COLUMN IF NOT EXISTS device_image TEXT NOT NULL DEFAULT '';"#,
+        r#"ALTER TABLE devices ADD COLUMN IF NOT EXISTS device_image TEXT NOT NULL DEFAULT 'device-meter:latest';"#,
+        r#"ALTER TABLE device_instances ADD COLUMN IF NOT EXISTS device_id UUID NOT NULL;"#,
     ];
 
     for sql in migrations {

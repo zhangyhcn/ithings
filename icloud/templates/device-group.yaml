@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{deployment_name}}
+  namespace: {{namespace}}
+  labels:
+    app: {{deployment_name}}
+    device-group: {{group_id}}
+    app.kubernetes.io/managed-by: ithings
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{deployment_name}}
+      device-group: {{group_id}}
+      app.kubernetes.io/managed-by: ithings
+  template:
+    metadata:
+      labels:
+        app: {{deployment_name}}
+        device-group: {{group_id}}
+        app.kubernetes.io/managed-by: ithings
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+{{#each device_containers}}
+      - name: {{this.name}}
+        image: {{this.image}}
+        imagePullPolicy: Always
+        args: ["--configfile", "/config/config.json", "--group"]
+        volumeMounts:
+        - name: device-config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+{{/each}}
+      - name: driver
+        image: {{driver_image}}
+        imagePullPolicy: Always
+        args: ["-c", "/config/driver-config.json"]
+        volumeMounts:
+        - name: device-config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+{{#if node_selector}}
+      nodeSelector:
+{{#each node_selector}}
+        {{key}}: {{value}}
+{{/each}}
+{{/if}}
+      volumes:
+      - name: device-config
+        configMap:
+          name: {{configmap_name}}
+      restartPolicy: Always

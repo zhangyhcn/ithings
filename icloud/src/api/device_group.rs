@@ -10,7 +10,7 @@ use uuid::Uuid;
 
 use crate::{
     response::Response,
-    service::device_group::{CreateDeviceGroupRequest, DeviceGroupResponse, DeviceGroupService, UpdateDeviceGroupRequest},
+    service::device_group::{CreateDeviceGroupRequest, DeviceGroupResponse, DeviceGroupService, UpdateDeviceGroupRequest, PublishDeviceGroupRequest},
     utils::AppError,
 };
 
@@ -32,6 +32,7 @@ pub fn create_device_group_router(db: DatabaseConnection) -> Router {
         .route("/device-groups/:id", get(get_device_group))
         .route("/device-groups/:id", put(update_device_group))
         .route("/device-groups/:id", delete(delete_device_group))
+        .route("/device-groups/:id/publish", post(publish_device_group))
         .with_state(db)
 }
 
@@ -79,5 +80,15 @@ async fn delete_device_group(
 ) -> Result<Json<Response<()>>, AppError> {
     let service = DeviceGroupService::new(db);
     service.delete(id).await?;
+    Ok(Json(Response::success(())))
+}
+
+async fn publish_device_group(
+    State(db): State<DatabaseConnection>,
+    Path(DeviceGroupPath { tenant_id: _, id }): Path<DeviceGroupPath>,
+    Json(req): Json<PublishDeviceGroupRequest>,
+) -> Result<Json<Response<()>>, AppError> {
+    let service = DeviceGroupService::new(db);
+    service.publish(id, req).await?;
     Ok(Json(Response::success(())))
 }
