@@ -1,4 +1,4 @@
-use crate::config::DeviceConfig;
+use crate::config::{DeviceConfig, group::RemoteTransportConfig};
 use crate::transport::publisher::{RemotePublisher, PublisherType};
 use crate::transport::subscriber::{RemoteSubscriber, SubscriberType};
 use crate::transport::mqtt::MqttPublisher;
@@ -10,6 +10,35 @@ use anyhow::Result;
 pub struct PublisherFactory;
 
 impl PublisherFactory {
+    pub fn create_from_remote_transport(rt: &RemoteTransportConfig) -> Result<Box<dyn RemotePublisher>> {
+        match rt.r#type.as_str() {
+            "mqtt" => {
+                let mqtt_config = crate::config::MqttConfig {
+                    enabled: true,
+                    broker_address: rt.broker.clone().unwrap_or_default(),
+                    client_id: rt.client_id.clone().unwrap_or_else(|| uuid::Uuid::new_v4().to_string()),
+                    username: rt.username.clone(),
+                    password: rt.password.clone(),
+                    ..Default::default()
+                };
+                Ok(Box::new(MqttPublisher::new(&mqtt_config)))
+            }
+            "kafka" => {
+                let kafka_config = crate::config::KafkaConfig {
+                    enabled: true,
+                    brokers: rt.brokers.clone().unwrap_or_default(),
+                    username: rt.username.clone(),
+                    password: rt.password.clone(),
+                    ..Default::default()
+                };
+                Ok(Box::new(KafkaPublisher::new(&kafka_config)))
+            }
+            _ => {
+                anyhow::bail!("Unsupported remote transport type: {}", rt.r#type);
+            }
+        }
+    }
+
     pub fn create(config: &DeviceConfig) -> Result<Option<Box<dyn RemotePublisher>>> {
         if let Some(publisher_type) = config.custom.get("publisher_type") {
             let publisher_type: PublisherType = serde_json::from_value(publisher_type.clone())?;

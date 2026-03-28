@@ -1,0 +1,559 @@
+{
+  "tenant_id": "5a631a2e-b2b1-447f-b2f7-e510a82bdc23",
+  "org_id": "3d5fdd4a-9b1b-4259-9d05-c0b8e2410ee4",
+  "site_id": "2f911d47-660b-44fb-9fcf-8bc1603e6c31",
+  "namespace_id": "6fc31a9e-43fa-4641-8e6a-7473ad14ebab",
+  "remote_transport": {
+    "broker": "tcp://172.25.219.101:1883",
+    "client_id": "ithings-tenant-001",
+    "type": "mqtt"
+  },
+  "group_id": "eddefb89-1923-41bb-8892-f4ca6b598c87",
+  "devices": [
+    {
+      "device_id": "3754ec35-00a3-4145-98e2-927f0f56ef14",
+      "device_name": "\u6d4b\u8bd51",
+      "device_type": "\u7535\u8868",
+      "poll_interval_ms": 1000,
+      "driver": {
+        "driver_name": "modbus-driver",
+        "driver_type": "modbus",
+        "poll_interval_ms": 1000,
+        "zmq": {
+          "enabled": true,
+          "publisher_address": "tcp://*:5555",
+          "topic": "modbus/data"
+        },
+        "logging": {
+          "level": "info",
+          "format": "json"
+        },
+        "custom": {
+          "profile": {
+            "description": "Three-phase electricity meter device profile",
+            "deviceCommands": [
+              {
+                "name": "ReadAllVoltages",
+                "readWrite": "R",
+                "resourceOperations": [
+                  {
+                    "deviceResource": "voltage_a"
+                  },
+                  {
+                    "deviceResource": "voltage_b"
+                  },
+                  {
+                    "deviceResource": "voltage_c"
+                  }
+                ]
+              },
+              {
+                "name": "ReadAllCurrents",
+                "readWrite": "R",
+                "resourceOperations": [
+                  {
+                    "deviceResource": "current_a"
+                  },
+                  {
+                    "deviceResource": "current_b"
+                  },
+                  {
+                    "deviceResource": "current_c"
+                  }
+                ]
+              },
+              {
+                "name": "ReadPowerAndEnergy",
+                "readWrite": "R",
+                "resourceOperations": [
+                  {
+                    "deviceResource": "power_total"
+                  },
+                  {
+                    "deviceResource": "energy_total"
+                  }
+                ]
+              },
+              {
+                "name": "ResetEnergy",
+                "readWrite": "W",
+                "resourceOperations": [
+                  {
+                    "deviceResource": "reset_register"
+                  }
+                ]
+              },
+              {
+                "name": "SetThreshold",
+                "readWrite": "W",
+                "resourceOperations": [
+                  {
+                    "deviceResource": "threshold_register"
+                  }
+                ]
+              }
+            ],
+            "deviceResources": [
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "0"
+                },
+                "description": "Phase A voltage (0.1V resolution)",
+                "isHidden": false,
+                "name": "voltage_a",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.1,
+                    "type": "Int16",
+                    "units": "V"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "1"
+                },
+                "description": "Phase B voltage (0.1V resolution)",
+                "isHidden": false,
+                "name": "voltage_b",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.1,
+                    "type": "Int16",
+                    "units": "V"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "2"
+                },
+                "description": "Phase C voltage (0.1V resolution)",
+                "isHidden": false,
+                "name": "voltage_c",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.1,
+                    "type": "Int16",
+                    "units": "V"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "3"
+                },
+                "description": "Phase A current (0.01A resolution)",
+                "isHidden": false,
+                "name": "current_a",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.01,
+                    "type": "Int16",
+                    "units": "A"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "4"
+                },
+                "description": "Phase B current (0.01A resolution)",
+                "isHidden": false,
+                "name": "current_b",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.01,
+                    "type": "Int16",
+                    "units": "A"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT16",
+                  "startingAddress": "5"
+                },
+                "description": "Phase C current (0.01A resolution)",
+                "isHidden": false,
+                "name": "current_c",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.01,
+                    "type": "Int16",
+                    "units": "A"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT32",
+                  "startingAddress": "6"
+                },
+                "description": "Total active power (0.01kW resolution)",
+                "isHidden": false,
+                "name": "power_total",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.01,
+                    "type": "Int32",
+                    "units": "kW"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "INPUT_REGISTERS",
+                  "rawType": "INT32",
+                  "startingAddress": "8"
+                },
+                "description": "Total energy consumption (0.1kWh resolution)",
+                "isHidden": false,
+                "name": "energy_total",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "R",
+                    "scale": 0.1,
+                    "type": "Int32",
+                    "units": "kWh"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "HOLDING_REGISTERS",
+                  "startingAddress": "100"
+                },
+                "description": "Reset control register",
+                "isHidden": true,
+                "name": "reset_register",
+                "properties": {
+                  "value": {
+                    "defaultValue": "0",
+                    "readWrite": "RW",
+                    "type": "Int16"
+                  }
+                }
+              },
+              {
+                "attributes": {
+                  "primaryTable": "HOLDING_REGISTERS",
+                  "startingAddress": "101"
+                },
+                "description": "Power threshold register",
+                "isHidden": true,
+                "name": "threshold_register",
+                "properties": {
+                  "value": {
+                    "defaultValue": "100",
+                    "readWrite": "RW",
+                    "type": "Float32"
+                  }
+                }
+              }
+            ],
+            "labels": [
+              "modbus",
+              "electricity",
+              "meter",
+              "three-phase"
+            ],
+            "manufacturer": "ABB",
+            "model": "ABB-Meter-3P",
+            "name": "Three-Phase-Electricity-Meter"
+          },
+          "slave_id": 1,
+          "host": "172.25.219.101",
+          "port": 502
+        }
+      },
+      "thing_model": {
+        "model_id": "b2f4b795-36d8-42fe-85b8-1747ae97979b",
+        "model_version": "1.0",
+        "device_type": "\u7535\u8868",
+        "manufacturer": "\u5317\u4eacxxx",
+        "description": "\u6d4b\u8bd5111",
+        "properties": [
+          {
+            "identifier": "voltage_a",
+            "name": "Voltage Phase A",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [
+              0.0,
+              500.0
+            ],
+            "default_value": 0,
+            "description": "Phase A voltage",
+            "modbus": null
+          },
+          {
+            "identifier": "voltage_b",
+            "name": "Voltage Phase B",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [
+              0.0,
+              500.0
+            ],
+            "default_value": 0,
+            "description": "Phase B voltage",
+            "modbus": null
+          },
+          {
+            "identifier": "voltage_c",
+            "name": "Voltage Phase C",
+            "type": "float",
+            "unit": "V",
+            "access": "R",
+            "range": [
+              0.0,
+              500.0
+            ],
+            "default_value": 0,
+            "description": "Phase C voltage",
+            "modbus": null
+          },
+          {
+            "identifier": "current_a",
+            "name": "Current Phase A",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [
+              0.0,
+              100.0
+            ],
+            "default_value": 0,
+            "description": "Phase A current",
+            "modbus": null
+          },
+          {
+            "identifier": "current_b",
+            "name": "Current Phase B",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [
+              0.0,
+              100.0
+            ],
+            "default_value": 0,
+            "description": "Phase B current",
+            "modbus": null
+          },
+          {
+            "identifier": "current_c",
+            "name": "Current Phase C",
+            "type": "float",
+            "unit": "A",
+            "access": "R",
+            "range": [
+              0.0,
+              100.0
+            ],
+            "default_value": 0,
+            "description": "Phase C current",
+            "modbus": null
+          },
+          {
+            "identifier": "power_total",
+            "name": "Total Power",
+            "type": "float",
+            "unit": "kW",
+            "access": "R",
+            "range": [
+              0.0,
+              1000.0
+            ],
+            "default_value": 0,
+            "description": "Total active power",
+            "modbus": null
+          },
+          {
+            "identifier": "energy_total",
+            "name": "Total Energy",
+            "type": "float",
+            "unit": "kWh",
+            "access": "R",
+            "range": [
+              0.0,
+              999999.0
+            ],
+            "default_value": 0,
+            "description": "Total energy consumption",
+            "modbus": null
+          }
+        ],
+        "events": [
+          {
+            "identifier": "overload",
+            "name": "Overload Alarm",
+            "level": "WARN",
+            "output_params": [
+              {
+                "identifier": "power_total",
+                "name": "Current Power",
+                "type": "float"
+              }
+            ],
+            "description": "Triggered when power exceeds threshold"
+          },
+          {
+            "identifier": "voltage_abnormal",
+            "name": "Voltage Abnormal",
+            "level": "WARN",
+            "output_params": [
+              {
+                "identifier": "voltage_a",
+                "name": "Voltage A",
+                "type": "float"
+              },
+              {
+                "identifier": "voltage_b",
+                "name": "Voltage B",
+                "type": "float"
+              },
+              {
+                "identifier": "voltage_c",
+                "name": "Voltage C",
+                "type": "float"
+              }
+            ],
+            "description": "Triggered when voltage is out of normal range"
+          }
+        ],
+        "services": [
+          {
+            "identifier": "reset_energy",
+            "name": "Reset Energy",
+            "description": "Reset energy accumulator",
+            "input_params": [],
+            "output_params": [
+              {
+                "identifier": "success",
+                "name": "Success",
+                "type": "boolean",
+                "unit": null,
+                "required": null,
+                "description": null,
+                "default_value": null
+              }
+            ]
+          },
+          {
+            "identifier": "set_threshold",
+            "name": "Set Alarm Threshold",
+            "description": "Set power alarm threshold",
+            "input_params": [
+              {
+                "identifier": "power_threshold",
+                "name": "Power Threshold",
+                "type": "float",
+                "unit": "kW",
+                "required": null,
+                "description": null,
+                "default_value": null
+              }
+            ],
+            "output_params": [
+              {
+                "identifier": "success",
+                "name": "Success",
+                "type": "boolean",
+                "unit": null,
+                "required": null,
+                "description": null,
+                "default_value": null
+              }
+            ]
+          }
+        ]
+      },
+      "rules": [
+        {
+          "identifier": "overload_alarm",
+          "name": "Overload Alarm Rule",
+          "conditions": [
+            {
+              "property_identifier": "power_total",
+              "operator": ">",
+              "value": 100
+            }
+          ],
+          "condition_logic": "and",
+          "actions": [
+            {
+              "trigger_event": {
+                "event_identifier": "overload",
+                "data": {
+                  "power_total": "{{power_total}}"
+                }
+              }
+            }
+          ],
+          "enabled": true
+        },
+        {
+          "identifier": "voltage_abnormal_alarm",
+          "name": "Voltage Abnormal Alarm",
+          "conditions": [
+            {
+              "property_identifier": "voltage_a",
+              "operator": "<",
+              "value": 180
+            },
+            {
+              "property_identifier": "voltage_a",
+              "operator": ">",
+              "value": 260
+            }
+          ],
+          "condition_logic": "or",
+          "actions": [
+            {
+              "trigger_event": {
+                "event_identifier": "voltage_abnormal",
+                "data": {
+                  "voltage_a": "{{voltage_a}}",
+                  "voltage_b": "{{voltage_b}}",
+                  "voltage_c": "{{voltage_c}}"
+                }
+              }
+            }
+          ],
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}

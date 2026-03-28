@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ProTable, ProColumns, ProRowSelection } from '@ant-design/pro-components';
 import { Button, Modal, Form, Input, message, Space, Popconfirm, Select, InputNumber, Row, Col, Dropdown } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, DownOutlined, UpOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import { deviceGroupApi, organizationApi, siteApi, productApi, driverApi, deviceInstanceApi, deviceApi, nodeApi } from '@/services/api';
-import type { DeviceGroup, Organization, Site, Device, Driver, DeviceInstance, Node } from '@/types';
+import { deviceGroupApi, organizationApi, siteApi, namespaceApi, productApi, driverApi, deviceInstanceApi, deviceApi, nodeApi } from '@/services/api';
+import type { DeviceGroup, Organization, Site, Namespace, Device, Driver, DeviceInstance, Node } from '@/types';
 
 export default function DeviceGroupList() {
   const [tableData, setTableData] = useState<DeviceGroup[]>([]);
@@ -15,6 +15,8 @@ export default function DeviceGroupList() {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [selectedOrgId, setSelectedOrgId] = useState<string>('');
   const [sites, setSites] = useState<Site[]>([]);
+  const [selectedSiteId, setSelectedSiteId] = useState<string>('');
+  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [devices, setDevices] = useState<Device[]>([]);
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -47,7 +49,9 @@ export default function DeviceGroupList() {
     
     setLoading(true);
     try {
-      const [orgData, productData, driverData, deviceData, nodeData, instanceData, groupData] = await Promise.all([
+      // 获取组织、站点、命名空间用于表单下拉选择
+      // 设备组列表已经包含关联名称，不需要前端再匹配
+      const [orgData, productData, driverData, deviceData, nodeData, instanceData, groupData, namespaceData] = await Promise.all([
         organizationApi.list(user.tenant_id),
         productApi.list(user.tenant_id),
         driverApi.list(user.tenant_id),
@@ -55,6 +59,7 @@ export default function DeviceGroupList() {
         nodeApi.list(user.tenant_id),
         deviceInstanceApi.list(user.tenant_id),
         deviceGroupApi.list(user.tenant_id),
+        namespaceApi.list(user.tenant_id),
       ]);
       setOrganizations(Array.isArray(orgData) ? orgData : []);
       setDrivers(Array.isArray(driverData) ? driverData : []);
@@ -62,6 +67,7 @@ export default function DeviceGroupList() {
       setNodes(Array.isArray(nodeData) ? nodeData : []);
       setInstances(Array.isArray(instanceData) ? instanceData : []);
       setTableData(Array.isArray(groupData) ? groupData : []);
+      setNamespaces(Array.isArray(namespaceData) ? namespaceData : []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -86,6 +92,19 @@ export default function DeviceGroupList() {
     }
   };
 
+  const fetchNamespaces = async (siteId: string) => {
+    if (!tenantId || !siteId) return;
+    try {
+      const namespaceData = await namespaceApi.list(tenantId);
+      const siteNamespaces = Array.isArray(namespaceData) 
+        ? namespaceData.filter((ns: Namespace) => ns.site_id === siteId)
+        : [];
+      setNamespaces(siteNamespaces);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleAdd = async (values: any) => {
     if (!tenantId) return;
     try {
@@ -105,14 +124,39 @@ export default function DeviceGroupList() {
     }
   };
 
-  const handleEdit = (record: DeviceGroup) => {
+  const handleEdit = async (record: DeviceGroup) => {
     setEditingRecord(record);
     form.setFieldsValue({
       ...record,
       node_id: record.node_id || undefined,
     });
     setSelectedOrgId(record.org_id);
-    fetchSites(record.org_id);
+    setSelectedSiteId(record.site_id);
+    
+    if (record.org_id && tenantId) {
+      try {
+        const siteData = await siteApi.list(tenantId);
+        const orgSites = Array.isArray(siteData) 
+          ? siteData.filter((s: Site) => s.organization_id === record.org_id)
+          : [];
+        setSites(orgSites);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    if (record.site_id && tenantId) {
+      try {
+        const namespaceData = await namespaceApi.list(tenantId);
+        const siteNamespaces = Array.isArray(namespaceData) 
+          ? namespaceData.filter((ns: Namespace) => ns.site_id === record.site_id)
+          : [];
+        setNamespaces(siteNamespaces);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
     setModalVisible(true);
   };
 
@@ -322,21 +366,21 @@ export default function DeviceGroupList() {
     },
     {
       title: '所属组织',
-      dataIndex: 'org_id',
-      key: 'org_id',
-      render: (orgId: string) => {
-        const org = organizations.find(o => o.id === orgId);
-        return org ? org.name : orgId;
-      },
+      dataIndex: 'org_name',
+      key: 'org_name',
+      render: (text: string, record: DeviceGroup) => text || record.org_id,
     },
     {
       title: '所属站点',
-      dataIndex: 'site_id',
-      key: 'site_id',
-      render: (siteId: string) => {
-        const site = sites.find(s => s.id === siteId);
-        return site ? site.name : siteId;
-      },
+      dataIndex: 'site_name',
+      key: 'site_name',
+      render: (text: string, record: DeviceGroup) => text || record.site_id,
+    },
+    {
+      title: '所属空间',
+      dataIndex: 'namespace_name',
+      key: 'namespace_name',
+      render: (text: string, record: DeviceGroup) => text || record.namespace_id || '-',
     },
     {
       title: '部署节点',
@@ -513,10 +557,33 @@ export default function DeviceGroupList() {
               showSearch
               optionFilterProp="children"
               disabled={!selectedOrgId}
+              onChange={(value) => {
+                setSelectedSiteId(value);
+                form.setFieldsValue({ namespace_id: undefined });
+                fetchNamespaces(value);
+              }}
             >
               {sites.map((site) => (
                 <Select.Option key={site.id} value={site.id}>
                   {site.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="namespace_id"
+            label="所属空间"
+            rules={[{ required: true, message: '请选择空间' }]}
+          >
+            <Select
+              placeholder="请选择空间"
+              showSearch
+              optionFilterProp="children"
+              disabled={!selectedSiteId}
+            >
+              {namespaces.map((ns) => (
+                <Select.Option key={ns.id} value={ns.id}>
+                  {ns.name}
                 </Select.Option>
               ))}
             </Select>

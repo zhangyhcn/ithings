@@ -9,7 +9,7 @@ use sha2::{Sha256, Digest};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeviceInstanceConfig {
     pub device_instance_id: String,
-    pub device_profile: DeviceProfile,
+    pub device_profile: Option<DeviceProfile>,
     pub custom: HashMap<String, serde_json::Value>,
     pub poll_interval_ms: Option<u64>,
 }
@@ -77,6 +77,9 @@ impl<D: Driver + Default> DeviceInstanceManager<D> {
         if let Some(poll_interval) = config.poll_interval_ms {
             full_config.poll_interval_ms = poll_interval;
         }
+        
+        // 子设备实例不需要自己的ZMQ连接，由MultiDeviceDriver统一管理
+        full_config.zmq.enabled = false;
 
         driver.initialize(full_config.clone()).await?;
 

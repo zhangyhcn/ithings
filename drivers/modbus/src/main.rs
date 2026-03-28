@@ -4,6 +4,8 @@ use driver_core::{DriverConfig, MultiDeviceDriver};
 use driver_modbus::ModbusDriver;
 use tokio::signal;
 use tracing_subscriber::{fmt, prelude::*, EnvFilter, reload};
+use common::config::group::DeviceGroupConfig;
+use driver_core::device_manager::DeviceInstanceConfig;
 
 #[derive(Parser, Debug)]
 #[command(name = "modbus-driver")]
@@ -34,22 +36,87 @@ async fn main() -> Result<()> {
         .init();
 
     tracing::info!("Loading configuration from {}", args.configfile);
-    let config = DriverConfig::from_file(&args.configfile)
-        .unwrap_or_else(|_| {
-            tracing::warn!("Failed to load config file, trying environment variables");
-            DriverConfig::from_env().expect("Failed to load configuration")
-        });
+    
+    let group_config = DeviceGroupConfig::from_file(&args.configfile)
+        .map_err(|e| {
+            tracing::error!("Failed to load group config: {}", e);
+            e
+        })?;
+
+    tracing::info!("Loaded device group: {} devices, tenant={}", 
+        group_config.devices.len(), 
+        group_config.tenant_id
+    );
+
+    let base_config = DriverConfig {
+        driver_name: "modbus-driver".to_string(),
+        driver_type: "modbus".to_string(),
+        device_instance_id: "modbus-driver-group".to_string(),
+        poll_interval_ms: 1000,
+        zmq: Default::default(),
+        logging: Default::default(),
+        custom: Default::default(),
+    };
 
     tracing::info!("Starting {} driver v{}", 
         env!("CARGO_PKG_NAME"),
         env!("CARGO_PKG_VERSION")
     );
 
-    let mut driver = MultiDeviceDriver::<ModbusDriver>::new(config.clone());
+    let mut driver = MultiDeviceDriver::<ModbusDriver>::new(base_config.clone());
     
-    tracing::info!("Driver metadata: {:?}", driver.device_manager().get_all_devices());
+    for device in &group_config.devices {
+        tracing::info!("Adding device: {} ({})", device.device_name, device.device_id);
+        
+        let mut custom = device.driver.custom.clone();
+        if let Some(profile) = custom.get("profile") {
+            tracing::debug!("Device has profile with {} device commands", 
+                profile.get("deviceCommands").map(|c| c.as_array().map(|a| a.len()).unwrap_or(0)).unwrap_or(0)
+            );
+        }
+        
+        let device_config = DeviceInstanceConfig {
+            device_instance_id: device.device_id.clone(),
+            device_profile: None,
+            custom: custom,
+            poll_interval_ms: Some(device.poll_interval_ms),
+        };
+        
+        driver.handle_config_update(device_config).await?;
+    }
+    
+    tracing::info!("Driver metadata: {} devices loaded", driver.device_manager().get_all_devices().len());
 
-    driver.initialize(config).await?;
+    let base_zmq_config = if let Some(first_device) = group_config.devices.first() {
+        let zmq_cfg = &first_device.driver.zmq;
+        common::config::driver::ZmqConfig {
+            enabled: zmq_cfg.enabled,
+            publisher_address: zmq_cfg.publisher_address.clone(),
+            topic: zmq_cfg.topic.clone(),
+            subscriber_enabled: false,
+            subscriber_address: String::new(),
+            write_topic: String::new(),
+            config_update_topic: String::new(),
+            high_water_mark: None,
+        }
+    } else {
+        Default::default()
+    };
+
+    let init_config = DriverConfig {
+        driver_name: "modbus-driver".to_string(),
+        driver_type: "modbus".to_string(),
+        device_instance_id: "modbus-driver-group".to_string(),
+        poll_interval_ms: group_config.devices.first().map(|d| d.poll_interval_ms).unwrap_or(1000),
+        zmq: base_zmq_config,
+        logging: common::config::driver::LoggingConfig {
+            level: group_config.devices.first().map(|d| d.driver.logging.level.clone()).unwrap_or_else(|| "info".to_string()),
+            format: group_config.devices.first().map(|d| d.driver.logging.format.clone()).unwrap_or_else(|| "json".to_string()),
+        },
+        custom: Default::default(),
+    };
+
+    driver.initialize(init_config).await?;
 
     tracing::info!("Driver initialized, starting polling loop");
 

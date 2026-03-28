@@ -34,5 +34,6 @@ rdkafka = { version = "0.36", features = ["tokio", "ssl-vendored"] }
 regex = "1.10"
 
 driver-core = { path = "drivers/driver-core" }
-device-common = { path = "common" }
+common = { path = "common" }
 driver-modbus = { path = "drivers/modbus" }
+device-common = { path = "common" }

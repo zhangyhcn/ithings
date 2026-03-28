@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use device_common::{DeviceConfig, DeviceManager};
+use common::{DeviceConfig, DeviceManager};
 use device_meter::MeterDevice;
 use driver_core::driver::Driver;
 use tracing_subscriber::{fmt, prelude::*, EnvFilter};
@@ -26,7 +26,7 @@ async fn main() -> Result<()> {
     
     let filter = EnvFilter::from_default_env()
         .add_directive(format!("device_meter={}", args.loglevel).parse().unwrap())
-        .add_directive(format!("device_common={}", args.loglevel).parse().unwrap());
+        .add_directive(format!("common={}", args.loglevel).parse().unwrap());
     
     tracing_subscriber::registry()
         .with(fmt::layer())
@@ -45,15 +45,9 @@ async fn main() -> Result<()> {
         manager.send_driver_config().await?;
         tracing::info!("Sent all driver configurations to drivers");
         
-        loop {
-            tokio::select! {
-                _ = tokio::signal::ctrl_c() => {
-                    tracing::info!("Shutdown signal received");
-                    tracing::info!("All devices stopped");
-                    break;
-                }
-            }
-        }
+        let default_report_interval = 5000;
+        manager.start_reporting_loop(default_report_interval).await;
+        // start_reporting_loop is an infinite loop, so we never reach here
         
         Ok(())
     } else {

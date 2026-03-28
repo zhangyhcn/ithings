@@ -1,0 +1,16 @@
+{
+  "driver_name": "modbus-driver",
+  "driver_type": "modbus",
+  "device_instance_id": "modbus-driver-group",
+  "poll_interval_ms": 1000,
+  "zmq": {
+    "enabled": false,
+    "publisher_address": "",
+    "topic": ""
+  },
+  "logging": {
+    "level": "info",
+    "format": "json"
+  },
+  "custom": {}
+}

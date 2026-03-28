@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ProTable, ProColumns } from '@ant-design/pro-components';
 import { Button, Modal, Form, Input, Select, message, Space, Popconfirm } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { namespaceApi } from '@/services/api';
-import type { Namespace } from '@/types';
+import { namespaceApi, siteApi } from '@/services/api';
+import type { Namespace, Site } from '@/types';
 
 export default function NamespaceList() {
   const [tableData, setTableData] = useState<Namespace[]>([]);
@@ -11,6 +11,7 @@ export default function NamespaceList() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState<Namespace | null>(null);
   const [selectedTenantId, setSelectedTenantId] = useState<string>('');
+  const [sites, setSites] = useState<Site[]>([]);
   const [form] = Form.useForm();
 
   const fetchData = async () => {
@@ -24,8 +25,12 @@ export default function NamespaceList() {
     setSelectedTenantId(user.tenant_id);
     setLoading(true);
     try {
-      const data = await namespaceApi.listByTenant(user.tenant_id);
-      setTableData(Array.isArray(data) ? data : []);
+      const [namespaceData, siteData] = await Promise.all([
+        namespaceApi.listByTenant(user.tenant_id),
+        siteApi.list(user.tenant_id)
+      ]);
+      setTableData(Array.isArray(namespaceData) ? namespaceData : []);
+      setSites(Array.isArray(siteData) ? siteData : []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -85,6 +90,15 @@ export default function NamespaceList() {
   };
 
   const columns: ProColumns<Namespace>[] = [
+    {
+      title: '所属站点',
+      dataIndex: 'site_id',
+      key: 'site_id',
+      render: (siteId: string) => {
+        const site = sites.find(s => s.id === siteId);
+        return site?.name || siteId;
+      },
+    },
     {
       title: '名称',
       dataIndex: 'name',
@@ -182,6 +196,19 @@ export default function NamespaceList() {
         onOk={form.submit}
       >
         <Form form={form} layout="vertical" onFinish={handleAdd}>
+          <Form.Item
+            name="site_id"
+            label="所属站点"
+            rules={[{ required: true, message: '请选择站点' }]}
+          >
+            <Select placeholder="请选择站点" disabled={!!editingRecord}>
+              {sites.map(site => (
+                <Select.Option key={site.id} value={site.id}>
+                  {site.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
           <Form.Item
             name="name"
             label="名称"

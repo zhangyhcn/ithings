@@ -8,6 +8,7 @@ use crate::utils::AppError;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateNamespaceRequest {
+    pub site_id: String,
     pub name: String,
     pub slug: String,
     pub description: Option<String>,
@@ -27,14 +28,15 @@ pub struct UpdateNamespaceRequest {
 pub struct NamespaceResponse {
     pub id: String,
     pub tenant_id: String,
+    pub site_id: String,
     pub name: String,
     pub slug: String,
-    pub description: Option<String>,
-    pub namespace_type: String,
-    pub config: JsonValue,
-    pub status: String,
-    pub created_at: String,
-    pub updated_at: String,
+    description: Option<String>,
+    namespace_type: String,
+    config: JsonValue,
+    status: String,
+    created_at: String,
+    updated_at: String,
 }
 
 impl From<Model> for NamespaceResponse {
@@ -42,6 +44,7 @@ impl From<Model> for NamespaceResponse {
         Self {
             id: model.id.to_string(),
             tenant_id: model.tenant_id.to_string(),
+            site_id: model.site_id.to_string(),
             name: model.name,
             slug: model.slug,
             description: model.description,
@@ -79,10 +82,23 @@ impl NamespaceService {
             return Err(AppError::BadRequest("Namespace with this slug already exists".to_string()));
         }
 
+        let site_id = Uuid::parse_str(&req.site_id)
+            .map_err(|_| AppError::BadRequest("Invalid site_id".to_string()))?;
+
+        let site = crate::entity::site::Entity::find_by_id(site_id)
+            .one(&self.db)
+            .await?
+            .ok_or(AppError::NotFound("Site not found".to_string()))?;
+
+        if site.tenant_id != tenant_id {
+            return Err(AppError::BadRequest("Site does not belong to this tenant".to_string()));
+        }
+
         let now = chrono::Utc::now().naive_utc();
         let active_model = crate::entity::namespace::ActiveModel {
             id: Set(Uuid::new_v4()),
             tenant_id: Set(tenant_id),
+            site_id: Set(site_id),
             name: Set(req.name),
             slug: Set(req.slug),
             description: Set(req.description),

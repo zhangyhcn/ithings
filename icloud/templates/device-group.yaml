@@ -21,8 +21,6 @@ spec:
         device-group: {{group_id}}
         app.kubernetes.io/managed-by: ithings
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
 {{#each device_containers}}
       - name: {{this.name}}
@@ -43,7 +41,7 @@ spec:
       - name: driver
         image: {{driver_image}}
         imagePullPolicy: Always
-        args: ["-c", "/config/driver-config.json"]
+        args: ["--configfile", "/config/config.json"]
         volumeMounts:
         - name: device-config
           mountPath: /config

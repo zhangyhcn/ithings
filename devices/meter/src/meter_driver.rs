@@ -1,4 +1,4 @@
-use device_common::{
+use common::{
     DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
     PublisherFactory, SubscriberFactory,
     DriverClientFactory,
@@ -208,7 +208,7 @@ impl Driver for MeterDevice {
             device_name: config.driver_name.clone(),
             device_type: config.driver_type.clone(),
             poll_interval_ms: config.poll_interval_ms,
-            zmq: device_common::config::ZmqConfig {
+            zmq: common::config::ZmqConfig {
                 enabled: config.zmq.subscriber_enabled,
                 publisher_address: config.zmq.publisher_address.clone(),
                 topic: config.zmq.topic.clone(),
@@ -219,10 +219,10 @@ impl Driver for MeterDevice {
                 high_water_mark: config.zmq.high_water_mark,
                 ..Default::default()
             },
-            mqtt: device_common::config::MqttConfig::default(),
-            kafka: device_common::config::KafkaConfig::default(),
-            driver: device_common::config::DriverClientConfig::default(),
-            logging: device_common::config::LoggingConfig {
+            mqtt: common::config::MqttConfig::default(),
+            kafka: common::config::KafkaConfig::default(),
+            driver: common::config::DriverClientConfig::default(),
+            logging: common::config::LoggingConfig {
                 level: config.logging.level.clone(),
                 format: config.logging.format.clone(),
             },
@@ -256,12 +256,12 @@ impl Driver for MeterDevice {
             let mut data_points = Vec::new();
 
             for (_, prop_value) in values {
-                let data_value = device_common::types::DataValue::from_json(&prop_value.value);
+                let data_value = common::types::DataValue::from_json(&prop_value.value);
                 data_points.push(DataPoint {
                     id: uuid::Uuid::new_v4().to_string(),
                     name: prop_value.identifier,
                     value: data_value,
-                    quality: device_common::types::Quality::Good,
+                    quality: common::types::Quality::Good,
                     timestamp: chrono::Utc::now(),
                     metadata: std::collections::HashMap::new(),
                     units: None,

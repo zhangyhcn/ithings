@@ -5,6 +5,7 @@ pub mod mqtt;
 pub mod kafka;
 pub mod zmq;
 pub mod topics;
+pub mod publish;
 
 pub use device::{DeviceConfig, LoggingConfig, DriverClientConfig};
 pub use group::{DeviceGroupConfig, DeviceInGroupConfig};
@@ -12,3 +13,4 @@ pub use mqtt::MqttConfig;
 pub use kafka::KafkaConfig;
 pub use zmq::ZmqConfig;
 pub use topics::*;
+pub use publish::{DeviceGroupPublishConfig, ConfigMapPublishRequest};

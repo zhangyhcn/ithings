@@ -1,14 +1,16 @@
 use crate::config::{group::DeviceGroupConfig, DeviceInGroupConfig, device::DeviceConfig, driver::DriverConfig};
 use crate::device_core::{ThingModel, DeviceRuntime, Rule};
-use crate::transport::DriverClientFactory;
-use crate::types::{DataPoint, DeviceProfile};
+use crate::transport::{DriverClientFactory, PublisherFactory, RemotePublisher};
+use crate::types::{DataPoint, DataValue, Quality};
 use anyhow::Result;
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+use tokio::time::{interval, Duration};
 
 pub struct DeviceManager {
     group_config: Option<DeviceGroupConfig>,
     devices: HashMap<String, Arc<DeviceRuntime>>,
+    remote_publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
 }
 
 impl DeviceManager {
@@ -16,6 +18,7 @@ impl DeviceManager {
         Self {
             group_config: None,
             devices: HashMap::new(),
+            remote_publisher: None,
         }
     }
 
@@ -30,6 +33,16 @@ impl DeviceManager {
         let Some(group_config) = &self.group_config else {
             anyhow::bail!("No device group config loaded");
         };
+
+        // Initialize remote publisher from group config (tenant remote_transport)
+        if !group_config.remote_transport.r#type.is_empty() {
+            let mut publisher = PublisherFactory::create_from_remote_transport(&group_config.remote_transport)?;
+            if publisher.enabled() {
+                publisher.connect().await?;
+                self.remote_publisher = Some(Arc::new(Mutex::new(publisher)));
+                tracing::info!("Remote publisher initialized: {}", group_config.remote_transport.r#type);
+            }
+        }
 
         for device_config in &group_config.devices {
             tracing::info!("Initializing device: {} ({})", device_config.device_name, device_config.device_id);
@@ -134,14 +147,7 @@ impl DeviceManager {
 
         let driver_client_config = crate::config::DriverClientConfig {
             enabled: true,
-            server_address: format!("tcp://{}:{}", 
-                device_config.driver.custom.get("host")
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("127.0.0.1"),
-                device_config.driver.custom.get("port")
-                    .and_then(|v| v.as_u64())
-                    .unwrap_or(502),
-            ),
+            server_address: "tcp://localhost:5556".to_string(),
         };
 
         let device_config_struct = DeviceConfig {
@@ -283,6 +289,110 @@ impl DeviceManager {
 
     pub fn is_empty(&self) -> bool {
         self.devices.is_empty()
+    }
+
+    pub async fn start_reporting_loop(&self, report_interval_ms: u64) -> ! {
+        let Some(remote_publisher_arc) = &self.remote_publisher else {
+            tracing::info!("No remote publisher configured, reporting loop will not start");
+            std::future::pending().await
+        };
+
+        let mut ticker = interval(Duration::from_millis(report_interval_ms));
+        tracing::info!("Starting remote reporting loop with interval: {}ms", report_interval_ms);
+
+        loop {
+            ticker.tick().await;
+
+            let remote_publisher = remote_publisher_arc.lock().unwrap();
+
+            for (device_id, runtime) in &self.devices {
+                match self.collect_device_data(runtime, &**remote_publisher).await {
+                    Ok(()) => {},
+                    Err(e) => {
+                        tracing::error!("Failed to report data for device {}: {}", device_id, e);
+                    }
+                }
+            }
+        }
+    }
+
+    async fn collect_device_data(&self, runtime: &Arc<DeviceRuntime>, publisher: &dyn RemotePublisher) -> Result<()> {
+        let values = runtime.get_all_property_values().await;
+        let mut data_points: Vec<DataPoint> = Vec::new();
+
+        for (prop_id, prop_value) in values {
+            let data_value = match prop_value.value {
+                serde_json::Value::Bool(b) => DataValue::Bool(b),
+                serde_json::Value::Number(n) => {
+                    if let Some(i) = n.as_i64() {
+                        DataValue::Int64(i)
+                    } else if let Some(f) = n.as_f64() {
+                        DataValue::Float64(f)
+                    } else {
+                        DataValue::Null
+                    }
+                }
+                serde_json::Value::String(s) => DataValue::String(s),
+                serde_json::Value::Array(arr) => {
+                    let data: Vec<DataValue> = arr.iter().map(|v| self.json_to_datavalue(v)).collect();
+                    DataValue::Array(data)
+                }
+                serde_json::Value::Object(obj) => {
+                    let mut map = HashMap::new();
+                    for (k, v) in obj {
+                        map.insert(k.clone(), self.json_to_datavalue(&v));
+                    }
+                    DataValue::Object(map)
+                 }
+                serde_json::Value::Null => DataValue::Null,
+            };
+
+            data_points.push(DataPoint {
+                id: uuid::Uuid::new_v4().to_string(),
+                name: prop_id.clone(),
+                value: data_value,
+                quality: Quality::Good,
+                timestamp: chrono::Utc::now(),
+                metadata: HashMap::new(),
+                units: None,
+            });
+        }
+
+        if !data_points.is_empty() {
+            publisher.publish_batch(runtime.get_device_name(), &data_points).await?;
+            tracing::debug!("Reported {} data points for device {}",
+                data_points.len(), runtime.get_device_name());
+        }
+
+        Ok(())
+    }
+
+    fn json_to_datavalue(&self, value: &serde_json::Value) -> DataValue {
+        match value {
+            serde_json::Value::Bool(b) => DataValue::Bool(*b),
+            serde_json::Value::Number(n) => {
+                if let Some(i) = n.as_i64() {
+                    DataValue::Int64(i)
+                } else if let Some(f) = n.as_f64() {
+                    DataValue::Float64(f)
+                } else {
+                    DataValue::Null
+                }
+            }
+            serde_json::Value::String(s) => DataValue::String(s.clone()),
+            serde_json::Value::Array(arr) => {
+                let data: Vec<DataValue> = arr.iter().map(|v| self.json_to_datavalue(v)).collect();
+                DataValue::Array(data)
+            }
+            serde_json::Value::Object(obj) => {
+                let mut map = HashMap::new();
+                for (k, v) in obj {
+                    map.insert(k.clone(), self.json_to_datavalue(v));
+                }
+                DataValue::Object(map)
+            }
+            serde_json::Value::Null => DataValue::Null,
+        }
     }
 }
 

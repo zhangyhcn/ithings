@@ -1,1 +1,1 @@
-pub use device_common::types::*;
+pub use common::types::*;

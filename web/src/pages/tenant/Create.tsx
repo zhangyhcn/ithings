@@ -9,6 +9,7 @@ interface CreateTenantFormValues {
   description: string;
   registry_url?: string;
   virtual_cluster_name?: string;
+  remote_transport_config?: string;
   admin_username: string;
   admin_email: string;
   admin_password: string;
@@ -27,9 +28,21 @@ export default function CreateTenant() {
     }
     setLoading(true);
     try {
+      let remote_transport: any = undefined;
+      if (values.remote_transport_config && values.remote_transport_config.trim()) {
+        try {
+          remote_transport = JSON.parse(values.remote_transport_config);
+        } catch (e) {
+          message.error('远程传输配置JSON格式错误');
+          setLoading(false);
+          return;
+        }
+      }
+
       const config = {
         registry_url: values.registry_url,
         virtual_cluster_name: values.virtual_cluster_name,
+        remote_transport,
       };
       await tenantApi.create({
         name: values.name,
@@ -95,6 +108,32 @@ export default function CreateTenant() {
 
           <Form.Item name="virtual_cluster_name" label="虚拟集群名">
             <Input placeholder="虚拟集群名称" />
+          </Form.Item>
+
+          <div style={{ marginBottom: '24px', marginTop: '32px' }}>
+            <h3>远程传输配置</h3>
+          </div>
+
+          <Form.Item name="remote_transport_config" label="远程传输配置(JSON)">
+            <Input.TextArea 
+              placeholder={`示例 (MQTT):
+{
+  "type": "mqtt",
+  "broker": "tcp://localhost:1883",
+  "username": "user",
+  "password": "pass",
+  "client_id": "client-id"
+}
+
+示例 (Kafka):
+{
+  "type": "kafka",
+  "brokers": "localhost:9092",
+  "username": "user",
+  "password": "pass"
+}`} 
+              rows={12}
+            />
           </Form.Item>
 
           <div style={{ marginBottom: '24px', marginTop: '32px' }}>

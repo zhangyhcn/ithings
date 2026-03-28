@@ -96,6 +96,7 @@ export interface Site {
 export interface Namespace {
   id: string;
   tenant_id: string;
+  site_id: string;
   name: string;
   slug: string;
   description?: string;
@@ -220,7 +221,11 @@ export interface DeviceGroup {
   id: string;
   tenant_id: string;
   org_id: string;
+  org_name?: string;
   site_id: string;
+  site_name?: string;
+  namespace_id?: string;
+  namespace_name?: string;
   name: string;
   description?: string;
   status: string;

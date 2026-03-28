@@ -92,10 +92,10 @@ async fn list_drivers(
     Path(TenantPath { tenant_id }): Path<TenantPath>,
     Query(_query): Query<PageQuery>,
 ) -> Result<Json<Response<Vec<DriverResponse>>>, AppError> {
-    tracing::info!("API list_drivers called with tenant_id: {}", tenant_id);
+    tracing::debug!("API list_drivers called with tenant_id: {}", tenant_id);
     let service = DriverService::new(db);
     let drivers = service.list_by_tenant(tenant_id).await?;
-    tracing::info!("API list_drivers returning {} drivers", drivers.len());
+    tracing::debug!("API list_drivers returning {} drivers", drivers.len());
     Ok(Json(Response::success(drivers)))
 }
 

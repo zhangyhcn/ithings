@@ -7,6 +7,8 @@ pub struct Model {
     pub id: Uuid,
     #[sea_orm(column_type = "Uuid")]
     pub tenant_id: Uuid,
+    #[sea_orm(column_type = "Uuid")]
+    pub site_id: Uuid,
     #[sea_orm(column_type = "Text")]
     pub name: String,
     #[sea_orm(unique, column_type = "Text")]
@@ -33,6 +35,18 @@ pub enum Relation {
         to = "super::tenant::Column::Id"
     )]
     Tenant,
+    #[sea_orm(
+        belongs_to = "super::site::Entity",
+        from = "Column::SiteId",
+        to = "super::site::Column::Id"
+    )]
+    Site,
+}
+
+impl Related<super::site::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Site.def()
+    }
 }
 
 impl ActiveModelBehavior for ActiveModel {}

@@ -149,7 +149,22 @@ impl<D: Driver + Default> MultiDeviceDriver<D> {
     }
 
     pub async fn initialize(&mut self, config: DriverConfig) -> Result<()> {
-        self.base.initialize(config).await?;
+        self.base.initialize(config.clone()).await?;
+        
+        // 如果配置中有profile，自动创建设备实例
+        if config.custom.contains_key("profile") || config.custom.contains_key("profiles") {
+            let device_instance_id = config.device_instance_id.clone();
+            let device_config = crate::device_manager::DeviceInstanceConfig {
+                device_instance_id: device_instance_id.clone(),
+                device_profile: None,
+                custom: config.custom.clone(),
+                poll_interval_ms: Some(config.poll_interval_ms),
+            };
+            
+            tracing::info!("Creating initial device instance from config: {}", device_instance_id);
+            self.device_manager.upsert_device(device_config).await?;
+        }
+        
         Ok(())
     }
 

@@ -6,7 +6,7 @@ use uuid::Uuid;
 use crate::entity::{ProductEntity, ProductColumn, ProductModel as Model};
 use crate::entity::tenant::{self};
 use crate::utils::AppError;
-use device_common::device_core::{ThingModel, Rule};
+use common::device_core::{ThingModel, Rule};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateProductRequest {

@@ -12,7 +12,7 @@ pub use device_manager::{DeviceInstance, DeviceInstanceManager, DeviceInstanceCo
 pub use error::DriverError;
 pub use publisher::ZmqPublisher;
 pub use subscriber::ZmqSubscriber;
-pub use device_common::types::{
+pub use common::types::{
     DataPoint, DataValue, DataValueConverter, DeviceCommand, DeviceProfile, DeviceResource,
     Quality, ReadWrite, ResourceOperation, ResourceProperties, ValueProperties, ValueType,
     DriverStatus, DriverMetadata,

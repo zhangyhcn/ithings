@@ -14,6 +14,7 @@ use crate::{
     service::tenant::{CreateTenantRequest, CreateTenantResponse, TenantResponse, TenantService, UpdateTenantRequest},
     utils::AppError,
 };
+use crate::api::namespace;
 
 #[derive(Debug, Deserialize)]
 pub struct ListQuery {
@@ -28,6 +29,7 @@ pub fn create_tenant_router(db: DatabaseConnection) -> Router {
         .route("/tenants/:id", get(get_tenant))
         .route("/tenants/:id", put(update_tenant))
         .route("/tenants/:id", delete(delete_tenant))
+        .nest("/tenants", namespace::create_namespace_router(db.clone()))
         .with_state(db)
 }
 

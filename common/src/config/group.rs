@@ -11,6 +11,7 @@ pub struct DeviceGroupConfig {
     pub site_id: String,
     pub namespace_id: String,
     pub remote_transport: RemoteTransportConfig,
+    pub group_id: Option<String>,
     pub devices: Vec<DeviceInGroupConfig>,
 }
 

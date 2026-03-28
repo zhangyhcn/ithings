@@ -14,23 +14,21 @@ use crate::{
     utils::AppError,
 };
 
-pub fn create_namespace_router(db: DatabaseConnection) -> Router {
+pub fn create_namespace_router(db: DatabaseConnection) -> Router<DatabaseConnection> {
     Router::new()
-        .route("/namespaces", get(list_all_namespaces))
-        .route("/namespaces", post(create_namespace))
-        .route("/namespaces/:id", get(get_namespace))
-        .route("/namespaces/:id", put(update_namespace))
-        .route("/namespaces/:id", delete(delete_namespace))
+        .route("/:tenant_id/namespaces", get(list_namespaces_by_tenant))
+        .route("/:tenant_id/namespaces", post(create_namespace))
+        .route("/:tenant_id/namespaces/:id", get(get_namespace))
+        .route("/:tenant_id/namespaces/:id", put(update_namespace))
+        .route("/:tenant_id/namespaces/:id", delete(delete_namespace))
         .with_state(db)
 }
 
-// 从父路由获取tenant_id
 #[derive(Debug, Deserialize)]
 pub struct TenantPath {
     pub tenant_id: Uuid,
 }
 
-// 从父路由获取tenant_id，从当前路径获取id
 #[derive(Debug, Deserialize)]
 pub struct TenantNamespacePath {
     pub tenant_id: Uuid,
@@ -46,6 +44,7 @@ pub async fn create_namespace(
     let namespace = service.create(
         tenant_id,
         CreateNamespaceRequest {
+            site_id: req.site_id,
             name: req.name,
             slug: req.slug,
             description: req.description,
@@ -62,14 +61,6 @@ pub async fn get_namespace(
     let service = NamespaceService::new(db);
     let namespace = service.find_by_id(id).await?;
     Ok(Json(Response::success(namespace)))
-}
-
-pub async fn list_all_namespaces(
-    State(db): State<DatabaseConnection>,
-) -> Result<Json<Response<Vec<NamespaceResponse>>>, AppError> {
-    let service = NamespaceService::new(db);
-    let namespaces = service.list_all().await?;
-    Ok(Json(Response::success(namespaces)))
 }
 
 pub async fn list_namespaces_by_tenant(

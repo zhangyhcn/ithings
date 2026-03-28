@@ -144,9 +144,13 @@ pub struct DriverMetadata {
     pub tags: Vec<String>,
 }
 
+fn default_api_version() -> String {
+    "v1".to_string()
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeviceProfile {
-    #[serde(alias = "apiVersion", alias = "apiversion")]
+    #[serde(alias = "apiVersion", alias = "apiversion", default = "default_api_version")]
     pub api_version: String,
     pub name: String,
     pub manufacturer: Option<String>,

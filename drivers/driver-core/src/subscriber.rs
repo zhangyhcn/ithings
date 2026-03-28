@@ -1,4 +1,4 @@
-use device_common::config::topics::*;
+use common::config::topics::*;
 use crate::config::ZmqConfig;
 use crate::types::DataPoint;
 use crate::DeviceInstanceConfig;

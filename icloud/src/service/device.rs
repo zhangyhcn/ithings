@@ -7,7 +7,7 @@ use chrono::Utc;
 use crate::entity::{DeviceEntity, DeviceColumn, DeviceModel as Model};
 use crate::entity::tenant;
 use crate::utils::AppError;
-use device_common::config::driver::DriverConfig;
+use common::config::driver::DriverConfig;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateDeviceRequest {

@@ -132,7 +132,7 @@ impl DriverService {
     }
 
     pub async fn list_by_tenant(&self, tenant_id: Uuid) -> Result<Vec<DriverResponse>, AppError> {
-        tracing::info!("list_by_tenant called with tenant_id: {}", tenant_id);
+        tracing::debug!("list_by_tenant called with tenant_id: {}", tenant_id);
 
         if let Err(e) = self.sync_drivers_from_registry(tenant_id).await {
             tracing::warn!("Failed to sync drivers from registry: {}", e);
@@ -143,7 +143,7 @@ impl DriverService {
             .all(&self.db)
             .await?;
 
-        tracing::info!("Found {} drivers for tenant {}", models.len(), tenant_id);
+        tracing::debug!("Found {} drivers for tenant {}", models.len(), tenant_id);
 
         Ok(models.into_iter().map(Into::into).collect())
     }
@@ -190,7 +190,7 @@ impl DriverService {
             }
         };
 
-        tracing::info!("Found {} driver images in registry", registry_images.len());
+        tracing::debug!("Found {} driver images in registry", registry_images.len());
 
         let existing_drivers = DriverEntity::find()
             .filter(DriverColumn::TenantId.eq(tenant_id))

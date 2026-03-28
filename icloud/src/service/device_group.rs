@@ -1,8 +1,11 @@
-use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, Set};
+use sea_orm::{ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, IntoActiveModel, QueryFilter, QuerySelect, Set};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::entity::{DeviceGroupEntity, DeviceGroupColumn, DeviceGroupModel as Model, TenantEntity, OrganizationEntity, SiteEntity};
+use crate::entity::{DeviceGroupEntity, DeviceGroupColumn, DeviceGroupModel as Model, TenantEntity};
+use crate::entity::organization::{Entity as OrganizationEntity, Column as OrgColumn};
+use crate::entity::site::{Entity as SiteEntity, Column as SiteColumn};
+use crate::entity::namespace::{Entity as NamespaceEntity, Column as NsColumn};
 use crate::service::cache::GlobalCache;
 use crate::utils::AppError;
 
@@ -10,6 +13,7 @@ use crate::utils::AppError;
 pub struct CreateDeviceGroupRequest {
     pub org_id: String,
     pub site_id: String,
+    pub namespace_id: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub node_id: Option<String>,
@@ -21,6 +25,7 @@ pub struct UpdateDeviceGroupRequest {
     pub description: Option<String>,
     pub status: Option<String>,
     pub node_id: Option<String>,
+    pub namespace_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -34,7 +39,11 @@ pub struct DeviceGroupResponse {
     pub id: String,
     pub tenant_id: String,
     pub org_id: String,
+    pub org_name: Option<String>,
     pub site_id: String,
+    pub site_name: Option<String>,
+    pub namespace_id: Option<String>,
+    pub namespace_name: Option<String>,
     pub name: String,
     pub description: Option<String>,
     pub status: String,
@@ -49,7 +58,11 @@ impl From<Model> for DeviceGroupResponse {
             id: model.id.to_string(),
             tenant_id: model.tenant_id.to_string(),
             org_id: model.org_id.to_string(),
+            org_name: None,
             site_id: model.site_id.to_string(),
+            site_name: None,
+            namespace_id: model.namespace_id.map(|id| id.to_string()),
+            namespace_name: None,
             name: model.name,
             description: model.description,
             status: model.status,
@@ -99,6 +112,21 @@ impl DeviceGroupService {
             return Err(AppError::BadRequest("Site does not belong to the organization".to_string()));
         }
 
+        let namespace_id = if let Some(ns_id_str) = &req.namespace_id {
+            let ns_id = Uuid::parse_str(ns_id_str)
+                .map_err(|_| AppError::BadRequest("Invalid namespace_id".to_string()))?;
+            let namespace = crate::entity::namespace::Entity::find_by_id(ns_id)
+                .one(&self.db)
+                .await?
+                .ok_or(AppError::NotFound("Namespace not found".to_string()))?;
+            if namespace.tenant_id != tenant_id {
+                return Err(AppError::BadRequest("Namespace does not belong to the tenant".to_string()));
+            }
+            Some(ns_id)
+        } else {
+            None
+        };
+
         let now = chrono::Utc::now().naive_utc();
         let node_id = req.node_id.and_then(|id| Uuid::parse_str(&id).ok());
         let active_model = crate::entity::device_group::ActiveModel {
@@ -106,6 +134,7 @@ impl DeviceGroupService {
             tenant_id: Set(tenant_id),
             org_id: Set(org_id),
             site_id: Set(site_id),
+            namespace_id: Set(namespace_id),
             name: Set(req.name),
             description: Set(req.description),
             status: Set("active".to_string()),
@@ -136,7 +165,63 @@ impl DeviceGroupService {
             .all(&self.db)
             .await?;
 
-        Ok(models.into_iter().map(|m| m.into()).collect())
+        // 批量查询关联名称
+        let org_ids: Vec<Uuid> = models.iter().map(|m| m.org_id).collect();
+        let site_ids: Vec<Uuid> = models.iter().map(|m| m.site_id).collect();
+        let ns_ids: Vec<Uuid> = models.iter().filter_map(|m| m.namespace_id).collect();
+
+        let orgs = OrganizationEntity::find()
+            .filter(OrgColumn::Id.is_in(org_ids))
+            .all(&self.db)
+            .await?;
+        let org_map: std::collections::HashMap<Uuid, String> = orgs
+            .into_iter()
+            .map(|o| (o.id, o.name))
+            .collect();
+
+        let sites = SiteEntity::find()
+            .filter(SiteColumn::Id.is_in(site_ids))
+            .all(&self.db)
+            .await?;
+        let site_map: std::collections::HashMap<Uuid, String> = sites
+            .into_iter()
+            .map(|s| (s.id, s.name))
+            .collect();
+
+        let namespaces = if !ns_ids.is_empty() {
+            NamespaceEntity::find()
+                .filter(NsColumn::Id.is_in(ns_ids))
+                .all(&self.db)
+                .await?
+        } else {
+            vec![]
+        };
+        let ns_map: std::collections::HashMap<Uuid, String> = namespaces
+            .into_iter()
+            .map(|ns| (ns.id, ns.name))
+            .collect();
+
+        let responses: Vec<DeviceGroupResponse> = models
+            .into_iter()
+            .map(|m| DeviceGroupResponse {
+                id: m.id.to_string(),
+                tenant_id: m.tenant_id.to_string(),
+                org_id: m.org_id.to_string(),
+                org_name: org_map.get(&m.org_id).cloned(),
+                site_id: m.site_id.to_string(),
+                site_name: site_map.get(&m.site_id).cloned(),
+                namespace_id: m.namespace_id.map(|id| id.to_string()),
+                namespace_name: m.namespace_id.and_then(|id| ns_map.get(&id).cloned()),
+                name: m.name,
+                description: m.description,
+                status: m.status,
+                node_id: m.node_id.map(|id| id.to_string()),
+                created_at: m.created_at.to_string(),
+                updated_at: m.updated_at.to_string(),
+            })
+            .collect();
+
+        Ok(responses)
     }
 
     pub async fn list_by_site(
@@ -173,6 +258,9 @@ impl DeviceGroupService {
         }
         if let Some(node_id) = req.node_id {
             model.node_id = Set(node_id.parse().ok());
+        }
+        if let Some(namespace_id) = req.namespace_id {
+            model.namespace_id = Set(namespace_id.parse().ok());
         }
         model.updated_at = Set(chrono::Utc::now().naive_utc());
 
@@ -221,44 +309,53 @@ impl DeviceGroupService {
                 .await?
                 .ok_or(AppError::NotFound("Product not found".to_string()))?;
 
-            let driver_custom_config = inst.driver_config.clone();
-             
-             let driver_type = device.driver_image.as_ref()
-                 .and_then(|s| s.split('/').next())
-                 .unwrap_or("modbus")
-                 .to_string();
+            // 从 driver_config 获取基础配置，然后覆盖必要的字段
+            // 如果 driver_config 是字符串，先解析为 JSON 对象
+            let mut driver_config = if let serde_json::Value::String(ref s) = inst.driver_config {
+                serde_json::from_str::<serde_json::Value>(s.trim())
+                    .unwrap_or_else(|_| inst.driver_config.clone())
+            } else {
+                inst.driver_config.clone()
+            };
+            
+            // 确保 device_id 正确
+            if let serde_json::Value::Object(ref mut config_map) = driver_config {
+                config_map.insert("device_id".to_string(), serde_json::json!(inst.id.to_string()));
+                
+                // 如果 custom 中缺少 profile，从 device.device_profile 补充
+                if let Some(custom) = config_map.get_mut("custom") {
+                    if let serde_json::Value::Object(ref mut custom_map) = custom {
+                        // 检查是否已有 profile
+                        if !custom_map.contains_key("profile") {
+                            // 从 device_profile 获取 profile
+                            if let serde_json::Value::Object(ref profile_map) = device.device_profile {
+                                if let Some(profile) = profile_map.get("profile") {
+                                    custom_map.insert("profile".to_string(), profile.clone());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             instance_configs.push(serde_json::json!({
-                 "device_id": inst.id.to_string(),
-                 "device_name": inst.name.clone(),
-                 "device_type": product.name.clone(),
-                 "poll_interval_ms": inst.poll_interval_ms,
-                 "driver": {
-                     "driver_name": device.driver_image.as_ref().map(|s| s.replace("driver/", "").replace(":latest", "")).unwrap_or_else(|| "modbus-driver".to_string()),
-                     "driver_type": driver_type,
-                     "poll_interval_ms": inst.poll_interval_ms,
-                     "zmq": {
-                         "enabled": true,
-                         "publisher_address": "tcp://127.0.0.1:5556",
-                         "topic": "driver/data"
-                     },
-                     "logging": {
-                         "level": "info",
-                         "format": "json"
-                     },
-                     "custom": driver_custom_config
-                 },
-                 "thing_model": {
-                     "model_id": product.id.to_string(),
-                     "model_version": "1.0",
-                     "device_type": product.name.clone(),
-                     "manufacturer": "ithings",
-                     "description": product.description.unwrap_or_default(),
-                     "properties": product.thing_model.get("properties").cloned().unwrap_or(serde_json::json!([])),
-                     "events": product.thing_model.get("events").cloned().unwrap_or(serde_json::json!([])),
-                     "services": product.thing_model.get("services").cloned().unwrap_or(serde_json::json!([]))
-                 }
-             }));
+                "device_id": inst.id.to_string(),
+                "device_name": inst.name.clone(),
+                "device_type": product.name.clone(),
+                "poll_interval_ms": inst.poll_interval_ms,
+                "thing_model": {
+                    "model_id": product.id.to_string(),
+                    "model_version": "1.0",
+                    "device_type": product.name.clone(),
+                    "manufacturer": device.manufacturer.as_ref().unwrap_or(&"ithings".to_string()).clone(),
+                    "description": product.description.clone().unwrap_or_default(),
+                    "properties": product.thing_model.get("properties").cloned().unwrap_or(serde_json::json!([])),
+                    "events": product.thing_model.get("events").cloned().unwrap_or(serde_json::json!([])),
+                    "services": product.thing_model.get("services").cloned().unwrap_or(serde_json::json!([]))
+                },
+                "rules": product.rule.clone(),
+                "driver": driver_config
+            }));
 
             let device_image = format_image_with_registry(group.tenant_id, &device.device_image).await;
             device_images.insert(device_image);
@@ -287,6 +384,10 @@ impl DeviceGroupService {
                 &labels,
                 &instance_configs,
                 id,
+                group.tenant_id,
+                group.org_id.to_string(),
+                group.site_id.to_string(),
+                group.namespace_id.map(|id| id.to_string()),
             )
             .await?;
 

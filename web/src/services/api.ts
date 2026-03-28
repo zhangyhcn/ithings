@@ -108,6 +108,8 @@ export const siteApi = {
 };
 
 export const namespaceApi = {
+  list: (tenantId: string) =>
+    request.get<Namespace[]>(`/tenants/${tenantId}/namespaces`),
   listAll: () =>
     request.get<Namespace[]>('/namespaces'),
   listByTenant: (tenantId: string) =>
@@ -116,7 +118,7 @@ export const namespaceApi = {
     request.get(`/tenants/${tenantId}/namespaces/${id}`),
   create: (
     tenantId: string,
-    data: { name: string; slug: string; description?: string; namespace_type?: string }
+    data: { site_id: string; name: string; slug: string; description?: string; namespace_type?: string }
   ) => request.post(`/tenants/${tenantId}/namespaces`, data),
   update: (
     tenantId: string,

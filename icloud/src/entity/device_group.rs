@@ -11,6 +11,8 @@ pub struct Model {
     pub org_id: Uuid,
     #[sea_orm(column_type = "Uuid")]
     pub site_id: Uuid,
+    #[sea_orm(column_type = "Uuid", nullable)]
+    pub namespace_id: Option<Uuid>,
     #[sea_orm(column_type = "Text")]
     pub name: String,
     #[sea_orm(column_type = "Text")]
@@ -45,6 +47,12 @@ pub enum Relation {
         to = "super::site::Column::Id"
     )]
     Site,
+    #[sea_orm(
+        belongs_to = "super::namespace::Entity",
+        from = "Column::NamespaceId",
+        to = "super::namespace::Column::Id"
+    )]
+    Namespace,
 }
 
 impl Related<super::tenant::Entity> for Entity {
@@ -62,6 +70,12 @@ impl Related<super::organization::Entity> for Entity {
 impl Related<super::site::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Site.def()
+    }
+}
+
+impl Related<super::namespace::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Namespace.def()
     }
 }
 

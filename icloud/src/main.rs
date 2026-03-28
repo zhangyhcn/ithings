@@ -443,7 +443,6 @@ fn create_app(
             .merge(create_product_router(db.clone()))
             .merge(create_driver_router(db.clone()))
             .merge(create_node_router(db.clone()))
-            .merge(create_namespace_router(db.clone()))
             .merge(create_device_router(db.clone()))
             .merge(create_device_group_router(db.clone()))
             .merge(create_device_instance_router(db.clone()))

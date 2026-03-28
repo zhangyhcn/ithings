@@ -7,6 +7,8 @@ use std::fs;
 use uuid::Uuid;
 
 use crate::utils::AppError;
+use common::config::{DeviceGroupPublishConfig, ConfigMapPublishRequest};
+use common::config::group::DeviceInGroupConfig;
 
 #[derive(Serialize)]
 struct DeviceContainerContext {
@@ -56,6 +58,18 @@ impl K8sClient {
         })
     }
 
+    fn default_driver_config() -> common::config::driver::DriverConfig {
+        common::config::driver::DriverConfig {
+            driver_name: "modbus-driver".to_string(),
+            driver_type: "modbus".to_string(),
+            device_instance_id: "modbus-driver-group".to_string(),
+            poll_interval_ms: 1000,
+            zmq: Default::default(),
+            logging: Default::default(),
+            custom: Default::default(),
+        }
+    }
+
     pub async fn create_or_update_deployment(
         &self,
         name: &str,
@@ -64,11 +78,15 @@ impl K8sClient {
         node_labels: &std::collections::HashMap<String, String>,
         instances: &[serde_json::Value],
         group_id: Uuid,
+        tenant_id: Uuid,
+        org_id: String,
+        site_id: String,
+        namespace_id: Option<String>,
     ) -> Result<(), AppError> {
         let configmap_name = format!("{}-config", name);
         
         if !instances.is_empty() {
-            self.create_or_update_configmap(&configmap_name, group_id, instances).await?;
+            self.create_or_update_configmap(&configmap_name, group_id, tenant_id, org_id, site_id, namespace_id.clone(), instances).await?;
         }
 
         let deployments: Api<Deployment> = Api::namespaced(self.client.clone(), &self.namespace);
@@ -138,6 +156,10 @@ impl K8sClient {
         &self,
         configmap_name: &str,
         group_id: Uuid,
+        tenant_id: Uuid,
+        org_id: String,
+        site_id: String,
+        namespace_id: Option<String>,
         instances: &[serde_json::Value],
     ) -> Result<(), AppError> {
         use k8s_openapi::apimachinery::pkg::apis::meta::v1::ObjectMeta;
@@ -146,44 +168,77 @@ impl K8sClient {
 
         let mut data = std::collections::BTreeMap::new();
         
-        let group_config = serde_json::json!({
-            "tenant_id": "",
-            "org_id": "",
-            "site_id": "",
-            "namespace_id": "",
-            "remote_transport": {
-                "type": "mqtt",
-                "broker": null,
-                "brokers": null,
-                "username": null,
-                "password": null,
-                "client_id": null
-            },
-            "devices": instances
+        let mut remote_transport = serde_json::json!({
+            "type": "mqtt",
+            "broker": null,
+            "brokers": null,
+            "username": null,
+            "password": null,
+            "client_id": null
         });
+
+        let tenant_id_str = tenant_id.to_string();
+        if let Some(tenant) = crate::service::cache::GlobalCache::get_tenant(tenant_id).await {
+            if let Some(config) = tenant.config {
+                if let serde_json::Value::Object(obj) = config {
+                    if let Some(rt) = obj.get("remote_transport") {
+                        remote_transport = rt.clone();
+                    }
+                }
+            }
+        }
         
-        let driver_config = serde_json::json!({
-             "driver_name": "modbus-driver",
-             "driver_type": "modbus",
-             "device_instance_id": "modbus-driver-group",
-             "poll_interval_ms": 1000,
-             "zmq": {
-                 "enabled": true,
-                 "publisher_address": "tcp://*:5556",
-                 "topic": "modbus/data"
-             },
-             "logging": {
-                 "level": "info",
-                 "format": "json"
-             },
-             "custom": {}
-         });
+        let namespace_id_str = namespace_id.unwrap_or_default();
         
-        let json_str = serde_json::to_string_pretty(&group_config).unwrap_or_default();
+        // 解析设备实例为结构化配置
+        let devices: Vec<common::config::DeviceInGroupConfig> = instances
+            .iter()
+            .filter_map(|inst| serde_json::from_value(inst.clone()).ok())
+            .collect();
+        
+        // 构建 DeviceGroupPublishConfig
+        let group_config = DeviceGroupPublishConfig {
+            tenant_id: tenant_id_str,
+            org_id,
+            site_id,
+            namespace_id: namespace_id_str,
+            remote_transport,
+            group_id: group_id.to_string(),
+            devices,
+        };
+        
+        // 从第一个设备实例提取 driver 配置
+        let driver_config = if let Some(first_instance) = instances.first() {
+            if let Some(driver) = first_instance.get("driver") {
+                // 如果 driver 是字符串，先解析为 JSON 对象
+                let base_config = if let serde_json::Value::String(ref s) = driver {
+                    serde_json::from_str::<serde_json::Value>(s.trim())
+                        .unwrap_or_else(|_| driver.clone())
+                } else {
+                    driver.clone()
+                };
+                // 解析为 DeviceInGroupConfig
+                serde_json::from_value(base_config)
+                    .unwrap_or_else(|_| Self::default_driver_config())
+            } else {
+                Self::default_driver_config()
+            }
+        } else {
+            Self::default_driver_config()
+        };
+        
+        // 构建发布请求并校验
+        let publish_request = ConfigMapPublishRequest {
+            config_json: group_config,
+            driver_config_json: driver_config,
+        };
+        
+        publish_request.validate()
+            .map_err(|e| AppError::BadRequest(format!("Invalid publish config: {}", e)))?;
+        
+        let json_str = serde_json::to_string_pretty(&publish_request.config_json)
+            .map_err(|e| AppError::InternalServerError(format!("Failed to serialize config.json: {}", e)))?;
         data.insert("config.json".to_string(), json_str);
-        
-        let driver_json_str = serde_json::to_string_pretty(&driver_config).unwrap_or_default();
-        data.insert("driver-config.json".to_string(), driver_json_str);
 
         let configmap = ConfigMap {
             metadata: ObjectMeta {
