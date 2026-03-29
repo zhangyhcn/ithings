@@ -390,7 +390,7 @@ impl Driver for ModbusDriver {
     }
 
     async fn read(&self) -> Result<Vec<DataPoint>> {
-        tracing::debug!("read() called, {} profiles loaded", self.profiles.len());
+        tracing::info!("read() called, {} profiles loaded", self.profiles.len());
 
         if self.profiles.is_empty() {
             tracing::warn!("No profiles loaded, returning empty data");
@@ -523,7 +523,7 @@ impl Driver for ModbusDriver {
         let total_resources: usize = self.profiles.iter()
             .map(|p| p.device_resources.len())
             .sum();
-        tracing::debug!("Read {} data points from {} devices ({} total resources)", 
+        tracing::info!("Read {} data points from {} devices ({} total resources)", 
             data_points.len(), self.profiles.len(), total_resources);
         Ok(data_points)
     }

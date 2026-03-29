@@ -6,7 +6,7 @@ def main():
     context = zmq.Context()
     socket = context.socket(zmq.SUB)
     
-    zmq_address = f"tcp://172.25.219.101:5555"
+    zmq_address = f"tcp://localhost:5555"
     print(f"Connecting to {zmq_address}")
     socket.connect(zmq_address)
     

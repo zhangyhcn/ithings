@@ -24,6 +24,7 @@ struct DeploymentTemplateContext {
     group_id: String,
     device_containers: Vec<DeviceContainerContext>,
     driver_image: String,
+    router_image: String,
     node_selector: Vec<NodeSelectorEntry>,
 }
 
@@ -111,6 +112,9 @@ impl K8sClient {
             })
             .collect();
         
+        let router_image = std::env::var("ZMQ_ROUTER_IMAGE")
+            .unwrap_or_else(|_| "172.17.0.1:30500/infra/zmq-router:latest".to_string());
+        
         let context = DeploymentTemplateContext {
             deployment_name: name.to_string(),
             configmap_name: configmap_name.clone(),
@@ -118,6 +122,7 @@ impl K8sClient {
             group_id: group_id.to_string(),
             device_containers,
             driver_image: driver_image.to_string(),
+            router_image,
             node_selector,
         };
         

@@ -9,6 +9,14 @@ pub struct MqttConfig {
     pub password: Option<String>,
     pub topic_prefix: String,
     pub qos: u8,
+    #[serde(default)]
+    pub tenant_id: Option<String>,
+    #[serde(default)]
+    pub org_id: Option<String>,
+    #[serde(default)]
+    pub site_id: Option<String>,
+    #[serde(default)]
+    pub namespace_id: Option<String>,
 }
 
 impl Default for MqttConfig {
@@ -21,6 +29,10 @@ impl Default for MqttConfig {
             password: None,
             topic_prefix: "devices".to_string(),
             qos: 1,
+            tenant_id: None,
+            org_id: None,
+            site_id: None,
+            namespace_id: None,
         }
     }
 }

@@ -41,11 +41,15 @@ impl ZmqPublisher {
             socket.set_sndhwm(hwm as i32)?;
         }
         
-        socket.bind(&config.publisher_address)?;
+        let router_address = config.router_address.as_deref().unwrap_or("tcp://localhost");
+        let router_sub_port = config.router_sub_port.unwrap_or(5550);
+        let connect_address = format!("{}:{}", router_address, router_sub_port);
+        
+        socket.connect(&connect_address)?;
         
         tracing::info!(
-            "ZeroMQ publisher bound to {} with topic '{}'",
-            config.publisher_address,
+            "ZeroMQ publisher connected to router {} with topic '{}'",
+            connect_address,
             config.topic
         );
 
@@ -56,8 +60,13 @@ impl ZmqPublisher {
         })
     }
 
+    pub fn is_enabled(&self) -> bool {
+        self.enabled
+    }
+
     pub async fn publish(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
         if !self.enabled {
+            tracing::debug!("Publisher disabled, skipping publish for {}", data_point.name);
             return Ok(());
         }
 
@@ -70,6 +79,8 @@ impl ZmqPublisher {
         
         let payload = serde_json::to_string(data_point)?;
         let message = format!("{} {}", topic, payload);
+        
+        tracing::debug!("Publishing message: {}", &message[..message.len().min(200)]);
         
         let socket = self.socket.lock().await;
         socket.send(message.as_bytes(), 0)?;

@@ -6,8 +6,11 @@ use super::event::Event;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ThingModel {
+    #[serde(alias = "modelId")]
     pub model_id: String,
+    #[serde(alias = "modelVersion")]
     pub model_version: String,
+    #[serde(alias = "deviceType")]
     pub device_type: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub manufacturer: Option<String>,

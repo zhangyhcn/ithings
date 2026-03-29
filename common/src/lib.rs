@@ -28,10 +28,10 @@ pub use driver::ConfigDiscovery;
 pub use types::*;
 
 pub use device_core::{
-    ThingModel, Property, PropertyType, PropertyAccess, PropertyValue,
-    Service, ServiceParam, ServiceResult as ServiceResultDef, ServiceRequest, ServiceResponse,
+    ThingModel, Property, PropertyType, PropertyAccess, PropertyValue, PropertyRange,
+    Service, ServiceParam, ServiceOutput, ServiceParams, ServiceResult, ServiceCallRequest, ServiceHandler, CallType,
     Event, EventLevel, EventData, EventParam,
     Rule, RuleCondition, RuleAction, ConditionLogic,
     StateMachine, State, Transition, StateMachineInstance, StateMachineContext,
-    DeviceRuntime,
+    DeviceRuntime, DeviceTrait, BaseDevice,
 };

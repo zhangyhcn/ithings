@@ -50,8 +50,15 @@ pub struct DriverInDeviceConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ZmqDriverConfig {
     pub enabled: bool,
+    #[serde(default)]
     pub publisher_address: String,
     pub topic: String,
+    #[serde(default)]
+    pub router_address: Option<String>,
+    #[serde(default)]
+    pub router_sub_port: Option<u16>,
+    #[serde(default)]
+    pub router_pub_port: Option<u16>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

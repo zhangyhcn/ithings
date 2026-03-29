@@ -49,11 +49,11 @@ impl RemoteSubscriber for KafkaSubscriber {
         }
 
         let consumer: StreamConsumer = client_config.create()?;
-        consumer.subscribe(&[&self.config.write_topic])?;
+        consumer.subscribe(&[&self.config.write_topic, &self.config.properties_topic])?;
         
         self.consumer = Some(Arc::new(Mutex::new(consumer)));
         self.connected = true;
-        tracing::info!("Subscribed to Kafka topic: {}", self.config.write_topic);
+        tracing::info!("Subscribed to Kafka topics: {}, {}", self.config.write_topic, self.config.properties_topic);
 
         Ok(())
     }
@@ -67,12 +67,44 @@ impl RemoteSubscriber for KafkaSubscriber {
             let consumer_guard = consumer.lock().await;
             match consumer_guard.recv().await {
                 Ok(message) => {
-                    match message.payload() {
-                        Some(payload) => {
-                            let data_point: DataPoint = serde_json::from_slice(payload)?;
-                            return Ok(Some(data_point));
+                    let topic = message.topic();
+                    if topic == self.config.write_topic {
+                        match message.payload() {
+                            Some(payload) => {
+                                let data_point: DataPoint = serde_json::from_slice(payload)?;
+                                return Ok(Some(data_point));
+                            }
+                            None => {}
                         }
-                        None => {}
+                    }
+                }
+                Err(e) => {
+                    tracing::error!("Kafka consumer error: {}", e);
+                }
+            }
+        }
+        
+        Ok(None)
+    }
+
+    async fn recv_properties(&self) -> Result<Option<Vec<DataPoint>>> {
+        if !self.config.enabled || !self.connected {
+            return Ok(None);
+        }
+
+        if let Some(consumer) = &self.consumer {
+            let consumer_guard = consumer.lock().await;
+            match consumer_guard.recv().await {
+                Ok(message) => {
+                    let topic = message.topic();
+                    if topic == self.config.properties_topic {
+                        match message.payload() {
+                            Some(payload) => {
+                                let data_points: Vec<DataPoint> = serde_json::from_slice(payload)?;
+                                return Ok(Some(data_points));
+                            }
+                            None => {}
+                        }
                     }
                 }
                 Err(e) => {

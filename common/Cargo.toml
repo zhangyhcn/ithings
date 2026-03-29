@@ -22,3 +22,4 @@ zmq.workspace = true
 rumqttc.workspace = true
 rdkafka.workspace = true
 regex.workspace = true
+futures.workspace = true

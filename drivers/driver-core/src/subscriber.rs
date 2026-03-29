@@ -55,11 +55,16 @@ impl ZmqSubscriber {
         
         socket.set_subscribe(config.write_topic.as_bytes())?;
         socket.set_subscribe(config.config_update_topic.as_bytes())?;
-        socket.connect(&config.subscriber_address)?;
+        
+        let router_address = config.router_address.as_deref().unwrap_or("tcp://localhost");
+        let router_pub_port = config.router_pub_port.unwrap_or(5551);
+        let connect_address = format!("{}:{}", router_address, router_pub_port);
+        
+        socket.connect(&connect_address)?;
         
         tracing::info!(
-            "ZeroMQ subscriber connected to {} subscribed to topics: write='{}', config_update='{}'",
-            config.subscriber_address,
+            "ZeroMQ subscriber connected to router {} subscribed to topics: write='{}', config_update='{}'",
+            connect_address,
             config.write_topic,
             config.config_update_topic
         );
@@ -79,6 +84,7 @@ impl ZmqSubscriber {
         }
 
         let socket = self.socket.lock().await;
+        socket.set_rcvtimeo(10)?;
         
         let mut msg = zmq::Message::new();
         match socket.recv(&mut msg, 0) {

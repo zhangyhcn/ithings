@@ -191,20 +191,34 @@ impl<D: Driver + Default> MultiDeviceDriver<D> {
             .map(|c| c.poll_interval_ms)
             .unwrap_or(1000);
         
+        tracing::info!("Starting polling loop with interval {}ms, {} devices, publisher={:?}", 
+            base_poll_interval, 
+            self.device_manager.get_all_devices().len(),
+            self.base.publisher().map(|p| p.is_enabled()));
+        
         let mut ticker = interval(Duration::from_millis(base_poll_interval));
+        ticker.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
         
         loop {
             tokio::select! {
+                biased;
+                
                 _ = ticker.tick() => {
+                    tracing::trace!("Ticker ticked, polling {} devices", self.device_manager.get_all_devices().len());
                     for (_, instance) in self.device_manager.get_all_devices() {
                         match instance.driver.read().await {
                             Ok(data_points) => {
+                                tracing::info!("Read {} data points from device {}", data_points.len(), instance.id);
                                 if let Some(publisher) = self.base.publisher() {
+                                    tracing::info!("Publisher enabled: {}", publisher.is_enabled());
                                     if !data_points.is_empty() {
+                                        tracing::info!("Publishing {} data points for device {}", data_points.len(), instance.id);
                                         if let Err(e) = publisher.publish_batch(&instance.id, &data_points).await {
                                             tracing::error!("Failed to publish data for device {}: {}", instance.id, e);
                                         }
                                     }
+                                } else {
+                                    tracing::warn!("No publisher available for device {}", instance.id);
                                 }
                             }
                             Err(e) => {
@@ -217,7 +231,7 @@ impl<D: Driver + Default> MultiDeviceDriver<D> {
                     if let Some(subscriber) = &self.base.subscriber() {
                         subscriber.recv_message().await.transpose().map(|res| res.ok())
                     } else {
-                        None
+                        std::future::pending().await
                     }
                 } => {
                     if let Some(Some(msg)) = message {

@@ -7,6 +7,9 @@ use serde::{Deserialize, Serialize};
 pub trait RemoteSubscriber: Send + Sync {
     async fn subscribe(&mut self) -> Result<()>;
     async fn recv_write_request(&self) -> Result<Option<DataPoint>>;
+    async fn recv_properties(&self) -> Result<Option<Vec<DataPoint>>> {
+        Ok(None)
+    }
     fn enabled(&self) -> bool;
     fn connected(&self) -> bool;
     fn subscriber_type(&self) -> &str;

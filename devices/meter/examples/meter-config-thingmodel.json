@@ -4,15 +4,20 @@
   "poll_interval_ms": 1000,
   "zmq": {
     "enabled": true,
-    "subscriber_address": "tcp://localhost:5556",
-    "write_topic": "driver/write"
+    "subscriber_address": "tcp://localhost:5551",
+    "write_topic": "driver/write",
+    "properties_topic": "driver/properties"
   },
   "mqtt": {
-    "enabled": false,
+    "enabled": true,
     "broker_address": "tcp://localhost:1883",
     "client_id": "three-phase-meter-1",
     "topic_prefix": "devices",
-    "qos": 1
+    "qos": 1,
+    "tenant_id": "default",
+    "org_id": "default",
+    "site_id": "default",
+    "namespace_id": "default"
   },
   "logging": {
     "level": "info",
@@ -37,10 +42,7 @@
           "type": "float",
           "unit": "V",
           "access": "R",
-          "range": [
-            0,
-            400
-          ],
+          "range": {"min": 0, "max": 400},
           "description": "Voltage on phase L1"
         },
         {
@@ -49,10 +51,7 @@
           "type": "float",
           "unit": "V",
           "access": "R",
-          "range": [
-            0,
-            400
-          ],
+          "range": {"min": 0, "max": 400},
           "description": "Voltage on phase L2"
         },
         {
@@ -61,10 +60,7 @@
           "type": "float",
           "unit": "V",
           "access": "R",
-          "range": [
-            0,
-            400
-          ],
+          "range": {"min": 0, "max": 400},
           "description": "Voltage on phase L3"
         },
         {
@@ -73,10 +69,7 @@
           "type": "float",
           "unit": "A",
           "access": "R",
-          "range": [
-            0,
-            100
-          ],
+          "range": {"min": 0, "max": 100},
           "description": "Current on phase L1"
         },
         {
@@ -85,10 +78,7 @@
           "type": "float",
           "unit": "A",
           "access": "R",
-          "range": [
-            0,
-            100
-          ],
+          "range": {"min": 0, "max": 100},
           "description": "Current on phase L2"
         },
         {
@@ -97,10 +87,7 @@
           "type": "float",
           "unit": "A",
           "access": "R",
-          "range": [
-            0,
-            100
-          ],
+          "range": {"min": 0, "max": 100},
           "description": "Current on phase L3"
         },
         {
@@ -109,10 +96,7 @@
           "type": "float",
           "unit": "W",
           "access": "R",
-          "range": [
-            0,
-            1000000
-          ],
+          "range": {"min": 0, "max": 1000000},
           "description": "Total active power"
         },
         {
@@ -121,10 +105,7 @@
           "type": "float",
           "unit": "",
           "access": "R",
-          "range": [
-            0,
-            1
-          ],
+          "range": {"min": 0, "max": 1},
           "description": "Power factor"
         },
         {
@@ -133,10 +114,7 @@
           "type": "float",
           "unit": "kWh",
           "access": "R",
-          "range": [
-            0,
-            100000000
-          ],
+          "range": {"min": 0, "max": 100000000},
           "description": "Total active energy"
         }
       ],
@@ -149,12 +127,12 @@
             {
               "identifier": "voltage",
               "name": "Current Voltage",
-              "data_type": "float"
+              "type": "float"
             },
             {
               "identifier": "phase",
               "name": "Phase",
-              "data_type": "string"
+              "type": "string"
             }
           ],
           "description": "Triggered when voltage exceeds threshold"
@@ -167,13 +145,54 @@
             {
               "identifier": "power",
               "name": "Current Power",
-              "data_type": "float"
+              "type": "float"
             }
           ],
           "description": "Triggered when power exceeds threshold"
         }
       ],
       "services": [
+        {
+          "identifier": "test_write_property",
+          "name": "Test Write Property",
+          "description": "Test service to write a property value with 100ms delay",
+          "input_params": [
+            {
+              "identifier": "property_name",
+              "name": "Property Name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "identifier": "property_value",
+              "name": "Property Value",
+              "type": "object",
+              "required": true
+            }
+          ],
+          "output_params": [
+            {
+              "identifier": "property_name",
+              "name": "Property Name",
+              "type": "string"
+            },
+            {
+              "identifier": "property_value",
+              "name": "Property Value",
+              "type": "object"
+            },
+            {
+              "identifier": "status",
+              "name": "Status",
+              "type": "string"
+            },
+            {
+              "identifier": "timestamp",
+              "name": "Timestamp",
+              "type": "string"
+            }
+          ]
+        }
       ]
     },
     "rules": [

@@ -1,11 +1,12 @@
 use crate::config::driver::DriverConfig;
+use crate::config::DriverClientConfig;
 use crate::types::{DataPoint};
 use crate::transport::driver_comm::{DriverClient, ReadRequest, ReadResponse, DataPointRequest};
 use anyhow::Result;
 use async_trait::async_trait;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-use zmq::{Context, Socket, REQ};
+use zmq::{Context, Socket, PUB};
 use uuid::Uuid;
 
 pub struct ZmqDriverClient {
@@ -15,20 +16,24 @@ pub struct ZmqDriverClient {
 }
 
 impl ZmqDriverClient {
-    pub fn new(server_address: &str) -> Result<Self> {
+    pub fn new(config: &DriverClientConfig) -> Result<Self> {
         let context = Context::new();
-        let socket = context.socket(REQ)?;
+        let socket = context.socket(PUB)?;
         
-        socket.connect(server_address)?;
+        let router_address = config.router_address.as_deref().unwrap_or("tcp://localhost");
+        let router_sub_port = config.router_sub_port.unwrap_or(5550);
+        let connect_address = format!("{}:{}", router_address, router_sub_port);
+        
+        socket.connect(&connect_address)?;
         
         tracing::info!(
-            "Connected to driver server at {}",
-            server_address
+            "ZMQ driver client (PUB) connected to router {}",
+            connect_address
         );
 
         Ok(Self {
             socket: Arc::new(Mutex::new(socket)),
-            server_address: server_address.to_string(),
+            server_address: connect_address,
             connected: true,
         })
     }
@@ -37,40 +42,22 @@ impl ZmqDriverClient {
 #[async_trait]
 impl DriverClient for ZmqDriverClient {
     async fn read(&self, device_name: &str, resource_names: &[&str]) -> Result<ReadResponse> {
-        let request = ReadRequest {
-            request_id: Uuid::new_v4().to_string(),
-            device_name: device_name.to_string(),
-            resources: resource_names.iter()
-                .map(|name| DataPointRequest { name: name.to_string() })
-                .collect(),
-        };
-
-        let socket = self.socket.lock().await;
-        
-        let json = serde_json::to_string(&request)?;
-        socket.send(json.as_bytes(), 0)?;
-        
-        let mut response_msg = zmq::Message::new();
-        socket.recv(&mut response_msg, 0)?;
-        
-        let response: ReadResponse = serde_json::from_slice(&response_msg.iter().cloned().collect::<Vec<u8>>())?;
-        Ok(response)
+        Err(anyhow::anyhow!("Read not supported in PUB mode"))
     }
 
     async fn read_all(&self, device_name: &str, resource_names: Vec<String>) -> Result<Vec<DataPoint>> {
-        let names: Vec<&str> = resource_names.iter().map(|s| s.as_str()).collect();
-        let response = self.read(device_name, &names).await?;
-        Ok(response.data_points)
+        Err(anyhow::anyhow!("Read not supported in PUB mode"))
     }
 
     async fn send_config(&self, config: &DriverConfig) -> Result<()> {
+        let topic = "driver/config_update";
         let json = serde_json::to_string(config)?;
+        let message = format!("{} {}", topic, json);
+        
         let socket = self.socket.lock().await;
-        socket.send(json.as_bytes(), 0)?;
+        socket.send(message.as_bytes(), 0)?;
         
-        let mut response_msg = zmq::Message::new();
-        socket.recv(&mut response_msg, 0)?;
-        
+        tracing::info!("Sent driver config via PUB to topic '{}'", topic);
         Ok(())
     }
 

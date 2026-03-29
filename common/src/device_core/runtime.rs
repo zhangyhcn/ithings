@@ -1,21 +1,22 @@
 use crate::transport::{RemotePublisher, RemoteSubscriber, DriverClient};
-use crate::types::{DataPoint, DataValue, Quality};
+use crate::types::{DataPoint, DataValue, Quality, DeviceEvent};
 use super::thing_model::ThingModel;
 use super::property::{Property, PropertyValue};
 use super::rule::Rule;
 use super::event::EventData;
-use super::service::{ServiceRequest, ServiceResponse};
+use super::service::{ServiceParams, ServiceResult, ServiceHandler, ServiceCallRequest};
 use super::state_machine::StateMachineContext;
+use super::device_trait::DeviceTrait;
 use anyhow::Result;
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::{Mutex, RwLock};
 
-pub type ServiceHandler = Arc<dyn Fn(ServiceRequest) -> ServiceResponse + Send + Sync>;
 pub type EventHandler = Arc<dyn Fn(&EventData) + Send + Sync>;
 
 pub struct DeviceRuntime {
     thing_model: ThingModel,
+    device_id: String,
     device_name: String,
     property_values: Arc<RwLock<HashMap<String, PropertyValue>>>,
     rules: Vec<Rule>,
@@ -23,7 +24,7 @@ pub struct DeviceRuntime {
     publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
     subscriber: Option<Arc<Mutex<Box<dyn RemoteSubscriber>>>>,
     driver_client: Option<Arc<Mutex<Box<dyn DriverClient>>>>,
-    service_handlers: HashMap<String, ServiceHandler>,
+    service_registry: HashMap<String, ServiceHandler>,
     event_handlers: HashMap<String, Vec<EventHandler>>,
     running: Arc<RwLock<bool>>,
 }
@@ -43,6 +44,7 @@ impl DeviceRuntime {
 
         Self {
             thing_model,
+            device_id: uuid::Uuid::new_v4().to_string(),
             device_name: device_name.to_string(),
             property_values: Arc::new(RwLock::new(values)),
             rules: Vec::new(),
@@ -50,10 +52,15 @@ impl DeviceRuntime {
             publisher: None,
             subscriber: None,
             driver_client: None,
-            service_handlers: HashMap::new(),
+            service_registry: HashMap::new(),
             event_handlers: HashMap::new(),
             running: Arc::new(RwLock::new(false)),
         }
+    }
+
+    pub fn with_device_id(mut self, device_id: &str) -> Self {
+        self.device_id = device_id.to_string();
+        self
     }
 
     pub fn with_publisher(mut self, publisher: Box<dyn RemotePublisher>) -> Self {
@@ -84,8 +91,8 @@ impl DeviceRuntime {
         self
     }
 
-    pub fn register_service_handler(&mut self, service_identifier: &str, handler: ServiceHandler) {
-        self.service_handlers.insert(service_identifier.to_string(), handler);
+    pub fn register_service(&mut self, service_id: &str, handler: ServiceHandler) {
+        self.service_registry.insert(service_id.to_string(), handler);
     }
 
     pub fn register_event_handler(&mut self, event_identifier: &str, handler: EventHandler) {
@@ -118,17 +125,10 @@ impl DeviceRuntime {
     pub async fn read_properties(&self) -> Result<Vec<PropertyValue>> {
         let mut results = Vec::new();
         
-        if let Some(ref client) = self.driver_client {
-            let client_guard = client.lock().await;
-            let readable_props: Vec<String> = self.thing_model.properties
-                .iter()
-                .filter(|p: &&Property| p.can_read())
-                .map(|p| p.identifier.clone())
-                .collect();
-
-            if !readable_props.is_empty() {
-                let data_points = client_guard.read_all(&self.device_name, readable_props).await?;
-                
+        if let Some(ref subscriber) = self.subscriber {
+            let mut sub_guard = subscriber.lock().await;
+            
+            if let Ok(Some(data_points)) = sub_guard.recv_properties().await {
                 let mut values = self.property_values.write().await;
                 for dp in data_points {
                     let value = serde_json::to_value(&dp.value).unwrap_or(serde_json::Value::Null);
@@ -136,10 +136,85 @@ impl DeviceRuntime {
                     values.insert(dp.name.clone(), prop_value.clone());
                     results.push(prop_value);
                 }
+                tracing::debug!("Updated {} properties in cache", results.len());
             }
         }
 
         Ok(results)
+    }
+
+    pub async fn report_properties(&self) -> Result<()> {
+        let values = self.property_values.read().await;
+        let properties: Vec<(String, PropertyValue)> = values
+            .iter()
+            .map(|(k, v)| (k.clone(), v.clone()))
+            .collect();
+        drop(values);
+
+        if properties.is_empty() {
+            return Ok(());
+        }
+
+        if let Some(ref publisher) = self.publisher {
+            let pub_guard = publisher.lock().await;
+            
+            for (name, prop_value) in &properties {
+                let data_point = DataPoint {
+                    id: uuid::Uuid::new_v4().to_string(),
+                    name: name.clone(),
+                    value: DataValue::from_json(&prop_value.value),
+                    quality: Quality::Good,
+                    timestamp: chrono::Utc::now(),
+                    metadata: HashMap::new(),
+                    units: None,
+                };
+                pub_guard.publish(&self.device_name, &data_point).await?;
+            }
+            tracing::debug!("Reported {} properties to remote", properties.len());
+        }
+
+        Ok(())
+    }
+
+    pub async fn report_event(&self, event: &DeviceEvent) -> Result<()> {
+        if let Some(ref publisher) = self.publisher {
+            let pub_guard = publisher.lock().await;
+            pub_guard.publish_event(&self.device_name, event).await?;
+            tracing::info!("Event reported: {} for device {}", event.name, self.device_name);
+        }
+        Ok(())
+    }
+
+    pub async fn start_processing_loop(self: &Arc<Self>, interval_ms: u64) {
+        let running = self.running.clone();
+        let runtime = self.clone();
+        
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(tokio::time::Duration::from_millis(interval_ms));
+            
+            loop {
+                let is_running = *running.read().await;
+                if !is_running {
+                    break;
+                }
+                
+                interval.tick().await;
+                
+                if let Err(e) = runtime.process_and_report().await {
+                    tracing::error!("Processing loop error: {}", e);
+                }
+            }
+        });
+    }
+
+    pub async fn process_and_report(&self) -> Result<()> {
+        self.evaluate_rules().await?;
+        self.report_properties().await?;
+        Ok(())
+    }
+
+    pub async fn try_recv_properties(&self) -> Result<Vec<PropertyValue>> {
+        self.read_properties().await
     }
 
     pub async fn evaluate_rules(&self) -> Result<()> {
@@ -171,8 +246,8 @@ impl DeviceRuntime {
                     self.trigger_event(event_identifier, data.clone()).await?;
                 }
                 RuleAction::CallService { service_identifier, params } => {
-                    let request = ServiceRequest::new(service_identifier, params.clone());
-                    self.handle_service_request(request).await?;
+                    let service_params = ServiceParams::from_json(params.clone());
+                    self.call_service(&uuid::Uuid::new_v4().to_string(), service_identifier, service_params);
                 }
                 RuleAction::Log { level, message } => {
                     match level.as_str() {
@@ -217,6 +292,10 @@ impl DeviceRuntime {
         }
     }
 
+    fn convert_property_value_to_datavalue(value: &PropertyValue) -> DataValue {
+        Self::convert_json_to_datavalue(&value.value)
+    }
+
     pub async fn trigger_event(&self, event_identifier: &str, data: HashMap<String, serde_json::Value>) -> Result<()> {
         let event_def = self.thing_model.get_event(event_identifier);
         let level = event_def.map(|e| e.level.clone()).unwrap_or(super::event::EventLevel::Info);
@@ -236,48 +315,45 @@ impl DeviceRuntime {
 
         if let Some(ref publisher) = self.publisher {
             let pub_guard = publisher.lock().await;
-            let event_json = serde_json::to_value(&event_data)?;
-            let value = Self::convert_json_to_datavalue(&event_json);
-            let data_point = DataPoint {
-                id: uuid::Uuid::new_v4().to_string(),
-                name: format!("event_{}", event_identifier),
-                value,
-                quality: Quality::Good,
-                timestamp: chrono::Utc::now(),
-                metadata: HashMap::new(),
-                units: None,
-            };
-            pub_guard.publish(&self.device_name, &data_point).await?;
+            
+            let params: HashMap<String, DataValue> = data
+                .iter()
+                .map(|(k, v)| (k.clone(), Self::convert_json_to_datavalue(v)))
+                .collect();
+            
+            let event = DeviceEvent::new(event_identifier, event_identifier, params);
+            pub_guard.publish_event(&self.device_name, &event).await?;
             tracing::info!("Event published: {} for device {}", event_identifier, self.device_name);
         }
 
         Ok(())
     }
 
-    pub async fn handle_service_request(&self, request: ServiceRequest) -> Result<ServiceResponse> {
-        let service = self.thing_model.get_service(&request.service_identifier);
+    pub fn call_service(&self, msg_id: &str, service_id: &str, params: ServiceParams) -> ServiceResult {
+        let service = self.thing_model.get_service(service_id);
         
         if let Some(service_def) = service {
-            let result = service_def.validate_input(&request.params);
+            let result = service_def.validate_input(&params);
             if let Err(e) = result {
-                return Ok(ServiceResponse::failure(
-                    &request.request_id,
-                    &request.service_identifier,
-                    &e,
-                ));
+                return ServiceResult::bad_request(msg_id, service_id, &e);
             }
         }
 
-        if let Some(handler) = self.service_handlers.get(&request.service_identifier) {
-            let response = handler(request);
-            Ok(response)
-        } else {
-            Ok(ServiceResponse::failure(
-                &request.request_id,
-                &request.service_identifier,
-                &format!("No handler registered for service: {}", request.service_identifier),
-            ))
+        match self.service_registry.get(service_id) {
+            Some(handler) => handler(msg_id, service_id, params),
+            None => ServiceResult::not_found(msg_id, service_id),
         }
+    }
+
+    pub async fn handle_service_call(&self, request: ServiceCallRequest) -> Result<ServiceResult> {
+        let result = self.call_service(&request.msg_id, &request.service_id, ServiceParams { params: request.params });
+        
+        if let Some(ref publisher) = self.publisher {
+            let pub_guard = publisher.lock().await;
+            pub_guard.publish_service_reply(&self.device_name, &result).await?;
+        }
+
+        Ok(result)
     }
 
     pub fn get_thing_model(&self) -> &ThingModel {
@@ -288,6 +364,10 @@ impl DeviceRuntime {
         &self.device_name
     }
 
+    pub fn get_device_id(&self) -> &str {
+        &self.device_id
+    }
+
     pub fn driver_client(&self) -> Option<&Arc<Mutex<Box<dyn DriverClient>>>> {
         self.driver_client.as_ref()
     }
@@ -295,6 +375,10 @@ impl DeviceRuntime {
     pub async fn get_all_property_values(&self) -> HashMap<String, PropertyValue> {
         let values = self.property_values.read().await;
         values.clone()
+    }
+
+    pub fn supported_services(&self) -> Vec<String> {
+        self.service_registry.keys().cloned().collect()
     }
 
     pub async fn start(&self) -> Result<()> {
@@ -314,5 +398,41 @@ impl DeviceRuntime {
     pub async fn is_running(&self) -> bool {
         let running = self.running.read().await;
         *running
+    }
+}
+
+impl DeviceTrait for DeviceRuntime {
+    fn device_id(&self) -> &str {
+        &self.device_id
+    }
+
+    fn device_name(&self) -> &str {
+        &self.device_name
+    }
+
+    fn get_properties(&self) -> HashMap<String, PropertyValue> {
+        tokio::task::block_in_place(|| {
+            futures::executor::block_on(async {
+                self.property_values.read().await.clone()
+            })
+        })
+    }
+
+    fn set_properties(&mut self, props: HashMap<String, PropertyValue>) -> Result<()> {
+        tokio::task::block_in_place(|| {
+            futures::executor::block_on(async {
+                let mut values = self.property_values.write().await;
+                values.extend(props);
+                Ok(())
+            })
+        })
+    }
+
+    fn service_registry(&mut self) -> &mut HashMap<String, ServiceHandler> {
+        &mut self.service_registry
+    }
+
+    fn supported_services(&self) -> Vec<String> {
+        self.service_registry.keys().cloned().collect()
     }
 }

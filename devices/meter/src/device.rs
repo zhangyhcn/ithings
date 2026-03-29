@@ -2,7 +2,7 @@ use common::{
     DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
     PublisherFactory, SubscriberFactory,
     DriverClientFactory,
-    ThingModel, DeviceRuntime,
+    ThingModel, DeviceRuntime, ServiceParams, ServiceResult, PropertyValue,
     Rule, StateMachine,
 };
 use driver_core::driver::{BaseDriver, Driver};
@@ -10,6 +10,7 @@ use driver_core::config::DriverConfig;
 use anyhow::Result;
 use async_trait::async_trait;
 use std::sync::Arc;
+use std::collections::HashMap;
 
 pub struct MeterDevice {
     base: BaseDriver,
@@ -42,13 +43,16 @@ impl MeterDevice {
             poll_interval_ms: config.poll_interval_ms,
             zmq: driver_core::config::ZmqConfig {
                 enabled: config.zmq.enabled,
-                publisher_address: config.zmq.subscriber_address.clone(),
+                publisher_address: String::new(),
                 topic: config.zmq.write_topic.clone(),
                 subscriber_enabled: config.zmq.enabled,
-                subscriber_address: config.zmq.subscriber_address.clone(),
+                subscriber_address: String::new(),
                 write_topic: config.zmq.write_topic.clone(),
                 config_update_topic: config.zmq.config_update_topic.clone(),
                 high_water_mark: config.zmq.high_water_mark,
+                router_address: Some("tcp://localhost".to_string()),
+                router_sub_port: Some(5550),
+                router_pub_port: Some(5551),
             },
             logging: driver_core::config::LoggingConfig {
                 level: config.logging.level.clone(),
@@ -114,6 +118,8 @@ impl MeterDevice {
              runtime = runtime.with_state_machine(state_machine);
          }
 
+        Self::register_test_services(&mut runtime);
+
         let runtime_arc = Arc::new(runtime);
         self.runtime = Some(runtime_arc);
         self.config = Some(config);
@@ -160,17 +166,16 @@ impl MeterDevice {
 
     pub async fn poll_and_process(&self) -> Result<()> {
         if let Some(runtime) = &self.runtime {
-            let data_points = runtime.read_properties().await?;
+            runtime.read_properties().await?;
+        }
+        Ok(())
+    }
 
-            if !data_points.is_empty() {
-                tracing::debug!("Read {} properties from driver", data_points.len());
-
-                for prop_value in data_points {
-                    runtime.set_property_value(&prop_value.identifier, prop_value.value.clone()).await?;
-                }
-
-                runtime.evaluate_rules().await?;
-            }
+    pub async fn start_processing(&self, interval_ms: u64) -> Result<()> {
+        if let Some(runtime) = &self.runtime {
+            runtime.start().await?;
+            runtime.start_processing_loop(interval_ms).await;
+            tracing::info!("Started processing loop with {}ms interval", interval_ms);
         }
         Ok(())
     }
@@ -181,6 +186,48 @@ impl MeterDevice {
 
     pub fn poll_interval_ms(&self) -> u64 {
         self.config.as_ref().map(|c| c.poll_interval_ms).unwrap_or(1000)
+    }
+
+    pub fn test_write_property(msg_id: &str, service_id: &str, params: ServiceParams) -> ServiceResult {
+        tracing::info!("test_write_property called: msg_id={}, service_id={}", msg_id, service_id);
+        
+        let property_name = params.params.get("property_name")
+            .and_then(|v| v.value.as_str())
+            .unwrap_or("test_property");
+        
+        let property_value = params.params.get("property_value")
+            .map(|v| v.value.clone())
+            .unwrap_or(serde_json::Value::Null);
+
+        tracing::info!("Writing property: {} = {:?}", property_name, property_value);
+
+        std::thread::sleep(std::time::Duration::from_millis(100));
+
+        let mut result_data = HashMap::new();
+        result_data.insert(
+            "property_name".to_string(),
+            PropertyValue::new("property_name", serde_json::Value::String(property_name.to_string())),
+        );
+        result_data.insert(
+            "property_value".to_string(),
+            PropertyValue::new("property_value", property_value),
+        );
+        result_data.insert(
+            "status".to_string(),
+            PropertyValue::new("status", serde_json::Value::String("written".to_string())),
+        );
+        result_data.insert(
+            "timestamp".to_string(),
+            PropertyValue::new("timestamp", serde_json::Value::String(chrono::Utc::now().to_rfc3339())),
+        );
+
+        tracing::info!("test_write_property completed successfully");
+        ServiceResult::success(msg_id, service_id, result_data)
+    }
+
+    fn register_test_services(runtime: &mut DeviceRuntime) {
+        runtime.register_service("test_write_property", Self::test_write_property);
+        tracing::info!("Registered test service: test_write_property");
     }
 }
 

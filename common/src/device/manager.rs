@@ -6,11 +6,14 @@ use anyhow::Result;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::time::{interval, Duration};
+use zmq::{Context, SUB};
 
 pub struct DeviceManager {
     group_config: Option<DeviceGroupConfig>,
     devices: HashMap<String, Arc<DeviceRuntime>>,
     remote_publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
+    zmq_subscriber: Option<Arc<Mutex<zmq::Socket>>>,
+    zmq_topic: String,
 }
 
 impl DeviceManager {
@@ -19,6 +22,8 @@ impl DeviceManager {
             group_config: None,
             devices: HashMap::new(),
             remote_publisher: None,
+            zmq_subscriber: None,
+            zmq_topic: String::new(),
         }
     }
 
@@ -36,11 +41,32 @@ impl DeviceManager {
 
         // Initialize remote publisher from group config (tenant remote_transport)
         if !group_config.remote_transport.r#type.is_empty() {
-            let mut publisher = PublisherFactory::create_from_remote_transport(&group_config.remote_transport)?;
+            let mut publisher = PublisherFactory::create_from_group_config(group_config)?;
             if publisher.enabled() {
                 publisher.connect().await?;
                 self.remote_publisher = Some(Arc::new(Mutex::new(publisher)));
                 tracing::info!("Remote publisher initialized: {}", group_config.remote_transport.r#type);
+            }
+        }
+
+        // Initialize ZMQ subscriber to receive data from driver via router
+        if let Some(first_device) = group_config.devices.first() {
+            if first_device.driver.zmq.enabled {
+                let router_address = first_device.driver.zmq.router_address
+                    .as_deref()
+                    .unwrap_or("tcp://localhost");
+                let router_pub_port = first_device.driver.zmq.router_pub_port.unwrap_or(5551);
+                let connect_address = format!("{}:{}", router_address, router_pub_port);
+                let topic = first_device.driver.zmq.topic.clone();
+                
+                let context = Context::new();
+                let socket = context.socket(SUB)?;
+                socket.set_subscribe(b"")?;
+                socket.connect(&connect_address)?;
+                
+                self.zmq_subscriber = Some(Arc::new(Mutex::new(socket)));
+                self.zmq_topic = topic;
+                tracing::info!("ZMQ subscriber connected to router {} for topic '{}'", connect_address, self.zmq_topic);
             }
         }
 
@@ -108,7 +134,7 @@ impl DeviceManager {
                         })
                         .collect(),
                     output_params: c.output_params.iter()
-                        .map(|p| crate::device_core::ServiceResult {
+                        .map(|p| crate::device_core::ServiceOutput {
                             identifier: p.identifier.clone(),
                             name: p.name.clone(),
                             data_type: p.type_.clone(),
@@ -145,9 +171,15 @@ impl DeviceManager {
             metadata: Default::default(),
         };
 
+        let group_config = self.group_config.as_ref().expect("Group config should be loaded");
+        
         let driver_client_config = crate::config::DriverClientConfig {
             enabled: true,
-            server_address: "tcp://localhost:5556".to_string(),
+            server_address: String::new(),
+            router_address: group_config.devices.first()
+                .and_then(|d| d.driver.zmq.router_address.clone()),
+            router_sub_port: group_config.devices.first()
+                .and_then(|d| d.driver.zmq.router_sub_port),
         };
 
         let device_config_struct = DeviceConfig {
@@ -301,19 +333,95 @@ impl DeviceManager {
         tracing::info!("Starting remote reporting loop with interval: {}ms", report_interval_ms);
 
         loop {
-            ticker.tick().await;
+            tokio::select! {
+                biased;
+                
+                _ = ticker.tick() => {
+                    let remote_publisher = remote_publisher_arc.lock().unwrap();
 
-            let remote_publisher = remote_publisher_arc.lock().unwrap();
-
-            for (device_id, runtime) in &self.devices {
-                match self.collect_device_data(runtime, &**remote_publisher).await {
-                    Ok(()) => {},
-                    Err(e) => {
-                        tracing::error!("Failed to report data for device {}: {}", device_id, e);
+                    for (device_id, runtime) in &self.devices {
+                        match self.collect_device_data(runtime, &**remote_publisher).await {
+                            Ok(()) => {},
+                            Err(e) => {
+                                tracing::error!("Failed to report data for device {}: {}", device_id, e);
+                            }
+                        }
+                    }
+                }
+                
+                data_result = self.receive_zmq_data() => {
+                    if let Ok(Some((device_id, data_points))) = data_result {
+                        if let Some(runtime) = self.devices.get(&device_id) {
+                            for dp in &data_points {
+                                let json_value = self.datavalue_to_json(&dp.value);
+                                if let Err(e) = runtime.set_property_value(&dp.name, json_value).await {
+                                    tracing::warn!("Failed to set property {}: {}", dp.name, e);
+                                }
+                            }
+                            tracing::info!("Updated {} properties for device {} via ZMQ", data_points.len(), device_id);
+                        }
                     }
                 }
             }
         }
+    }
+
+    async fn receive_zmq_data(&self) -> Result<Option<(String, Vec<DataPoint>)>> {
+        let Some(subscriber_arc) = &self.zmq_subscriber else {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+            return Ok(None);
+        };
+
+        let zmq_topic = self.zmq_topic.clone();
+        let subscriber = Arc::clone(subscriber_arc);
+        
+        let result = tokio::task::spawn_blocking(move || {
+            let socket = subscriber.lock().unwrap();
+            socket.set_rcvtimeo(10).ok()?;
+            
+            let mut msg = zmq::Message::new();
+            match socket.recv(&mut msg, 0) {
+                Ok(_) => {
+                    let content = msg.as_str().unwrap_or("");
+                    tracing::debug!("ZMQ received raw: {}", &content[..content.len().min(200)]);
+                    let parts: Vec<&str> = content.splitn(2, ' ').collect();
+                    if parts.len() != 2 {
+                        tracing::warn!("ZMQ message format invalid, expected 'topic payload': {}", content.len());
+                        return Some(Err(anyhow::anyhow!("Invalid message format")));
+                    }
+                    
+                    let topic = parts[0];
+                    let payload = parts[1];
+                    
+                    if !topic.starts_with(&zmq_topic) {
+                        tracing::trace!("ZMQ topic mismatch: {} vs {}", topic, zmq_topic);
+                        return None;
+                    }
+                    
+                    let topic_parts: Vec<&str> = topic.split('/').collect();
+                    if topic_parts.len() < 3 {
+                        tracing::warn!("ZMQ topic format invalid: {}", topic);
+                        return None;
+                    }
+                    let device_id = topic_parts[2].to_string();
+                    
+                    match serde_json::from_str::<DataPoint>(payload) {
+                        Ok(data_point) => {
+                            tracing::info!("Received ZMQ data: device={}, {} = {:?}", device_id, data_point.name, data_point.value);
+                            Some(Ok((device_id, vec![data_point])))
+                        }
+                        Err(e) => {
+                            tracing::error!("Failed to parse ZMQ payload: {}", e);
+                            None
+                        }
+                    }
+                }
+                Err(zmq::Error::EAGAIN) => None,
+                Err(e) => Some(Err(anyhow::anyhow!("ZMQ recv error: {}", e))),
+            }
+        }).await?;
+        
+        result.transpose()
     }
 
     async fn collect_device_data(&self, runtime: &Arc<DeviceRuntime>, publisher: &dyn RemotePublisher) -> Result<()> {
@@ -392,6 +500,31 @@ impl DeviceManager {
                 DataValue::Object(map)
             }
             serde_json::Value::Null => DataValue::Null,
+        }
+    }
+
+    fn datavalue_to_json(&self, value: &DataValue) -> serde_json::Value {
+        match value {
+            DataValue::Bool(b) => serde_json::Value::Bool(*b),
+            DataValue::Int8(i) => serde_json::Value::Number((*i).into()),
+            DataValue::Int16(i) => serde_json::Value::Number((*i).into()),
+            DataValue::Int32(i) => serde_json::Value::Number((*i).into()),
+            DataValue::Int64(i) => serde_json::Value::Number((*i).into()),
+            DataValue::UInt8(i) => serde_json::Value::Number((*i).into()),
+            DataValue::UInt16(i) => serde_json::Value::Number((*i).into()),
+            DataValue::UInt32(i) => serde_json::Value::Number((*i).into()),
+            DataValue::UInt64(i) => serde_json::Value::Number((*i).into()),
+            DataValue::Float32(f) => serde_json::Number::from_f64(*f as f64)
+                .map(serde_json::Value::Number)
+                .unwrap_or(serde_json::Value::Null),
+            DataValue::Float64(f) => serde_json::Number::from_f64(*f)
+                .map(serde_json::Value::Number)
+                .unwrap_or(serde_json::Value::Null),
+            DataValue::String(s) => serde_json::Value::String(s.clone()),
+            DataValue::Array(arr) => serde_json::Value::Array(arr.iter().map(|v| self.datavalue_to_json(v)).collect()),
+            DataValue::Object(map) => serde_json::Value::Object(map.iter().map(|(k, v)| (k.clone(), self.datavalue_to_json(v))).collect()),
+            DataValue::Bytes(b) => serde_json::Value::String(b.iter().map(|byte| format!("{:02x}", byte)).collect()),
+            DataValue::Null => serde_json::Value::Null,
         }
     }
 }

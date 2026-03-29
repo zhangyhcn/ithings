@@ -1,2 +1,2 @@
-pub mod meter_driver;
-pub use meter_driver::MeterDevice;
+pub mod device;
+pub use device::MeterDevice;

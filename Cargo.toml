@@ -4,6 +4,7 @@ members = [
     "icloud",
     "drivers/driver-core",
     "drivers/modbus",
+    "drivers/zmq-router",
     "devices/meter", "mes",
 ]
 resolver = "2"
@@ -32,6 +33,7 @@ sha2 = "0.10"
 rumqttc = { version = "0.23", features = ["use-native-tls"] }
 rdkafka = { version = "0.36", features = ["tokio", "ssl-vendored"] }
 regex = "1.10"
+futures = "0.3"
 
 driver-core = { path = "drivers/driver-core" }
 common = { path = "common" }

@@ -77,8 +77,10 @@ async fn main() -> Result<()> {
 
         device.connect().await?;
 
-        let poll_interval = std::time::Duration::from_millis(device.poll_interval_ms());
-        let mut ticker = tokio::time::interval(poll_interval);
+        let poll_interval = device.poll_interval_ms();
+        device.start_processing(poll_interval).await?;
+
+        let mut ticker = tokio::time::interval(std::time::Duration::from_millis(poll_interval));
 
         loop {
             tokio::select! {

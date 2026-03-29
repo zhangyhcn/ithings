@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use crate::device_core::property::PropertyValue;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Default)]
 #[serde(rename_all = "lowercase")]
@@ -37,7 +38,7 @@ impl ServiceParam {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ServiceResult {
+pub struct ServiceOutput {
     pub identifier: String,
     pub name: String,
     #[serde(rename = "type")]
@@ -46,7 +47,7 @@ pub struct ServiceResult {
     pub description: Option<String>,
 }
 
-impl ServiceResult {
+impl ServiceOutput {
     pub fn new(identifier: &str, name: &str, data_type: &str) -> Self {
         Self {
             identifier: identifier.to_string(),
@@ -64,7 +65,7 @@ pub struct Service {
     #[serde(default)]
     pub input_params: Vec<ServiceParam>,
     #[serde(default)]
-    pub output_params: Vec<ServiceResult>,
+    pub output_params: Vec<ServiceOutput>,
     #[serde(default)]
     pub call_type: CallType,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -91,7 +92,7 @@ impl Service {
         self
     }
 
-    pub fn with_output_param(mut self, result: ServiceResult) -> Self {
+    pub fn with_output_param(mut self, result: ServiceOutput) -> Self {
         self.output_params.push(result);
         self
     }
@@ -111,10 +112,10 @@ impl Service {
         self
     }
 
-    pub fn validate_input(&self, params: &HashMap<String, serde_json::Value>) -> Result<(), String> {
+    pub fn validate_input(&self, params: &ServiceParams) -> Result<(), String> {
         for input_param in &self.input_params {
             if input_param.required.unwrap_or(true) {
-                if !params.contains_key(&input_param.identifier) {
+                if !params.params.contains_key(&input_param.identifier) {
                     return Err(format!("Missing required parameter: {}", input_param.identifier));
                 }
             }
@@ -124,54 +125,107 @@ impl Service {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ServiceRequest {
-    pub request_id: String,
-    pub service_identifier: String,
-    pub params: HashMap<String, serde_json::Value>,
-    pub timestamp: i64,
+pub struct ServiceParams {
+    pub params: HashMap<String, PropertyValue>,
 }
 
-impl ServiceRequest {
-    pub fn new(service_identifier: &str, params: HashMap<String, serde_json::Value>) -> Self {
+impl ServiceParams {
+    pub fn new() -> Self {
         Self {
-            request_id: uuid::Uuid::new_v4().to_string(),
-            service_identifier: service_identifier.to_string(),
-            params,
-            timestamp: chrono::Utc::now().timestamp_millis(),
+            params: HashMap::new(),
         }
+    }
+
+    pub fn with_param(mut self, key: &str, value: PropertyValue) -> Self {
+        self.params.insert(key.to_string(), value);
+        self
+    }
+
+    pub fn from_json(params: HashMap<String, serde_json::Value>) -> Self {
+        let mut result = HashMap::new();
+        for (k, v) in params {
+            result.insert(k, PropertyValue::from_json_value(&v));
+        }
+        Self { params: result }
+    }
+}
+
+impl Default for ServiceParams {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ServiceResponse {
-    pub request_id: String,
-    pub service_identifier: String,
-    pub success: bool,
-    pub result: HashMap<String, serde_json::Value>,
-    pub error: Option<String>,
-    pub timestamp: i64,
+pub struct ServiceResult {
+    pub msg_id: String,
+    pub service_id: String,
+    pub code: i32,
+    pub message: String,
+    pub data: HashMap<String, PropertyValue>,
 }
 
-impl ServiceResponse {
-    pub fn success(request_id: &str, service_identifier: &str, result: HashMap<String, serde_json::Value>) -> Self {
+impl ServiceResult {
+    pub fn success(msg_id: &str, service_id: &str, data: HashMap<String, PropertyValue>) -> Self {
         Self {
-            request_id: request_id.to_string(),
-            service_identifier: service_identifier.to_string(),
-            success: true,
-            result,
-            error: None,
-            timestamp: chrono::Utc::now().timestamp_millis(),
+            msg_id: msg_id.to_string(),
+            service_id: service_id.to_string(),
+            code: 200,
+            message: "success".to_string(),
+            data,
         }
     }
 
-    pub fn failure(request_id: &str, service_identifier: &str, error: &str) -> Self {
+    pub fn error(msg_id: &str, service_id: &str, code: i32, message: &str) -> Self {
         Self {
-            request_id: request_id.to_string(),
-            service_identifier: service_identifier.to_string(),
-            success: false,
-            result: HashMap::new(),
-            error: Some(error.to_string()),
-            timestamp: chrono::Utc::now().timestamp_millis(),
+            msg_id: msg_id.to_string(),
+            service_id: service_id.to_string(),
+            code,
+            message: message.to_string(),
+            data: HashMap::new(),
+        }
+    }
+
+    pub fn not_found(msg_id: &str, service_id: &str) -> Self {
+        Self::error(msg_id, service_id, 404, "service not found")
+    }
+
+    pub fn bad_request(msg_id: &str, service_id: &str, reason: &str) -> Self {
+        Self::error(msg_id, service_id, 400, reason)
+    }
+
+    pub fn internal_error(msg_id: &str, service_id: &str, reason: &str) -> Self {
+        Self::error(msg_id, service_id, 500, reason)
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ServiceCallRequest {
+    pub msg_id: String,
+    pub service_id: String,
+    pub params: HashMap<String, PropertyValue>,
+}
+
+impl ServiceCallRequest {
+    pub fn new(service_id: &str, params: HashMap<String, PropertyValue>) -> Self {
+        Self {
+            msg_id: uuid::Uuid::new_v4().to_string(),
+            service_id: service_id.to_string(),
+            params,
+        }
+    }
+
+    pub fn from_json(msg_id: &str, service_id: &str, params: HashMap<String, serde_json::Value>) -> Self {
+        let mut result = HashMap::new();
+        for (k, v) in params {
+            result.insert(k, PropertyValue::from_json_value(&v));
+        }
+        Self {
+            msg_id: msg_id.to_string(),
+            service_id: service_id.to_string(),
+            params: result,
         }
     }
 }
+
+pub type ServiceHandler = fn(&str, &str, ServiceParams) -> ServiceResult;

@@ -21,8 +21,10 @@
         "poll_interval_ms": 1000,
         "zmq": {
           "enabled": true,
-          "publisher_address": "tcp://*:5555",
-          "topic": "modbus/data"
+          "topic": "modbus/data",
+          "router_address": "tcp://localhost",
+          "router_sub_port": 5550,
+          "router_pub_port": 5551
         },
         "logging": {
           "level": "info",

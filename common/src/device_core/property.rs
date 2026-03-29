@@ -159,4 +159,29 @@ impl PropertyValue {
         self.quality = quality.to_string();
         self
     }
+
+    pub fn from_json_value(value: &serde_json::Value) -> Self {
+        Self {
+            identifier: String::new(),
+            value: value.clone(),
+            timestamp: chrono::Utc::now().timestamp_millis(),
+            quality: "Good".to_string(),
+        }
+    }
+
+    pub fn as_bool(&self) -> Option<bool> {
+        self.value.as_bool()
+    }
+
+    pub fn as_i64(&self) -> Option<i64> {
+        self.value.as_i64()
+    }
+
+    pub fn as_f64(&self) -> Option<f64> {
+        self.value.as_f64()
+    }
+
+    pub fn as_str(&self) -> Option<&str> {
+        self.value.as_str()
+    }
 }

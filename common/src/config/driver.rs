@@ -33,19 +33,28 @@ pub struct ZmqConfig {
     pub config_update_topic: String,
     #[serde(default)]
     pub high_water_mark: Option<u32>,
+    #[serde(default)]
+    pub router_address: Option<String>,
+    #[serde(default)]
+    pub router_sub_port: Option<u16>,
+    #[serde(default)]
+    pub router_pub_port: Option<u16>,
 }
 
 impl Default for ZmqConfig {
     fn default() -> Self {
         Self {
             enabled: true,
-            publisher_address: "tcp://*:5555".to_string(),
+            publisher_address: String::new(),
             topic: DATA_PUBLISH_TOPIC.to_string(),
             subscriber_enabled: true,
-            subscriber_address: "tcp://localhost:5556".to_string(),
+            subscriber_address: String::new(),
             write_topic: WRITE_REQUEST_TOPIC.to_string(),
             config_update_topic: CONFIG_UPDATE_TOPIC.to_string(),
             high_water_mark: Some(1000),
+            router_address: Some("tcp://localhost".to_string()),
+            router_sub_port: Some(5550),
+            router_pub_port: Some(5551),
         }
     }
 }

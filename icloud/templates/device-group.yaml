@@ -52,6 +52,17 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+      - name: zmq-router
+        image: {{router_image}}
+        imagePullPolicy: Always
+        args: ["--frontend", "tcp://*:5550", "--backend", "tcp://*:5551", "--loglevel", "info"]
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
 {{#if node_selector}}
       nodeSelector:
 {{#each node_selector}}

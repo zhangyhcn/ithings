@@ -48,56 +48,25 @@ async fn main() -> Result<()> {
         group_config.tenant_id
     );
 
-    let base_config = DriverConfig {
-        driver_name: "modbus-driver".to_string(),
-        driver_type: "modbus".to_string(),
-        device_instance_id: "modbus-driver-group".to_string(),
-        poll_interval_ms: 1000,
-        zmq: Default::default(),
-        logging: Default::default(),
-        custom: Default::default(),
-    };
-
     tracing::info!("Starting {} driver v{}", 
         env!("CARGO_PKG_NAME"),
         env!("CARGO_PKG_VERSION")
     );
 
-    let mut driver = MultiDeviceDriver::<ModbusDriver>::new(base_config.clone());
-    
-    for device in &group_config.devices {
-        tracing::info!("Adding device: {} ({})", device.device_name, device.device_id);
-        
-        let mut custom = device.driver.custom.clone();
-        if let Some(profile) = custom.get("profile") {
-            tracing::debug!("Device has profile with {} device commands", 
-                profile.get("deviceCommands").map(|c| c.as_array().map(|a| a.len()).unwrap_or(0)).unwrap_or(0)
-            );
-        }
-        
-        let device_config = DeviceInstanceConfig {
-            device_instance_id: device.device_id.clone(),
-            device_profile: None,
-            custom: custom,
-            poll_interval_ms: Some(device.poll_interval_ms),
-        };
-        
-        driver.handle_config_update(device_config).await?;
-    }
-    
-    tracing::info!("Driver metadata: {} devices loaded", driver.device_manager().get_all_devices().len());
-
     let base_zmq_config = if let Some(first_device) = group_config.devices.first() {
         let zmq_cfg = &first_device.driver.zmq;
         common::config::driver::ZmqConfig {
             enabled: zmq_cfg.enabled,
-            publisher_address: zmq_cfg.publisher_address.clone(),
+            publisher_address: String::new(),
             topic: zmq_cfg.topic.clone(),
-            subscriber_enabled: false,
+            subscriber_enabled: true,
             subscriber_address: String::new(),
-            write_topic: String::new(),
-            config_update_topic: String::new(),
+            write_topic: "driver/write".to_string(),
+            config_update_topic: "driver/config_update".to_string(),
             high_water_mark: None,
+            router_address: zmq_cfg.router_address.clone(),
+            router_sub_port: zmq_cfg.router_sub_port,
+            router_pub_port: zmq_cfg.router_pub_port,
         }
     } else {
         Default::default()
@@ -116,7 +85,29 @@ async fn main() -> Result<()> {
         custom: Default::default(),
     };
 
+    let mut driver = MultiDeviceDriver::<ModbusDriver>::new(init_config.clone());
+    
     driver.initialize(init_config).await?;
+
+    for device in &group_config.devices {
+        tracing::info!("Adding device: {} ({})", device.device_name, device.device_id);
+        
+        let custom = device.driver.custom.clone();
+        if let Some(profile) = custom.get("profile") {
+            tracing::debug!("Device has profile with {} device commands", 
+                profile.get("deviceCommands").map(|c| c.as_array().map(|a| a.len()).unwrap_or(0)).unwrap_or(0)
+            );
+        }
+        
+        let device_config = DeviceInstanceConfig {
+            device_instance_id: device.device_id.clone(),
+            device_profile: None,
+            custom: custom,
+            poll_interval_ms: Some(device.poll_interval_ms),
+        };
+        
+        driver.handle_config_update(device_config).await?;
+    }
 
     tracing::info!("Driver initialized, starting polling loop");
 

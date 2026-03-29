@@ -41,13 +41,19 @@ impl DeviceConfig {
 pub struct DriverClientConfig {
     pub enabled: bool,
     pub server_address: String,
+    #[serde(default)]
+    pub router_address: Option<String>,
+    #[serde(default)]
+    pub router_sub_port: Option<u16>,
 }
 
 impl Default for DriverClientConfig {
     fn default() -> Self {
         Self {
             enabled: false,
-            server_address: "tcp://localhost:7777".to_string(),
+            server_address: String::new(),
+            router_address: Some("tcp://localhost".to_string()),
+            router_sub_port: Some(5550),
         }
     }
 }

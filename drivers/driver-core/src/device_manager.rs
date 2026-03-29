@@ -80,6 +80,7 @@ impl<D: Driver + Default> DeviceInstanceManager<D> {
         
         // 子设备实例不需要自己的ZMQ连接，由MultiDeviceDriver统一管理
         full_config.zmq.enabled = false;
+        full_config.zmq.subscriber_enabled = false;
 
         driver.initialize(full_config.clone()).await?;
 

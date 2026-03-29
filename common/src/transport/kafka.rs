@@ -94,6 +94,102 @@ impl RemotePublisher for KafkaPublisher {
         Ok(())
     }
 
+    async fn publish_write(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
+        if !self.config.enabled || !self.connected {
+            return Ok(());
+        }
+
+        let topic = format!(
+            "{}.{}.write",
+            self.config.topic_prefix.trim_end_matches('.'),
+            device_name
+        );
+
+        let payload = serde_json::to_string(data_point)?;
+        
+        if let Some(producer) = &self.producer {
+            let record = FutureRecord::to(&topic)
+                .payload(&payload)
+                .key(&data_point.name);
+            
+            match producer.send(record, Duration::from_secs(5)).await {
+                Ok(_) => {
+                    tracing::trace!("Published write to Kafka: {} -> {}", topic, data_point.name);
+                }
+                Err((e, _)) => {
+                    tracing::error!("Failed to publish write to Kafka: {}", e);
+                    return Err(e.into());
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    async fn publish_event(&self, device_name: &str, event: &crate::types::DeviceEvent) -> Result<()> {
+        if !self.config.enabled || !self.connected {
+            return Ok(());
+        }
+
+        let topic = format!(
+            "{}.{}.events",
+            self.config.topic_prefix.trim_end_matches('.'),
+            device_name
+        );
+
+        let payload = serde_json::to_string(event)?;
+        
+        if let Some(producer) = &self.producer {
+            let record = FutureRecord::to(&topic)
+                .payload(&payload)
+                .key(&event.name);
+            
+            match producer.send(record, Duration::from_secs(5)).await {
+                Ok(_) => {
+                    tracing::trace!("Published event to Kafka: {} -> {}", topic, event.name);
+                }
+                Err((e, _)) => {
+                    tracing::error!("Failed to publish event to Kafka: {}", e);
+                    return Err(e.into());
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    async fn publish_service_reply(&self, device_name: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
+        if !self.config.enabled || !self.connected {
+            return Ok(());
+        }
+
+        let topic = format!(
+            "{}.{}.service.reply",
+            self.config.topic_prefix.trim_end_matches('.'),
+            device_name
+        );
+
+        let payload = serde_json::to_string(reply)?;
+        
+        if let Some(producer) = &self.producer {
+            let record = FutureRecord::to(&topic)
+                .payload(&payload)
+                .key(&reply.msg_id);
+            
+            match producer.send(record, Duration::from_secs(5)).await {
+                Ok(_) => {
+                    tracing::trace!("Published service reply to Kafka: {} -> {}", topic, reply.msg_id);
+                }
+                Err((e, _)) => {
+                    tracing::error!("Failed to publish service reply to Kafka: {}", e);
+                    return Err(e.into());
+                }
+            }
+        }
+
+        Ok(())
+    }
+
     fn enabled(&self) -> bool {
         self.config.enabled
     }

@@ -15,6 +15,8 @@ pub struct ZmqConfig {
     #[serde(default)]
     pub write_topic: String,
     #[serde(default)]
+    pub properties_topic: String,
+    #[serde(default)]
     pub config_update_topic: String,
     #[serde(default)]
     pub high_water_mark: Option<u32>,
@@ -29,6 +31,7 @@ impl Default for ZmqConfig {
             subscriber_enabled: true,
             subscriber_address: "tcp://localhost:5556".to_string(),
             write_topic: topics::WRITE_REQUEST_TOPIC.to_string(),
+            properties_topic: topics::PROPERTIES_PUSH_TOPIC.to_string(),
             config_update_topic: topics::CONFIG_UPDATE_TOPIC.to_string(),
             high_water_mark: Some(1000),
         }

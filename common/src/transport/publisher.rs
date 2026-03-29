@@ -1,4 +1,5 @@
-use crate::types::DataPoint;
+use crate::types::{DataPoint, DeviceEvent};
+use crate::device_core::ServiceResult;
 use anyhow::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -8,6 +9,9 @@ pub trait RemotePublisher: Send + Sync {
     async fn connect(&mut self) -> Result<()>;
     async fn publish(&self, device_name: &str, data_point: &DataPoint) -> Result<()>;
     async fn publish_batch(&self, device_name: &str, data_points: &[DataPoint]) -> Result<()>;
+    async fn publish_write(&self, device_name: &str, data_point: &DataPoint) -> Result<()>;
+    async fn publish_event(&self, device_name: &str, event: &DeviceEvent) -> Result<()>;
+    async fn publish_service_reply(&self, device_name: &str, reply: &ServiceResult) -> Result<()>;
     fn enabled(&self) -> bool;
     fn connected(&self) -> bool;
     fn publisher_type(&self) -> &str;

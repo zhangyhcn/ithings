@@ -47,7 +47,7 @@ impl DriverClientFactory {
             
             match comm_type {
                 DriverCommType::Zmq => {
-                    let client = ZmqDriverClient::new(&config.driver.server_address)?;
+                    let client = ZmqDriverClient::new(&config.driver)?;
                     Ok(Some(Box::new(client)))
                 }
                 DriverCommType::InMemory => {
@@ -58,7 +58,7 @@ impl DriverClientFactory {
                 }
             }
         } else {
-            let client = ZmqDriverClient::new(&config.driver.server_address)?;
+            let client = ZmqDriverClient::new(&config.driver)?;
             Ok(Some(Box::new(client)))
         }
     }

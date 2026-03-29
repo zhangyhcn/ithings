@@ -423,3 +423,24 @@ impl DataValueConverter {
         DataValue::Null
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeviceEvent {
+    pub id: String,
+    pub event_id: String,
+    pub name: String,
+    pub timestamp: DateTime<Utc>,
+    pub params: HashMap<String, DataValue>,
+}
+
+impl DeviceEvent {
+    pub fn new(event_id: &str, name: &str, params: HashMap<String, DataValue>) -> Self {
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            event_id: event_id.to_string(),
+            name: name.to_string(),
+            timestamp: Utc::now(),
+            params,
+        }
+    }
+}
