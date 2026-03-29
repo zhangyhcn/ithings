@@ -60,16 +60,16 @@ impl ZmqSubscriber {
             Ok(_) => {
                 let topic_bytes: Vec<u8> = topic_msg.iter().cloned().collect();
                 let topic = String::from_utf8_lossy(&topic_bytes).to_string();
-                tracing::debug!("ZMQ received topic: {}", topic);
+                tracing::info!("ZMQ received topic: {}", topic);
                 
                 let more = socket.get_rcvmore()?;
                 if more {
                     socket.recv(&mut payload_msg, 0)?;
                     let payload: Vec<u8> = payload_msg.iter().cloned().collect();
-                    tracing::debug!("ZMQ received payload: {} bytes", payload.len());
+                    tracing::info!("ZMQ received payload: {} bytes", payload.len());
                     Ok(Some((topic, payload)))
                 } else {
-                    tracing::debug!("ZMQ message has no payload part");
+                    tracing::warn!("ZMQ message has no payload part");
                     Ok(None)
                 }
             }
@@ -96,7 +96,10 @@ impl ZmqSubscriber {
         if let Some((topic, payload)) = self.recv_message().await? {
             if topic == self.properties_topic {
                 let data_points: Vec<DataPoint> = serde_json::from_slice(&payload)?;
+                tracing::debug!("Received {} data points from properties topic", data_points.len());
                 return Ok(Some(data_points));
+            } else {
+                tracing::trace!("Received message with unexpected topic: {} (expected: {})", topic, self.properties_topic);
             }
         }
         Ok(None)

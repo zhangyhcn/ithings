@@ -83,6 +83,15 @@ impl MeterDevice {
             }
         }
 
+        tracing::debug!("Initializing internal ZMQ subscriber for driver properties");
+        let internal_subscriber = common::transport::zmq_sub::ZmqSubscriber::new(&common::config::ZmqConfig {
+            enabled: config.zmq.enabled,
+            subscriber_address: config.zmq.subscriber_address.clone(),
+            write_topic: config.zmq.write_topic.clone(),
+            properties_topic: config.zmq.properties_topic.clone(),
+            ..Default::default()
+        })?;
+
         tracing::debug!("Initializing driver client (sidecar mode)");
         let driver_client = DriverClientFactory::create(&config)?;
 
@@ -102,6 +111,10 @@ impl MeterDevice {
 
         if let Some(subscriber) = subscriber {
             runtime = runtime.with_subscriber(subscriber);
+        }
+
+        if let Some(internal_sub) = internal_subscriber {
+            runtime = runtime.with_internal_subscriber(internal_sub);
         }
 
         if let Some(client) = driver_client {
@@ -225,9 +238,39 @@ impl MeterDevice {
         ServiceResult::success(msg_id, service_id, result_data)
     }
 
+    pub fn set_threshold(msg_id: &str, service_id: &str, params: ServiceParams) -> ServiceResult {
+        tracing::info!("set_threshold called: msg_id={}, service_id={}", msg_id, service_id);
+        
+        let power_threshold = params.params.get("power_threshold")
+            .and_then(|v| v.value.as_f64())
+            .unwrap_or(0.0);
+
+        tracing::info!("Setting power threshold to: {}", power_threshold);
+
+        std::thread::sleep(std::time::Duration::from_millis(100));
+
+        let mut result_data = HashMap::new();
+        result_data.insert(
+            "power_threshold".to_string(),
+            PropertyValue::new("power_threshold", serde_json::Value::Number(serde_json::Number::from_f64(power_threshold).unwrap_or_else(|| serde_json::Number::from(0)))),
+        );
+        result_data.insert(
+            "status".to_string(),
+            PropertyValue::new("status", serde_json::Value::String("success".to_string())),
+        );
+        result_data.insert(
+            "timestamp".to_string(),
+            PropertyValue::new("timestamp", serde_json::Value::String(chrono::Utc::now().to_rfc3339())),
+        );
+
+        tracing::info!("set_threshold completed successfully");
+        ServiceResult::success(msg_id, service_id, result_data)
+    }
+
     fn register_test_services(runtime: &mut DeviceRuntime) {
         runtime.register_service("test_write_property", Self::test_write_property);
-        tracing::info!("Registered test service: test_write_property");
+        runtime.register_service("set_threshold", Self::set_threshold);
+        tracing::info!("Registered test services: test_write_property, set_threshold");
     }
 }
 

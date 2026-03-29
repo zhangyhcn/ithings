@@ -50,7 +50,7 @@ impl RemotePublisher for KafkaPublisher {
         Ok(())
     }
 
-    async fn publish(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
+    async fn publish(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -58,7 +58,7 @@ impl RemotePublisher for KafkaPublisher {
         let topic = format!(
             "{}.{}",
             self.config.topic_prefix.trim_end_matches('.'),
-            device_name
+            device_instance_id
         );
 
         let payload = serde_json::to_string(data_point)?;
@@ -82,19 +82,19 @@ impl RemotePublisher for KafkaPublisher {
         Ok(())
     }
 
-    async fn publish_batch(&self, device_name: &str, data_points: &[DataPoint]) -> Result<()> {
+    async fn publish_batch(&self, device_instance_id: &str, data_points: &[DataPoint]) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
 
         for data_point in data_points {
-            self.publish(device_name, data_point).await?;
+            self.publish(device_instance_id, data_point).await?;
         }
 
         Ok(())
     }
 
-    async fn publish_write(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
+    async fn publish_write(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -102,7 +102,7 @@ impl RemotePublisher for KafkaPublisher {
         let topic = format!(
             "{}.{}.write",
             self.config.topic_prefix.trim_end_matches('.'),
-            device_name
+            device_instance_id
         );
 
         let payload = serde_json::to_string(data_point)?;
@@ -126,7 +126,7 @@ impl RemotePublisher for KafkaPublisher {
         Ok(())
     }
 
-    async fn publish_event(&self, device_name: &str, event: &crate::types::DeviceEvent) -> Result<()> {
+    async fn publish_event(&self, device_instance_id: &str, event: &crate::types::DeviceEvent) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -134,7 +134,7 @@ impl RemotePublisher for KafkaPublisher {
         let topic = format!(
             "{}.{}.events",
             self.config.topic_prefix.trim_end_matches('.'),
-            device_name
+            device_instance_id
         );
 
         let payload = serde_json::to_string(event)?;
@@ -158,7 +158,7 @@ impl RemotePublisher for KafkaPublisher {
         Ok(())
     }
 
-    async fn publish_service_reply(&self, device_name: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
+    async fn publish_service_reply(&self, device_instance_id: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -166,7 +166,7 @@ impl RemotePublisher for KafkaPublisher {
         let topic = format!(
             "{}.{}.service.reply",
             self.config.topic_prefix.trim_end_matches('.'),
-            device_name
+            device_instance_id
         );
 
         let payload = serde_json::to_string(reply)?;

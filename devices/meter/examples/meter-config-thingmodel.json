@@ -10,14 +10,14 @@
   },
   "mqtt": {
     "enabled": true,
-    "broker_address": "tcp://localhost:1883",
+    "broker_address": "tcp://172.25.219.101:1883",
     "client_id": "three-phase-meter-1",
     "topic_prefix": "devices",
     "qos": 1,
-    "tenant_id": "default",
-    "org_id": "default",
-    "site_id": "default",
-    "namespace_id": "default"
+    "tenant_id": "5a631a2e-b2b1-447f-b2f7-e510a82bdc23",
+    "org_id": "3d5fdd4a-9b1b-4259-9d05-c0b8e2410ee4",
+    "site_id": "2f911d47-660b-44fb-9fcf-8bc1603e6c31",
+    "namespace_id": "6fc31a9e-43fa-4641-8e6a-7473ad14ebab"
   },
   "logging": {
     "level": "info",

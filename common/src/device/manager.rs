@@ -1,19 +1,25 @@
 use crate::config::{group::DeviceGroupConfig, DeviceInGroupConfig, device::DeviceConfig, driver::DriverConfig};
-use crate::device_core::{ThingModel, DeviceRuntime, Rule};
-use crate::transport::{DriverClientFactory, PublisherFactory, RemotePublisher};
+use crate::device_core::{ThingModel, DeviceRuntime, Rule, ServiceCallRequest, ServiceHandler, ServiceParams, ServiceResult};
+use crate::transport::{DriverClientFactory, PublisherFactory, RemotePublisher, RemoteSubscriber};
+use crate::transport::mqtt_sub::MqttSubscriber;
 use crate::types::{DataPoint, DataValue, Quality};
 use anyhow::Result;
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use tokio::sync::Mutex;
 use tokio::time::{interval, Duration};
 use zmq::{Context, SUB};
+
+pub type ServiceRegistry = HashMap<String, ServiceHandler>;
 
 pub struct DeviceManager {
     group_config: Option<DeviceGroupConfig>,
     devices: HashMap<String, Arc<DeviceRuntime>>,
     remote_publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
-    zmq_subscriber: Option<Arc<Mutex<zmq::Socket>>>,
+    zmq_subscriber: Option<Arc<std::sync::Mutex<zmq::Socket>>>,
     zmq_topic: String,
+    mqtt_subscriber: Option<Arc<Mutex<MqttSubscriber>>>,
+    service_registry: ServiceRegistry,
 }
 
 impl DeviceManager {
@@ -24,7 +30,13 @@ impl DeviceManager {
             remote_publisher: None,
             zmq_subscriber: None,
             zmq_topic: String::new(),
+            mqtt_subscriber: None,
+            service_registry: HashMap::new(),
         }
+    }
+
+    pub fn register_service(&mut self, service_id: &str, handler: ServiceHandler) {
+        self.service_registry.insert(service_id.to_string(), handler);
     }
 
     pub async fn load_from_file(&mut self, path: &str) -> Result<()> {
@@ -64,9 +76,37 @@ impl DeviceManager {
                 socket.set_subscribe(b"")?;
                 socket.connect(&connect_address)?;
                 
-                self.zmq_subscriber = Some(Arc::new(Mutex::new(socket)));
+                self.zmq_subscriber = Some(Arc::new(std::sync::Mutex::new(socket)));
                 self.zmq_topic = topic;
                 tracing::info!("ZMQ subscriber connected to router {} for topic '{}'", connect_address, self.zmq_topic);
+            }
+        }
+
+        // Initialize MQTT subscriber for service calls
+        if !group_config.remote_transport.r#type.is_empty() 
+            && group_config.remote_transport.r#type == "mqtt" {
+            let broker_address = group_config.remote_transport.broker.clone()
+                .or_else(|| group_config.remote_transport.brokers.clone())
+                .unwrap_or_else(|| "tcp://localhost:1883".to_string());
+            
+            let mqtt_config = crate::config::MqttConfig {
+                enabled: true,
+                broker_address,
+                client_id: format!("{}-subscriber", group_config.tenant_id),
+                topic_prefix: String::new(),
+                qos: 1,
+                username: group_config.remote_transport.username.clone(),
+                password: group_config.remote_transport.password.clone(),
+                tenant_id: Some(group_config.tenant_id.clone()),
+                org_id: Some(group_config.org_id.clone()),
+                site_id: Some(group_config.site_id.clone()),
+                namespace_id: Some(group_config.namespace_id.clone()),
+            };
+            
+            if let Ok(Some(mut subscriber)) = MqttSubscriber::new(&mqtt_config) {
+                subscriber.subscribe().await?;
+                self.mqtt_subscriber = Some(Arc::new(Mutex::new(subscriber)));
+                tracing::info!("MQTT subscriber initialized for service calls");
             }
         }
 
@@ -74,6 +114,16 @@ impl DeviceManager {
             tracing::info!("Initializing device: {} ({})", device_config.device_name, device_config.device_id);
             let device_runtime = self.initialize_device(device_config).await?;
             self.devices.insert(device_config.device_id.clone(), device_runtime);
+        }
+
+        // Subscribe to service call topics for all devices
+        if let Some(mqtt_sub_arc) = &self.mqtt_subscriber {
+            let mqtt_sub = mqtt_sub_arc.lock().await;
+            for (device_id, _runtime) in &self.devices {
+                if let Err(e) = mqtt_sub.subscribe_service_topic(device_id).await {
+                    tracing::warn!("Failed to subscribe service topic for device {}: {}", device_id, e);
+                }
+            }
         }
 
         tracing::info!("Initialized {} devices total", self.devices.len());
@@ -201,6 +251,8 @@ impl DeviceManager {
             thing_model,
             &device_config.device_name,
         );
+        
+        runtime = runtime.with_device_id(&device_config.device_id);
 
         if let Some(client) = DriverClientFactory::create(&device_config_struct)? {
             runtime = runtime.with_driver_client(client);
@@ -255,6 +307,14 @@ impl DeviceManager {
             .collect();
 
         runtime = runtime.with_rules(rules);
+
+        for (service_id, handler) in &self.service_registry {
+            runtime.register_service(service_id, *handler);
+        }
+
+        if let Some(ref publisher) = self.remote_publisher {
+            runtime = runtime.with_publisher_arc(Arc::clone(publisher));
+        }
 
         let runtime = Arc::new(runtime);
 
@@ -337,10 +397,10 @@ impl DeviceManager {
                 biased;
                 
                 _ = ticker.tick() => {
-                    let remote_publisher = remote_publisher_arc.lock().unwrap();
+                    let remote_publisher = remote_publisher_arc.lock().await;
 
                     for (device_id, runtime) in &self.devices {
-                        match self.collect_device_data(runtime, &**remote_publisher).await {
+                        match self.collect_device_data(runtime, &remote_publisher).await {
                             Ok(()) => {},
                             Err(e) => {
                                 tracing::error!("Failed to report data for device {}: {}", device_id, e);
@@ -362,8 +422,29 @@ impl DeviceManager {
                         }
                     }
                 }
+                
+                service_result = self.receive_service_call() => {
+                    if let Ok(Some(request)) = service_result {
+                        tracing::info!("Received service call: {} for device {}", request.service_id, request.msg_id);
+                        for (_device_id, runtime) in &self.devices {
+                            if let Ok(result) = runtime.handle_service_call(request.clone()).await {
+                                tracing::info!("Service call result: code={}, msg_id={}", result.code, result.msg_id);
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+
+    async fn receive_service_call(&self) -> Result<Option<ServiceCallRequest>> {
+        let Some(mqtt_sub_arc) = &self.mqtt_subscriber else {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+            return Ok(None);
+        };
+
+        let mqtt_sub = mqtt_sub_arc.lock().await;
+        mqtt_sub.recv_service_call().await
     }
 
     async fn receive_zmq_data(&self) -> Result<Option<(String, Vec<DataPoint>)>> {
@@ -424,7 +505,7 @@ impl DeviceManager {
         result.transpose()
     }
 
-    async fn collect_device_data(&self, runtime: &Arc<DeviceRuntime>, publisher: &dyn RemotePublisher) -> Result<()> {
+    async fn collect_device_data(&self, runtime: &Arc<DeviceRuntime>, publisher: &tokio::sync::MutexGuard<'_, Box<dyn RemotePublisher>>) -> Result<()> {
         let values = runtime.get_all_property_values().await;
         let mut data_points: Vec<DataPoint> = Vec::new();
 
@@ -467,9 +548,9 @@ impl DeviceManager {
         }
 
         if !data_points.is_empty() {
-            publisher.publish_batch(runtime.get_device_name(), &data_points).await?;
+            publisher.as_ref().publish_batch(runtime.get_device_id(), &data_points).await?;
             tracing::debug!("Reported {} data points for device {}",
-                data_points.len(), runtime.get_device_name());
+                data_points.len(), runtime.get_device_id());
         }
 
         Ok(())

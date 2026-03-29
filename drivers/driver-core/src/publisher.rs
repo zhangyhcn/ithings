@@ -107,6 +107,23 @@ impl ZmqPublisher {
         Ok(())
     }
 
+    pub async fn publish_properties(&self, _device_name: &str, data_points: &[DataPoint]) -> Result<()> {
+        if !self.enabled {
+            return Ok(());
+        }
+
+        let topic = "driver/properties";
+        let payload = serde_json::to_string(data_points)?;
+        
+        tracing::debug!("Publishing {} data points to topic '{}'", data_points.len(), topic);
+        
+        let socket = self.socket.lock().await;
+        socket.send(topic.as_bytes(), zmq::SNDMORE)?;
+        socket.send(payload.as_bytes(), 0)?;
+
+        Ok(())
+    }
+
     pub async fn publish_json(&self, json: &str) -> Result<()> {
         if !self.enabled {
             return Ok(());

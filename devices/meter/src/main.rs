@@ -37,6 +37,8 @@ async fn main() -> Result<()> {
         tracing::info!("Loading multiple devices from group config: {}", args.configfile);
         
         let mut manager = DeviceManager::new();
+        manager.register_service("test_write_property", MeterDevice::test_write_property);
+        manager.register_service("set_threshold", MeterDevice::set_threshold);
         manager.load_from_file(&args.configfile).await?;
         manager.initialize_all().await?;
         

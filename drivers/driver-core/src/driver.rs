@@ -213,7 +213,7 @@ impl<D: Driver + Default> MultiDeviceDriver<D> {
                                     tracing::info!("Publisher enabled: {}", publisher.is_enabled());
                                     if !data_points.is_empty() {
                                         tracing::info!("Publishing {} data points for device {}", data_points.len(), instance.id);
-                                        if let Err(e) = publisher.publish_batch(&instance.id, &data_points).await {
+                                        if let Err(e) = publisher.publish_properties(&instance.id, &data_points).await {
                                             tracing::error!("Failed to publish data for device {}: {}", instance.id, e);
                                         }
                                     }

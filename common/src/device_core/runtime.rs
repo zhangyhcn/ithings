@@ -1,4 +1,5 @@
 use crate::transport::{RemotePublisher, RemoteSubscriber, DriverClient};
+use crate::transport::zmq_sub::ZmqSubscriber;
 use crate::types::{DataPoint, DataValue, Quality, DeviceEvent};
 use super::thing_model::ThingModel;
 use super::property::{Property, PropertyValue};
@@ -23,6 +24,7 @@ pub struct DeviceRuntime {
     state_context: Option<StateMachineContext>,
     publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
     subscriber: Option<Arc<Mutex<Box<dyn RemoteSubscriber>>>>,
+    internal_subscriber: Option<Arc<Mutex<ZmqSubscriber>>>,
     driver_client: Option<Arc<Mutex<Box<dyn DriverClient>>>>,
     service_registry: HashMap<String, ServiceHandler>,
     event_handlers: HashMap<String, Vec<EventHandler>>,
@@ -51,6 +53,7 @@ impl DeviceRuntime {
             state_context: None,
             publisher: None,
             subscriber: None,
+            internal_subscriber: None,
             driver_client: None,
             service_registry: HashMap::new(),
             event_handlers: HashMap::new(),
@@ -68,8 +71,18 @@ impl DeviceRuntime {
         self
     }
 
+    pub fn with_publisher_arc(mut self, publisher: Arc<Mutex<Box<dyn RemotePublisher>>>) -> Self {
+        self.publisher = Some(publisher);
+        self
+    }
+
     pub fn with_subscriber(mut self, subscriber: Box<dyn RemoteSubscriber>) -> Self {
         self.subscriber = Some(Arc::new(Mutex::new(subscriber)));
+        self
+    }
+
+    pub fn with_internal_subscriber(mut self, subscriber: ZmqSubscriber) -> Self {
+        self.internal_subscriber = Some(Arc::new(Mutex::new(subscriber)));
         self
     }
 
@@ -125,7 +138,7 @@ impl DeviceRuntime {
     pub async fn read_properties(&self) -> Result<Vec<PropertyValue>> {
         let mut results = Vec::new();
         
-        if let Some(ref subscriber) = self.subscriber {
+        if let Some(ref subscriber) = self.internal_subscriber {
             let mut sub_guard = subscriber.lock().await;
             
             if let Ok(Some(data_points)) = sub_guard.recv_properties().await {
@@ -168,7 +181,7 @@ impl DeviceRuntime {
                     metadata: HashMap::new(),
                     units: None,
                 };
-                pub_guard.publish(&self.device_name, &data_point).await?;
+                pub_guard.publish(&self.device_id, &data_point).await?;
             }
             tracing::debug!("Reported {} properties to remote", properties.len());
         }
@@ -179,8 +192,8 @@ impl DeviceRuntime {
     pub async fn report_event(&self, event: &DeviceEvent) -> Result<()> {
         if let Some(ref publisher) = self.publisher {
             let pub_guard = publisher.lock().await;
-            pub_guard.publish_event(&self.device_name, event).await?;
-            tracing::info!("Event reported: {} for device {}", event.name, self.device_name);
+            pub_guard.publish_event(&self.device_id, event).await?;
+            tracing::info!("Event reported: {} for device {}", event.name, self.device_id);
         }
         Ok(())
     }
@@ -322,8 +335,8 @@ impl DeviceRuntime {
                 .collect();
             
             let event = DeviceEvent::new(event_identifier, event_identifier, params);
-            pub_guard.publish_event(&self.device_name, &event).await?;
-            tracing::info!("Event published: {} for device {}", event_identifier, self.device_name);
+            pub_guard.publish_event(&self.device_id, &event).await?;
+            tracing::info!("Event published: {} for device {}", event_identifier, self.device_id);
         }
 
         Ok(())
@@ -346,11 +359,15 @@ impl DeviceRuntime {
     }
 
     pub async fn handle_service_call(&self, request: ServiceCallRequest) -> Result<ServiceResult> {
-        let result = self.call_service(&request.msg_id, &request.service_id, ServiceParams { params: request.params });
+        let result = self.call_service(&request.msg_id, &request.service_id, request.to_service_params());
         
         if let Some(ref publisher) = self.publisher {
+            tracing::info!("Publishing service reply for device {}", self.device_id);
             let pub_guard = publisher.lock().await;
-            pub_guard.publish_service_reply(&self.device_name, &result).await?;
+            pub_guard.publish_service_reply(&self.device_id, &result).await?;
+            tracing::info!("Service reply published successfully");
+        } else {
+            tracing::warn!("No publisher configured for device {}, cannot publish service reply", self.device_id);
         }
 
         Ok(result)

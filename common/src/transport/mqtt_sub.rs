@@ -1,18 +1,21 @@
 use crate::config::MqttConfig;
 use crate::transport::subscriber::RemoteSubscriber;
 use crate::types::DataPoint;
+use crate::device_core::ServiceCallRequest;
 use anyhow::Result;
 use async_trait::async_trait;
-use rumqttc::{AsyncClient, Event, MqttOptions, Packet};
+use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS};
 use tokio::sync::{mpsc, Mutex};
 use std::sync::Arc;
 use std::time::Duration;
 
 pub struct MqttSubscriber {
     client: Option<Arc<Mutex<AsyncClient>>>,
-    receiver: Option<Arc<Mutex<mpsc::Receiver<DataPoint>>>>,
+    write_receiver: Option<Arc<Mutex<mpsc::Receiver<DataPoint>>>>,
+    service_receiver: Option<Arc<Mutex<mpsc::Receiver<ServiceCallRequest>>>>,
     config: MqttConfig,
     connected: bool,
+    service_topic: Option<String>,
 }
 
 impl MqttSubscriber {
@@ -24,10 +27,59 @@ impl MqttSubscriber {
 
         Ok(Some(Self {
             client: None,
-            receiver: None,
+            write_receiver: None,
+            service_receiver: None,
             config: config.clone(),
             connected: false,
+            service_topic: None,
         }))
+    }
+
+    pub fn with_service_topic(mut self, topic: String) -> Self {
+        self.service_topic = Some(topic);
+        self
+    }
+
+    pub async fn recv_service_call(&self) -> Result<Option<ServiceCallRequest>> {
+        if !self.config.enabled || !self.connected {
+            return Ok(None);
+        }
+
+        if let Some(receiver) = &self.service_receiver {
+            let mut rx = receiver.lock().await;
+            match rx.try_recv() {
+                Ok(request) => Ok(Some(request)),
+                Err(mpsc::error::TryRecvError::Empty) => Ok(None),
+                Err(e) => Err(anyhow::anyhow!("MQTT service receive error: {}", e)),
+            }
+        } else {
+            Ok(None)
+        }
+    }
+
+    pub async fn subscribe_service_topic(&self, device_instance_id: &str) -> Result<()> {
+        if let Some(client) = &self.client {
+            let topic = if let (Some(tenant_id), Some(org_id), Some(site_id), Some(namespace_id)) = (
+                &self.config.tenant_id,
+                &self.config.org_id,
+                &self.config.site_id,
+                &self.config.namespace_id,
+            ) {
+                format!(
+                    "/{}/{}/{}/{}/{}/service/call",
+                    tenant_id, org_id, site_id, namespace_id, device_instance_id
+                )
+            } else {
+                format!("{}/{}/service/call", 
+                    self.config.topic_prefix.trim_end_matches('/'),
+                    device_instance_id)
+            };
+            
+            let client_guard = client.lock().await;
+            client_guard.subscribe(&topic, QoS::AtLeastOnce).await?;
+            tracing::info!("MQTT subscriber subscribed to service call topic: {}", topic);
+        }
+        Ok(())
     }
 }
 
@@ -52,7 +104,11 @@ impl RemoteSubscriber for MqttSubscriber {
         }
 
         let (client, mut eventloop) = AsyncClient::new(options, 10);
-        let (tx, rx) = mpsc::channel::<DataPoint>(100);
+        let (write_tx, write_rx) = mpsc::channel::<DataPoint>(100);
+        let (service_tx, service_rx) = mpsc::channel::<ServiceCallRequest>(100);
+
+        let client_arc = Arc::new(Mutex::new(client));
+        let client_clone = Arc::clone(&client_arc);
 
         tokio::spawn(async move {
             loop {
@@ -60,8 +116,23 @@ impl RemoteSubscriber for MqttSubscriber {
                     Ok(event) => {
                         match event {
                             Event::Incoming(Packet::Publish(publish)) => {
-                                if let Ok(data_point) = serde_json::from_slice::<DataPoint>(&publish.payload) {
-                                    let _ = tx.send(data_point).await;
+                                let topic = publish.topic.clone();
+                                let payload = &publish.payload;
+                                tracing::debug!("MQTT subscriber received message on topic: {}", topic);
+                                
+                                if topic.ends_with("/service/call") {
+                                    tracing::debug!("Service call payload: {}", String::from_utf8_lossy(payload));
+                                    if let Ok(request) = serde_json::from_slice::<ServiceCallRequest>(payload) {
+                                        tracing::info!("Successfully parsed service call: msg_id={}, service_id={}", request.msg_id, request.service_id);
+                                        let _ = service_tx.send(request).await;
+                                        tracing::debug!("Received service call request on topic: {}", topic);
+                                    } else {
+                                        tracing::warn!("Failed to parse service call request from topic: {}", topic);
+                                    }
+                                } else {
+                                    if let Ok(data_point) = serde_json::from_slice::<DataPoint>(payload) {
+                                        let _ = write_tx.send(data_point).await;
+                                    }
                                 }
                             }
                             Event::Incoming(Packet::ConnAck(_)) => {
@@ -78,8 +149,9 @@ impl RemoteSubscriber for MqttSubscriber {
             }
         });
 
-        self.client = Some(Arc::new(Mutex::new(client)));
-        self.receiver = Some(Arc::new(Mutex::new(rx)));
+        self.client = Some(client_clone);
+        self.write_receiver = Some(Arc::new(Mutex::new(write_rx)));
+        self.service_receiver = Some(Arc::new(Mutex::new(service_rx)));
         self.connected = true;
         tracing::info!("MQTT subscriber connected to {}", self.config.broker_address);
 
@@ -91,7 +163,7 @@ impl RemoteSubscriber for MqttSubscriber {
             return Ok(None);
         }
 
-        if let Some(receiver) = &self.receiver {
+        if let Some(receiver) = &self.write_receiver {
             let mut rx = receiver.lock().await;
             match rx.try_recv() {
                 Ok(data_point) => Ok(Some(data_point)),

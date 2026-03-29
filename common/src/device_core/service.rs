@@ -203,11 +203,11 @@ impl ServiceResult {
 pub struct ServiceCallRequest {
     pub msg_id: String,
     pub service_id: String,
-    pub params: HashMap<String, PropertyValue>,
+    pub params: HashMap<String, serde_json::Value>,
 }
 
 impl ServiceCallRequest {
-    pub fn new(service_id: &str, params: HashMap<String, PropertyValue>) -> Self {
+    pub fn new(service_id: &str, params: HashMap<String, serde_json::Value>) -> Self {
         Self {
             msg_id: uuid::Uuid::new_v4().to_string(),
             service_id: service_id.to_string(),
@@ -215,16 +215,12 @@ impl ServiceCallRequest {
         }
     }
 
-    pub fn from_json(msg_id: &str, service_id: &str, params: HashMap<String, serde_json::Value>) -> Self {
+    pub fn to_service_params(&self) -> ServiceParams {
         let mut result = HashMap::new();
-        for (k, v) in params {
-            result.insert(k, PropertyValue::from_json_value(&v));
+        for (k, v) in &self.params {
+            result.insert(k.clone(), PropertyValue::from_json_value(v));
         }
-        Self {
-            msg_id: msg_id.to_string(),
-            service_id: service_id.to_string(),
-            params: result,
-        }
+        ServiceParams { params: result }
     }
 }
 

@@ -71,7 +71,7 @@ impl MqttPublisher {
         Ok(())
     }
 
-    pub async fn publish(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
+    pub async fn publish(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -88,14 +88,14 @@ impl MqttPublisher {
                 org_id,
                 site_id,
                 namespace_id,
-                device_name,
+                device_instance_id,
                 data_point.name
             )
         } else {
             format!(
                 "{}/{}/{}",
                 self.config.topic_prefix.trim_end_matches('/'),
-                device_name,
+                device_instance_id,
                 data_point.name
             )
         };
@@ -110,25 +110,25 @@ impl MqttPublisher {
                 _ => QoS::AtLeastOnce,
             };
             client_guard.publish(&topic, qos, false, payload.into_bytes()).await?;
-            tracing::trace!("Published to MQTT: {}", topic);
+            tracing::debug!("Published to MQTT topic: {}", topic);
         }
 
         Ok(())
     }
 
-    pub async fn publish_batch(&self, device_name: &str, data_points: &[DataPoint]) -> Result<()> {
+    pub async fn publish_batch(&self, device_instance_id: &str, data_points: &[DataPoint]) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
 
         for data_point in data_points {
-            self.publish(device_name, data_point).await?;
+            self.publish(device_instance_id, data_point).await?;
         }
 
         Ok(())
     }
 
-    pub async fn publish_write(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
+    pub async fn publish_write(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -145,14 +145,14 @@ impl MqttPublisher {
                 org_id,
                 site_id,
                 namespace_id,
-                device_name,
+                device_instance_id,
                 data_point.name
             )
         } else {
             format!(
                 "{}/{}/write/{}",
                 self.config.topic_prefix.trim_end_matches('/'),
-                device_name,
+                device_instance_id,
                 data_point.name
             )
         };
@@ -173,7 +173,7 @@ impl MqttPublisher {
         Ok(())
     }
 
-    pub async fn publish_event(&self, device_name: &str, event: &crate::types::DeviceEvent) -> Result<()> {
+    pub async fn publish_event(&self, device_instance_id: &str, event: &crate::types::DeviceEvent) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -190,14 +190,14 @@ impl MqttPublisher {
                 org_id,
                 site_id,
                 namespace_id,
-                device_name,
+                device_instance_id,
                 event.name
             )
         } else {
             format!(
                 "{}/{}/events/{}",
                 self.config.topic_prefix.trim_end_matches('/'),
-                device_name,
+                device_instance_id,
                 event.name
             )
         };
@@ -218,7 +218,7 @@ impl MqttPublisher {
         Ok(())
     }
 
-    pub async fn publish_service_reply(&self, device_name: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
+    pub async fn publish_service_reply(&self, device_instance_id: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
         if !self.config.enabled || !self.connected {
             return Ok(());
         }
@@ -235,17 +235,18 @@ impl MqttPublisher {
                 org_id,
                 site_id,
                 namespace_id,
-                device_name
+                device_instance_id
             )
         } else {
             format!(
                 "{}/{}/service/reply",
                 self.config.topic_prefix.trim_end_matches('/'),
-                device_name
+                device_instance_id
             )
         };
 
         let payload = serde_json::to_string(reply)?;
+        tracing::debug!("Publishing service reply to topic: {}, payload: {}", topic, payload);
         if let Some(client) = &self.client {
             let client_guard = client.lock().await;
             let qos = match self.config.qos {
@@ -254,10 +255,9 @@ impl MqttPublisher {
                 2 => QoS::ExactlyOnce,
                 _ => QoS::AtLeastOnce,
             };
-            client_guard.publish(&topic, qos, false, payload.into_bytes()).await?;
-            tracing::trace!("Published service reply to MQTT: {}", topic);
+            client_guard.publish(&topic, qos, false, payload.clone()).await?;
+            tracing::debug!("Published service reply to MQTT topic: {}", topic);
         }
-
         Ok(())
     }
 
@@ -276,24 +276,24 @@ impl RemotePublisher for MqttPublisher {
         self.connect().await
     }
 
-    async fn publish(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
-        self.publish(device_name, data_point).await
+    async fn publish(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
+        self.publish(device_instance_id, data_point).await
     }
 
-    async fn publish_batch(&self, device_name: &str, data_points: &[DataPoint]) -> Result<()> {
-        self.publish_batch(device_name, data_points).await
+    async fn publish_batch(&self, device_instance_id: &str, data_points: &[DataPoint]) -> Result<()> {
+        self.publish_batch(device_instance_id, data_points).await
     }
 
-    async fn publish_write(&self, device_name: &str, data_point: &DataPoint) -> Result<()> {
-        self.publish_write(device_name, data_point).await
+    async fn publish_write(&self, device_instance_id: &str, data_point: &DataPoint) -> Result<()> {
+        self.publish_write(device_instance_id, data_point).await
     }
 
-    async fn publish_event(&self, device_name: &str, event: &crate::types::DeviceEvent) -> Result<()> {
-        self.publish_event(device_name, event).await
+    async fn publish_event(&self, device_instance_id: &str, event: &crate::types::DeviceEvent) -> Result<()> {
+        self.publish_event(device_instance_id, event).await
     }
 
-    async fn publish_service_reply(&self, device_name: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
-        self.publish_service_reply(device_name, reply).await
+    async fn publish_service_reply(&self, device_instance_id: &str, reply: &crate::device_core::ServiceResult) -> Result<()> {
+        self.publish_service_reply(device_instance_id, reply).await
     }
 
     fn enabled(&self) -> bool {
