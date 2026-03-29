@@ -47,10 +47,9 @@ impl MqttSubscriber {
 
         if let Some(receiver) = &self.service_receiver {
             let mut rx = receiver.lock().await;
-            match rx.try_recv() {
-                Ok(request) => Ok(Some(request)),
-                Err(mpsc::error::TryRecvError::Empty) => Ok(None),
-                Err(e) => Err(anyhow::anyhow!("MQTT service receive error: {}", e)),
+            match rx.recv().await {
+                Some(request) => Ok(Some(request)),
+                None => Ok(None),
             }
         } else {
             Ok(None)

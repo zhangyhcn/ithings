@@ -6,7 +6,7 @@ use crate::types::{DataPoint, DataValue, Quality};
 use anyhow::Result;
 use std::collections::HashMap;
 use std::sync::Arc;
-use tokio::sync::Mutex;
+use tokio::sync::{Mutex, mpsc};
 use tokio::time::{interval, Duration};
 use zmq::{Context, SUB};
 
@@ -18,6 +18,7 @@ pub struct DeviceManager {
     remote_publisher: Option<Arc<Mutex<Box<dyn RemotePublisher>>>>,
     zmq_subscriber: Option<Arc<std::sync::Mutex<zmq::Socket>>>,
     zmq_topic: String,
+    zmq_receiver: Option<Arc<Mutex<mpsc::Receiver<(String, Vec<DataPoint>)>>>>,
     mqtt_subscriber: Option<Arc<Mutex<MqttSubscriber>>>,
     service_registry: ServiceRegistry,
 }
@@ -30,6 +31,7 @@ impl DeviceManager {
             remote_publisher: None,
             zmq_subscriber: None,
             zmq_topic: String::new(),
+            zmq_receiver: None,
             mqtt_subscriber: None,
             service_registry: HashMap::new(),
         }
@@ -75,9 +77,53 @@ impl DeviceManager {
                 let socket = context.socket(SUB)?;
                 socket.set_subscribe(b"")?;
                 socket.connect(&connect_address)?;
+                socket.set_rcvtimeo(100).ok();
                 
-                self.zmq_subscriber = Some(Arc::new(std::sync::Mutex::new(socket)));
+                let (tx, rx) = mpsc::channel::<(String, Vec<DataPoint>)>(100);
+                let socket_arc = Arc::new(std::sync::Mutex::new(socket));
+                let topic_clone = topic.clone();
+                
+                let socket_for_task = Arc::clone(&socket_arc);
+                tokio::task::spawn_blocking(move || {
+                    loop {
+                        let sock = socket_for_task.lock().unwrap();
+                        let mut msg = zmq::Message::new();
+                        match sock.recv(&mut msg, 0) {
+                            Ok(_) => {
+                                let content = match msg.as_str() {
+                                    Some(s) => s,
+                                    None => continue,
+                                };
+                                let parts: Vec<&str> = content.splitn(2, ' ').collect();
+                                if parts.len() != 2 {
+                                    continue;
+                                }
+                                let msg_topic = parts[0];
+                                let payload = parts[1];
+                                
+                                if !msg_topic.starts_with(&topic_clone) {
+                                    continue;
+                                }
+                                
+                                let topic_parts: Vec<&str> = msg_topic.split('/').collect();
+                                if topic_parts.len() < 3 {
+                                    continue;
+                                }
+                                let device_id = topic_parts[2].to_string();
+                                
+                                if let Ok(data_point) = serde_json::from_str::<DataPoint>(payload) {
+                                    let _ = tx.blocking_send((device_id, vec![data_point]));
+                                }
+                            }
+                            Err(zmq::Error::EAGAIN) => {}
+                            Err(_) => break,
+                        }
+                    }
+                });
+                
+                self.zmq_subscriber = Some(socket_arc);
                 self.zmq_topic = topic;
+                self.zmq_receiver = Some(Arc::new(Mutex::new(rx)));
                 tracing::info!("ZMQ subscriber connected to router {} for topic '{}'", connect_address, self.zmq_topic);
             }
         }
@@ -383,14 +429,16 @@ impl DeviceManager {
         self.devices.is_empty()
     }
 
-    pub async fn start_reporting_loop(&self, report_interval_ms: u64) -> ! {
+    pub async fn start_reporting_loop(&self, report_interval_ms: u64) {
         let Some(remote_publisher_arc) = &self.remote_publisher else {
             tracing::info!("No remote publisher configured, reporting loop will not start");
-            std::future::pending().await
+            return;
         };
 
         let mut ticker = interval(Duration::from_millis(report_interval_ms));
         tracing::info!("Starting remote reporting loop with interval: {}ms", report_interval_ms);
+
+        let mqtt_enabled = self.mqtt_subscriber.is_some();
 
         loop {
             tokio::select! {
@@ -409,8 +457,15 @@ impl DeviceManager {
                     }
                 }
                 
-                data_result = self.receive_zmq_data() => {
-                    if let Ok(Some((device_id, data_points))) = data_result {
+                data_result = async {
+                    if let Some(rx_arc) = &self.zmq_receiver {
+                        let mut rx = rx_arc.lock().await;
+                        rx.recv().await
+                    } else {
+                        std::future::pending().await
+                    }
+                } => {
+                    if let Some((device_id, data_points)) = data_result {
                         if let Some(runtime) = self.devices.get(&device_id) {
                             for dp in &data_points {
                                 let json_value = self.datavalue_to_json(&dp.value);
@@ -423,7 +478,13 @@ impl DeviceManager {
                     }
                 }
                 
-                service_result = self.receive_service_call() => {
+                service_result = async {
+                    if !mqtt_enabled {
+                        std::future::pending().await
+                    } else {
+                        self.receive_service_call().await
+                    }
+                } => {
                     if let Ok(Some(request)) = service_result {
                         tracing::info!("Received service call: {} for device {}", request.service_id, request.msg_id);
                         for (_device_id, runtime) in &self.devices {
@@ -433,76 +494,22 @@ impl DeviceManager {
                         }
                     }
                 }
+                
+                _ = tokio::signal::ctrl_c() => {
+                    tracing::info!("Shutdown signal received in reporting loop");
+                    return;
+                }
             }
         }
     }
 
     async fn receive_service_call(&self) -> Result<Option<ServiceCallRequest>> {
         let Some(mqtt_sub_arc) = &self.mqtt_subscriber else {
-            tokio::time::sleep(Duration::from_millis(100)).await;
             return Ok(None);
         };
 
         let mqtt_sub = mqtt_sub_arc.lock().await;
         mqtt_sub.recv_service_call().await
-    }
-
-    async fn receive_zmq_data(&self) -> Result<Option<(String, Vec<DataPoint>)>> {
-        let Some(subscriber_arc) = &self.zmq_subscriber else {
-            tokio::time::sleep(Duration::from_millis(100)).await;
-            return Ok(None);
-        };
-
-        let zmq_topic = self.zmq_topic.clone();
-        let subscriber = Arc::clone(subscriber_arc);
-        
-        let result = tokio::task::spawn_blocking(move || {
-            let socket = subscriber.lock().unwrap();
-            socket.set_rcvtimeo(10).ok()?;
-            
-            let mut msg = zmq::Message::new();
-            match socket.recv(&mut msg, 0) {
-                Ok(_) => {
-                    let content = msg.as_str().unwrap_or("");
-                    tracing::debug!("ZMQ received raw: {}", &content[..content.len().min(200)]);
-                    let parts: Vec<&str> = content.splitn(2, ' ').collect();
-                    if parts.len() != 2 {
-                        tracing::warn!("ZMQ message format invalid, expected 'topic payload': {}", content.len());
-                        return Some(Err(anyhow::anyhow!("Invalid message format")));
-                    }
-                    
-                    let topic = parts[0];
-                    let payload = parts[1];
-                    
-                    if !topic.starts_with(&zmq_topic) {
-                        tracing::trace!("ZMQ topic mismatch: {} vs {}", topic, zmq_topic);
-                        return None;
-                    }
-                    
-                    let topic_parts: Vec<&str> = topic.split('/').collect();
-                    if topic_parts.len() < 3 {
-                        tracing::warn!("ZMQ topic format invalid: {}", topic);
-                        return None;
-                    }
-                    let device_id = topic_parts[2].to_string();
-                    
-                    match serde_json::from_str::<DataPoint>(payload) {
-                        Ok(data_point) => {
-                            tracing::info!("Received ZMQ data: device={}, {} = {:?}", device_id, data_point.name, data_point.value);
-                            Some(Ok((device_id, vec![data_point])))
-                        }
-                        Err(e) => {
-                            tracing::error!("Failed to parse ZMQ payload: {}", e);
-                            None
-                        }
-                    }
-                }
-                Err(zmq::Error::EAGAIN) => None,
-                Err(e) => Some(Err(anyhow::anyhow!("ZMQ recv error: {}", e))),
-            }
-        }).await?;
-        
-        result.transpose()
     }
 
     async fn collect_device_data(&self, runtime: &Arc<DeviceRuntime>, publisher: &tokio::sync::MutexGuard<'_, Box<dyn RemotePublisher>>) -> Result<()> {

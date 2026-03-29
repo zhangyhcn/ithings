@@ -49,7 +49,6 @@ async fn main() -> Result<()> {
         
         let default_report_interval = 5000;
         manager.start_reporting_loop(default_report_interval).await;
-        // start_reporting_loop is an infinite loop, so we never reach here
         
         Ok(())
     } else {
