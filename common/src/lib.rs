@@ -34,4 +34,5 @@ pub use device_core::{
     Rule, RuleCondition, RuleAction, ConditionLogic,
     StateMachine, State, Transition, StateMachineInstance, StateMachineContext,
     DeviceRuntime, DeviceTrait, BaseDevice,
+    DeviceBuilder, DeviceContext,
 };

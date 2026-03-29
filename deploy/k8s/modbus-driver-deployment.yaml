@@ -19,9 +19,9 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: modbus-driver
-        image: 172.17.0.1:30500/ithings/modbus-driver:latest
+        image: 172.17.0.1:30500/driver/modbus-driver:latest
         imagePullPolicy: IfNotPresent
-        args: ["-c", "/config/modbus.json"]
+        args: ["--configfile", "/config/modbus.json", "--loglevel", "info"]
         ports:
         - containerPort: 5555
           name: zmq

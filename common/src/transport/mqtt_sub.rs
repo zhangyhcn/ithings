@@ -8,6 +8,7 @@ use rumqttc::{AsyncClient, Event, MqttOptions, Packet, QoS};
 use tokio::sync::{mpsc, Mutex};
 use std::sync::Arc;
 use std::time::Duration;
+use std::collections::HashSet;
 
 pub struct MqttSubscriber {
     client: Option<Arc<Mutex<AsyncClient>>>,
@@ -15,7 +16,7 @@ pub struct MqttSubscriber {
     service_receiver: Option<Arc<Mutex<mpsc::Receiver<ServiceCallRequest>>>>,
     config: MqttConfig,
     connected: bool,
-    service_topic: Option<String>,
+    subscribed_topics: Arc<Mutex<HashSet<String>>>,
 }
 
 impl MqttSubscriber {
@@ -31,13 +32,8 @@ impl MqttSubscriber {
             service_receiver: None,
             config: config.clone(),
             connected: false,
-            service_topic: None,
+            subscribed_topics: Arc::new(Mutex::new(HashSet::new())),
         }))
-    }
-
-    pub fn with_service_topic(mut self, topic: String) -> Self {
-        self.service_topic = Some(topic);
-        self
     }
 
     pub async fn recv_service_call(&self) -> Result<Option<ServiceCallRequest>> {
@@ -47,9 +43,13 @@ impl MqttSubscriber {
 
         if let Some(receiver) = &self.service_receiver {
             let mut rx = receiver.lock().await;
-            match rx.recv().await {
-                Some(request) => Ok(Some(request)),
-                None => Ok(None),
+            match rx.try_recv() {
+                Ok(request) => {
+                    tracing::info!("Got service call from channel: msg_id={}", request.msg_id);
+                    Ok(Some(request))
+                }
+                Err(mpsc::error::TryRecvError::Empty) => Ok(None),
+                Err(e) => Err(anyhow::anyhow!("Service call receive error: {}", e)),
             }
         } else {
             Ok(None)
@@ -57,27 +57,31 @@ impl MqttSubscriber {
     }
 
     pub async fn subscribe_service_topic(&self, device_instance_id: &str) -> Result<()> {
+        let topic = if let (Some(tenant_id), Some(org_id), Some(site_id), Some(namespace_id)) = (
+            &self.config.tenant_id,
+            &self.config.org_id,
+            &self.config.site_id,
+            &self.config.namespace_id,
+        ) {
+            format!(
+                "/{}/{}/{}/{}/{}/service/call",
+                tenant_id, org_id, site_id, namespace_id, device_instance_id
+            )
+        } else {
+            format!("{}/{}/service/call", 
+                self.config.topic_prefix.trim_end_matches('/'),
+                device_instance_id)
+        };
+
         if let Some(client) = &self.client {
-            let topic = if let (Some(tenant_id), Some(org_id), Some(site_id), Some(namespace_id)) = (
-                &self.config.tenant_id,
-                &self.config.org_id,
-                &self.config.site_id,
-                &self.config.namespace_id,
-            ) {
-                format!(
-                    "/{}/{}/{}/{}/{}/service/call",
-                    tenant_id, org_id, site_id, namespace_id, device_instance_id
-                )
-            } else {
-                format!("{}/{}/service/call", 
-                    self.config.topic_prefix.trim_end_matches('/'),
-                    device_instance_id)
-            };
-            
             let client_guard = client.lock().await;
             client_guard.subscribe(&topic, QoS::AtLeastOnce).await?;
             tracing::info!("MQTT subscriber subscribed to service call topic: {}", topic);
         }
+
+        let mut topics = self.subscribed_topics.lock().await;
+        topics.insert(topic);
+        
         Ok(())
     }
 }
@@ -108,23 +112,29 @@ impl RemoteSubscriber for MqttSubscriber {
 
         let client_arc = Arc::new(Mutex::new(client));
         let client_clone = Arc::clone(&client_arc);
+        let client_for_struct = Arc::clone(&client_arc);
+        let topics_clone = Arc::clone(&self.subscribed_topics);
 
         tokio::spawn(async move {
             loop {
                 match eventloop.poll().await {
                     Ok(event) => {
+                        tracing::trace!("MQTT subscriber event: {:?}", event);
                         match event {
                             Event::Incoming(Packet::Publish(publish)) => {
                                 let topic = publish.topic.clone();
                                 let payload = &publish.payload;
-                                tracing::debug!("MQTT subscriber received message on topic: {}", topic);
+                                tracing::info!("MQTT subscriber received message on topic: {}", topic);
                                 
                                 if topic.ends_with("/service/call") {
-                                    tracing::debug!("Service call payload: {}", String::from_utf8_lossy(payload));
+                                    tracing::info!("Service call payload: {}", String::from_utf8_lossy(payload));
                                     if let Ok(request) = serde_json::from_slice::<ServiceCallRequest>(payload) {
                                         tracing::info!("Successfully parsed service call: msg_id={}, service_id={}", request.msg_id, request.service_id);
-                                        let _ = service_tx.send(request).await;
-                                        tracing::debug!("Received service call request on topic: {}", topic);
+                                        if let Err(e) = service_tx.send(request).await {
+                                            tracing::error!("Failed to send service call to channel: {}", e);
+                                        } else {
+                                            tracing::info!("Service call sent to channel successfully");
+                                        }
                                     } else {
                                         tracing::warn!("Failed to parse service call request from topic: {}", topic);
                                     }
@@ -135,7 +145,16 @@ impl RemoteSubscriber for MqttSubscriber {
                                 }
                             }
                             Event::Incoming(Packet::ConnAck(_)) => {
-                                tracing::info!("MQTT subscriber connected");
+                                tracing::info!("MQTT subscriber connected, resubscribing topics...");
+                                let topics = topics_clone.lock().await;
+                                let client = client_clone.lock().await;
+                                for topic in topics.iter() {
+                                    if let Err(e) = client.subscribe(topic, QoS::AtLeastOnce).await {
+                                        tracing::warn!("Failed to resubscribe topic {}: {}", topic, e);
+                                    } else {
+                                        tracing::info!("Resubscribed topic: {}", topic);
+                                    }
+                                }
                             }
                             _ => {}
                         }
@@ -148,7 +167,7 @@ impl RemoteSubscriber for MqttSubscriber {
             }
         });
 
-        self.client = Some(client_clone);
+        self.client = Some(client_for_struct);
         self.write_receiver = Some(Arc::new(Mutex::new(write_rx)));
         self.service_receiver = Some(Arc::new(Mutex::new(service_rx)));
         self.connected = true;

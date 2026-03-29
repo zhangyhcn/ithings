@@ -5,7 +5,9 @@ members = [
     "drivers/driver-core",
     "drivers/modbus",
     "drivers/zmq-router",
-    "devices/meter", "mes",
+    "devices/meter",
+    "devices/example",
+    "mes",
 ]
 resolver = "2"
 

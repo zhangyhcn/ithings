@@ -26,7 +26,7 @@ spec:
       - name: {{this.name}}
         image: {{this.image}}
         imagePullPolicy: Always
-        args: ["--configfile", "/config/config.json", "--group"]
+        args: ["--configfile", "/config/config.json", "--loglevel", "info"]
         volumeMounts:
         - name: device-config
           mountPath: /config
@@ -41,7 +41,7 @@ spec:
       - name: driver
         image: {{driver_image}}
         imagePullPolicy: Always
-        args: ["--configfile", "/config/config.json"]
+        args: ["--configfile", "/config/config.json", "--loglevel", "info"]
         volumeMounts:
         - name: device-config
           mountPath: /config

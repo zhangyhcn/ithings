@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: device-meter
-        image: 172.17.0.1:30500/ithings/device-meter:latest
+        image: 172.17.0.1:30500/device/device-meter:latest
         imagePullPolicy: IfNotPresent
-        args: ["-c", "/config/meter-config-integration.json"]
+        args: ["--configfile", "/config/config.json", "--loglevel", "info"]
         resources:
           requests:
             cpu: 100m

@@ -1,9 +1,7 @@
 use common::{
     DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
-    PublisherFactory, SubscriberFactory,
-    DriverClientFactory,
-    ThingModel, DeviceRuntime, ServiceParams, ServiceResult, PropertyValue,
-    Rule, StateMachine,
+    PropertyValue, ServiceParams, ServiceResult,
+    DeviceBuilder,
 };
 use driver_core::driver::{BaseDriver, Driver};
 use driver_core::config::DriverConfig;
@@ -15,7 +13,7 @@ use std::collections::HashMap;
 pub struct MeterDevice {
     base: BaseDriver,
     config: Option<DeviceConfig>,
-    runtime: Option<Arc<DeviceRuntime>>,
+    runtime: Option<Arc<common::DeviceRuntime>>,
 }
 
 impl Default for MeterDevice {
@@ -36,145 +34,20 @@ impl MeterDevice {
     pub async fn initialize_with_device_config(&mut self, config: DeviceConfig) -> Result<()> {
         tracing::info!("Initializing electricity meter device with thing model: {}", config.device_name);
         
-        let driver_config = DriverConfig {
-            driver_name: config.device_name.clone(),
-            driver_type: config.device_type.clone(),
-            device_instance_id: config.device_name.clone(),
-            poll_interval_ms: config.poll_interval_ms,
-            zmq: driver_core::config::ZmqConfig {
-                enabled: config.zmq.enabled,
-                publisher_address: String::new(),
-                topic: config.zmq.write_topic.clone(),
-                subscriber_enabled: config.zmq.enabled,
-                subscriber_address: String::new(),
-                write_topic: config.zmq.write_topic.clone(),
-                config_update_topic: config.zmq.config_update_topic.clone(),
-                high_water_mark: config.zmq.high_water_mark,
-                router_address: Some("tcp://localhost".to_string()),
-                router_sub_port: Some(5550),
-                router_pub_port: Some(5551),
-            },
-            logging: driver_core::config::LoggingConfig {
-                level: config.logging.level.clone(),
-                format: config.logging.format.clone(),
-            },
-            custom: config.custom.clone(),
-        };
+        let thing_model = DeviceBuilder::load_thing_model_from_config(&config)?;
         
-        self.base.initialize(driver_config.clone()).await?;
+        let runtime = DeviceBuilder::new(config.clone())
+            .with_thing_model(thing_model)
+            .with_service("test_write_property", Self::test_write_property)
+            .with_service("set_threshold", Self::set_threshold)
+            .build()
+            .await?;
 
-        tracing::debug!("Initializing publisher (MQTT/Kafka)");
-        let mut publisher = PublisherFactory::create(&config)?;
-        if let Some(ref mut p) = publisher {
-            if let Err(e) = p.connect().await {
-                tracing::error!("Failed to connect to publisher: {}", e);
-            } else {
-                tracing::info!("Connected to {} publisher", p.publisher_type());
-            }
-        }
-
-        tracing::debug!("Initializing subscriber (ZMQ/Kafka) for service calls");
-        let mut subscriber = SubscriberFactory::create(&config)?;
-        if let Some(ref mut s) = subscriber {
-            if let Err(e) = s.subscribe().await {
-                tracing::error!("Failed to subscribe: {}", e);
-            } else {
-                tracing::info!("Subscribed to {} subscriber", s.subscriber_type());
-            }
-        }
-
-        tracing::debug!("Initializing internal ZMQ subscriber for driver properties");
-        let internal_subscriber = common::transport::zmq_sub::ZmqSubscriber::new(&common::config::ZmqConfig {
-            enabled: config.zmq.enabled,
-            subscriber_address: config.zmq.subscriber_address.clone(),
-            write_topic: config.zmq.write_topic.clone(),
-            properties_topic: config.zmq.properties_topic.clone(),
-            ..Default::default()
-        })?;
-
-        tracing::debug!("Initializing driver client (sidecar mode)");
-        let driver_client = DriverClientFactory::create(&config)?;
-
-        tracing::debug!("Loading thing model from configuration");
-        let thing_model = self.load_thing_model(&config)?;
-
-        tracing::debug!("Validating thing model");
-        thing_model.validate().map_err(|e| anyhow::anyhow!(e))?;
-
-        tracing::info!("Thing model loaded: {} v{}", thing_model.model_id, thing_model.model_version);
-
-        let mut runtime = DeviceRuntime::new(thing_model, &config.device_name);
-
-        if let Some(publisher) = publisher {
-            runtime = runtime.with_publisher(publisher);
-        }
-
-        if let Some(subscriber) = subscriber {
-            runtime = runtime.with_subscriber(subscriber);
-        }
-
-        if let Some(internal_sub) = internal_subscriber {
-            runtime = runtime.with_internal_subscriber(internal_sub);
-        }
-
-        if let Some(client) = driver_client {
-            runtime = runtime.with_driver_client(client);
-        }
-
-        if let Some(rules) = self.load_rules(&config)? {
-             tracing::info!("Loaded {} rules", rules.len());
-             runtime = runtime.with_rules(rules);
-         }
-
-        if let Some(state_machine) = self.load_state_machine(&config)? {
-             tracing::info!("State machine configured");
-             runtime = runtime.with_state_machine(state_machine);
-         }
-
-        Self::register_test_services(&mut runtime);
-
-        let runtime_arc = Arc::new(runtime);
-        self.runtime = Some(runtime_arc);
+        self.runtime = Some(runtime);
         self.config = Some(config);
 
         tracing::info!("Electricity meter device initialized with thing model");
         Ok(())
-    }
-
-    fn load_thing_model(&self, config: &DeviceConfig) -> Result<ThingModel> {
-        if let Some(thing_model_path) = config.custom.get("thing_model_path") {
-            if let Some(path) = thing_model_path.as_str() {
-                tracing::info!("Loading thing model from file: {}", path);
-                return Ok(ThingModel::from_file(path)?);
-            }
-        }
-
-        if let Some(thing_model_json) = config.custom.get("thing_model") {
-            tracing::info!("Loading thing model from custom config JSON");
-            let thing_model: ThingModel = serde_json::from_value(thing_model_json.clone())?;
-            return Ok(thing_model);
-        }
-
-        tracing::warn!("No thing model configured, using default empty model");
-        Ok(ThingModel::default())
-    }
-
-    fn load_rules(&self, config: &DeviceConfig) -> Result<Option<Vec<Rule>>> {
-        if let Some(rules_json) = config.custom.get("rules") {
-            let rules: Vec<Rule> = serde_json::from_value(rules_json.clone())?;
-            Ok(Some(rules))
-        } else {
-            Ok(None)
-        }
-    }
-
-    fn load_state_machine(&self, config: &DeviceConfig) -> Result<Option<StateMachine>> {
-        if let Some(sm_json) = config.custom.get("state_machine") {
-            let sm: StateMachine = serde_json::from_value(sm_json.clone())?;
-            Ok(Some(sm))
-        } else {
-            Ok(None)
-        }
     }
 
     pub async fn poll_and_process(&self) -> Result<()> {
@@ -193,7 +66,7 @@ impl MeterDevice {
         Ok(())
     }
 
-    pub fn get_runtime(&self) -> Option<&Arc<DeviceRuntime>> {
+    pub fn get_runtime(&self) -> Option<&Arc<common::DeviceRuntime>> {
         self.runtime.as_ref()
     }
 
@@ -265,12 +138,6 @@ impl MeterDevice {
 
         tracing::info!("set_threshold completed successfully");
         ServiceResult::success(msg_id, service_id, result_data)
-    }
-
-    fn register_test_services(runtime: &mut DeviceRuntime) {
-        runtime.register_service("test_write_property", Self::test_write_property);
-        runtime.register_service("set_threshold", Self::set_threshold);
-        tracing::info!("Registered test services: test_write_property, set_threshold");
     }
 }
 
