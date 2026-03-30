@@ -1,0 +1,6 @@
+version: 0.1
+http:
+  addr: :5000
+  tls:
+    certificate: /certs/domain.crt
+    key: /certs/domain.key

@@ -98,4 +98,71 @@ impl EquipmentService {
 
         Ok(models.into_iter().map(Into::into).collect())
     }
+
+    pub async fn get_by_id(&self, tenant_id: Uuid, id: Uuid) -> Result<Option<EquipmentResponse>, AppError> {
+        let model = EquipmentEntity::find_by_id(id)
+            .filter(EquipmentColumn::TenantId.eq(tenant_id))
+            .one(&self.db)
+            .await?;
+
+        Ok(model.map(Into::into))
+    }
+
+    pub async fn update(
+        &self,
+        tenant_id: Uuid,
+        id: Uuid,
+        equipment_name: Option<String>,
+        equipment_type: Option<String>,
+        model: Option<String>,
+        manufacturer: Option<String>,
+        purchase_date: Option<String>,
+        workshop_id: Option<Uuid>,
+        ip_address: Option<String>,
+        status: Option<String>,
+    ) -> Result<EquipmentResponse, AppError> {
+        let equipment = EquipmentEntity::find_by_id(id)
+            .filter(EquipmentColumn::TenantId.eq(tenant_id))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| AppError::not_found("Equipment not found".to_string()))?;
+
+        let mut active_model: crate::entity::equipment::ActiveModel = equipment.into();
+        if let Some(name) = equipment_name {
+            active_model.equipment_name = Set(name);
+        }
+        if let Some(etype) = equipment_type {
+            active_model.equipment_type = Set(Some(etype));
+        }
+        if let Some(m) = model {
+            active_model.model = Set(Some(m));
+        }
+        if let Some(manu) = manufacturer {
+            active_model.manufacturer = Set(Some(manu));
+        }
+        if let Some(date) = purchase_date {
+            active_model.purchase_date = Set(chrono::NaiveDate::parse_from_str(&date, "%Y-%m-%d").ok());
+        }
+        if let Some(wid) = workshop_id {
+            active_model.workshop_id = Set(Some(wid));
+        }
+        if let Some(ip) = ip_address {
+            active_model.ip_address = Set(Some(ip));
+        }
+        if let Some(s) = status {
+            active_model.status = Set(s);
+        }
+        active_model.updated_at = Set(Utc::now().naive_utc());
+
+        let updated = active_model.update(&self.db).await?;
+        Ok(updated.into())
+    }
+
+    pub async fn delete(&self, tenant_id: Uuid, id: Uuid) -> Result<(), AppError> {
+        EquipmentEntity::delete_by_id(id)
+            .filter(EquipmentColumn::TenantId.eq(tenant_id))
+            .exec(&self.db)
+            .await?;
+        Ok(())
+    }
 }

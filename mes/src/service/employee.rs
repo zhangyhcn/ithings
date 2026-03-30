@@ -90,4 +90,63 @@ impl EmployeeService {
 
         Ok(models.into_iter().map(Into::into).collect())
     }
+
+    pub async fn get_by_id(&self, tenant_id: Uuid, id: Uuid) -> Result<Option<EmployeeResponse>, AppError> {
+        let model = EmployeeEntity::find_by_id(id)
+            .filter(EmployeeColumn::TenantId.eq(tenant_id))
+            .one(&self.db)
+            .await?;
+
+        Ok(model.map(Into::into))
+    }
+
+    pub async fn update(
+        &self,
+        tenant_id: Uuid,
+        id: Uuid,
+        name: Option<String>,
+        department_id: Option<Uuid>,
+        position: Option<String>,
+        phone: Option<String>,
+        entry_date: Option<String>,
+        status: Option<String>,
+    ) -> Result<EmployeeResponse, AppError> {
+        let employee = EmployeeEntity::find_by_id(id)
+            .filter(EmployeeColumn::TenantId.eq(tenant_id))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| AppError::not_found("Employee not found".to_string()))?;
+
+        let mut active_model: crate::entity::employee::ActiveModel = employee.into();
+        if let Some(n) = name {
+            active_model.name = Set(n);
+        }
+        if let Some(did) = department_id {
+            active_model.department_id = Set(Some(did));
+        }
+        if let Some(pos) = position {
+            active_model.position = Set(Some(pos));
+        }
+        if let Some(ph) = phone {
+            active_model.phone = Set(Some(ph));
+        }
+        if let Some(date) = entry_date {
+            active_model.entry_date = Set(chrono::NaiveDate::parse_from_str(&date, "%Y-%m-%d").ok());
+        }
+        if let Some(s) = status {
+            active_model.status = Set(s);
+        }
+        active_model.updated_at = Set(Utc::now().naive_utc());
+
+        let updated = active_model.update(&self.db).await?;
+        Ok(updated.into())
+    }
+
+    pub async fn delete(&self, tenant_id: Uuid, id: Uuid) -> Result<(), AppError> {
+        EmployeeEntity::delete_by_id(id)
+            .filter(EmployeeColumn::TenantId.eq(tenant_id))
+            .exec(&self.db)
+            .await?;
+        Ok(())
+    }
 }

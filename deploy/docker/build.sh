@@ -5,9 +5,12 @@ set -e
 
 REGISTRY_ADDR=172.17.0.1:30500
 
-# 本地编译
-echo "Building project locally..."
-cargo build --release
+# 本地编译（只编译需要发布的组件）
+echo "Building required components locally..."
+cargo build --release -p driver-modbus
+cargo build --release -p driver-bacnet
+cargo build --release -p device-meter
+cargo build --release -p zmq-router
 
 # 拷贝二进制到 Dockerfile 所在目录
 echo "Copying binaries to docker directory..."
