@@ -1,0 +1,23 @@
+pub mod supplier;
+pub mod purchase_order;
+pub mod material;
+pub mod warehouse;
+pub mod inventory;
+pub mod inbound_order;
+pub mod outbound_order;
+pub mod supplier_quotation;
+pub mod bidding;
+pub mod contract;
+pub mod stocktaking;
+
+pub use supplier::create_supplier_router;
+pub use purchase_order::create_purchase_order_router;
+pub use material::create_material_router;
+pub use warehouse::create_warehouse_router;
+pub use inventory::create_inventory_router;
+pub use inbound_order::create_inbound_order_router;
+pub use outbound_order::create_outbound_order_router;
+pub use supplier_quotation::create_supplier_quotation_router;
+pub use bidding::create_bidding_router;
+pub use contract::create_contract_router;
+pub use stocktaking::create_stocktaking_router;

@@ -1,0 +1,23 @@
+pub mod supplier;
+pub mod purchase_order;
+pub mod material;
+pub mod warehouse;
+pub mod inventory;
+pub mod inbound_order;
+pub mod outbound_order;
+pub mod supplier_quotation;
+pub mod bidding;
+pub mod contract;
+pub mod stocktaking;
+
+pub use supplier::SupplierService;
+pub use purchase_order::PurchaseOrderService;
+pub use material::MaterialService;
+pub use warehouse::WarehouseService;
+pub use inventory::InventoryService;
+pub use inbound_order::InboundOrderService;
+pub use outbound_order::OutboundOrderService;
+pub use supplier_quotation::SupplierQuotationService;
+pub use bidding::BiddingService;
+pub use contract::ContractService;
+pub use stocktaking::StocktakingService;

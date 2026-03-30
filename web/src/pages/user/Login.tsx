@@ -22,6 +22,17 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(data.user));
       if (data.user.tenant_id) {
         localStorage.setItem('tenant_id', data.user.tenant_id);
+        
+        // 获取租户下的第一个组织作为默认组织
+        try {
+          const { organizationApi } = await import('@/services/api');
+          const orgs = await organizationApi.list(data.user.tenant_id);
+          if (orgs && orgs.length > 0) {
+            localStorage.setItem('org_id', orgs[0].id);
+          }
+        } catch (error) {
+          console.error('Failed to fetch organizations:', error);
+        }
       }
       message.success('登录成功');
       navigate('/');
@@ -41,7 +52,7 @@ export default function Login() {
       background: '#f0f2f5',
     }}>
       <Card
-        title={<h2 style={{ textAlign: 'center', margin: 0 }}>物联网云平台</h2>}
+        title={<h2 style={{ textAlign: 'center', margin: 0 }}>智能制造平台</h2>}
         style={{ width: 400 }}
       >
         <Form

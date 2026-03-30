@@ -32,7 +32,7 @@ export default function SystemConfig() {
         layout="vertical"
         onFinish={onFinish}
         initialValues={{ 
-          site_name: '物联网云平台',
+          site_name: '智能制造平台',
           enable_registration: true,
           session_timeout: 24,
           max_login_attempts: 5,

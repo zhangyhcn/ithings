@@ -9,6 +9,8 @@ members = [
     "devices/meter",
     "devices/example",
     "mes",
+    "scm",
+    "finance",
 ]
 resolver = "2"
 

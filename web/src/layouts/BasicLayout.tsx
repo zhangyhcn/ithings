@@ -13,6 +13,38 @@ import {
   TeamOutlined,
   GlobalOutlined,
   ToolOutlined,
+  ShoppingCartOutlined,
+  LineChartOutlined,
+  AimOutlined,
+  BranchesOutlined,
+  CalculatorOutlined,
+  ShoppingOutlined,
+  DollarOutlined,
+  FileSearchOutlined,
+  SolutionOutlined,
+  FileTextOutlined,
+  FileDoneOutlined,
+  ContainerOutlined,
+  LoginOutlined,
+  LogoutOutlined as LogoutOutlinedIcon,
+  AuditOutlined,
+  SearchOutlined,
+  SwapOutlined,
+  RocketOutlined,
+  SendOutlined,
+  CarOutlined,
+  RollbackOutlined,
+  ImportOutlined,
+  ExportOutlined,
+  CheckCircleOutlined,
+  ScheduleOutlined,
+  BellOutlined,
+  AccountBookOutlined,
+  MoneyCollectOutlined,
+  FilePdfOutlined,
+  DatabaseOutlined,
+  AppstoreOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import { menuApi } from '@/services/api';
 import type { Menu as MenuType } from '@/types';
@@ -36,6 +68,38 @@ const iconMap: Record<string, React.ReactNode> = {
   SettingOutlined: <SettingOutlined />,
   GlobalOutlined: <GlobalOutlined />,
   ToolOutlined: <ToolOutlined />,
+  ShoppingCartOutlined: <ShoppingCartOutlined />,
+  LineChartOutlined: <LineChartOutlined />,
+  AimOutlined: <AimOutlined />,
+  BranchesOutlined: <BranchesOutlined />,
+  CalculatorOutlined: <CalculatorOutlined />,
+  ShoppingOutlined: <ShoppingOutlined />,
+  DollarOutlined: <DollarOutlined />,
+  FileSearchOutlined: <FileSearchOutlined />,
+  SolutionOutlined: <SolutionOutlined />,
+  FileTextOutlined: <FileTextOutlined />,
+  FileDoneOutlined: <FileDoneOutlined />,
+  ContainerOutlined: <ContainerOutlined />,
+  LoginOutlined: <LoginOutlined />,
+  LogoutOutlined: <LogoutOutlinedIcon />,
+  AuditOutlined: <AuditOutlined />,
+  SearchOutlined: <SearchOutlined />,
+  SwapOutlined: <SwapOutlined />,
+  RocketOutlined: <RocketOutlined />,
+  SendOutlined: <SendOutlined />,
+  CarOutlined: <CarOutlined />,
+  RollbackOutlined: <RollbackOutlined />,
+  ImportOutlined: <ImportOutlined />,
+  ExportOutlined: <ExportOutlined />,
+  CheckCircleOutlined: <CheckCircleOutlined />,
+  ScheduleOutlined: <ScheduleOutlined />,
+  BellOutlined: <BellOutlined />,
+  AccountBookOutlined: <AccountBookOutlined />,
+  MoneyCollectOutlined: <MoneyCollectOutlined />,
+  FilePdfOutlined: <FilePdfOutlined />,
+  DatabaseOutlined: <DatabaseOutlined />,
+  AppstoreOutlined: <AppstoreOutlined />,
+  HomeOutlined: <HomeOutlined />,
 };
 
 export default function BasicLayout() {
@@ -61,10 +125,15 @@ export default function BasicLayout() {
 
   useEffect(() => {
     setSelectedKeys([location.pathname]);
+    // 计算所有需要展开的父级路径
     const pathSegments = location.pathname.split('/').filter(Boolean);
-    if (pathSegments.length > 1) {
-      setOpenKeys([`/${pathSegments[0]}`]);
+    const newOpenKeys: string[] = [];
+    let currentPath = '';
+    for (let i = 0; i < pathSegments.length - 1; i++) {
+      currentPath += '/' + pathSegments[i];
+      newOpenKeys.push(currentPath);
     }
+    setOpenKeys(newOpenKeys);
   }, [location.pathname]);
 
   const loadMenus = async () => {
@@ -167,7 +236,7 @@ export default function BasicLayout() {
           fontSize: 18,
           fontWeight: 'bold',
         }}>
-          物联网云平台
+          智能制造平台
         </div>
         <Menu
           theme="dark"

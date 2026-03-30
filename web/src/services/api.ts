@@ -563,3 +563,177 @@ export const deviceApi = {
   delete: (tenantId: string, id: string) =>
     request.delete(`/tenants/${tenantId}/devices/${id}`),
 };
+
+// SCM 供应链管理 API
+export const scmApi = {
+  // 供应商管理
+  listSuppliers: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/suppliers`),
+  getSupplier: (tenantId: string, orgId: string, id: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/suppliers/${id}`),
+  createSupplier: (
+    tenantId: string,
+    orgId: string,
+    data: {
+      supplier_code: string;
+      supplier_name: string;
+      contact_person?: string;
+      contact_phone?: string;
+      contact_email?: string;
+      address?: string;
+      bank_name?: string;
+      bank_account?: string;
+      tax_number?: string;
+      supplier_type?: string;
+      credit_level?: string;
+      remarks?: string;
+    }
+  ) => request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/suppliers`, data),
+  updateSupplier: (
+    tenantId: string,
+    orgId: string,
+    id: string,
+    data: {
+      supplier_name?: string;
+      contact_person?: string;
+      contact_phone?: string;
+      contact_email?: string;
+      address?: string;
+      bank_name?: string;
+      bank_account?: string;
+      tax_number?: string;
+      supplier_type?: string;
+      credit_level?: string;
+      remarks?: string;
+      status?: string;
+    }
+  ) => request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/suppliers/${id}`, data),
+  deleteSupplier: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/suppliers/${id}`),
+
+  // 采购订单管理
+  listPurchaseOrders: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/purchase-orders`),
+  getPurchaseOrder: (tenantId: string, orgId: string, id: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/purchase-orders/${id}`),
+  createPurchaseOrder: (
+    tenantId: string,
+    orgId: string,
+    data: {
+      supplier_id: string;
+      order_date: string;
+      expected_delivery_date?: string;
+      payment_terms?: string;
+      delivery_address?: string;
+      contact_person?: string;
+      contact_phone?: string;
+      total_amount: number;
+      currency?: string;
+      remarks?: string;
+    }
+  ) => request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/purchase-orders`, data),
+  updatePurchaseOrder: (
+    tenantId: string,
+    orgId: string,
+    id: string,
+    data: {
+      expected_delivery_date?: string;
+      payment_terms?: string;
+      delivery_address?: string;
+      contact_person?: string;
+      contact_phone?: string;
+      total_amount?: number;
+      currency?: string;
+      remarks?: string;
+      status?: string;
+    }
+  ) => request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/purchase-orders/${id}`, data),
+  deletePurchaseOrder: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/purchase-orders/${id}`),
+
+  // 物料管理
+  listMaterials: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/materials`),
+  getMaterial: (tenantId: string, orgId: string, id: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/materials/${id}`),
+  createMaterial: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/materials`, data),
+  updateMaterial: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/materials/${id}`, data),
+  deleteMaterial: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/materials/${id}`),
+
+  // 仓库管理
+  listWarehouses: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/warehouses`),
+  getWarehouse: (tenantId: string, orgId: string, id: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/warehouses/${id}`),
+  createWarehouse: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/warehouses`, data),
+  updateWarehouse: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/warehouses/${id}`, data),
+  deleteWarehouse: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/warehouses/${id}`),
+
+  // 库存管理
+  listInventory: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/inventory`),
+  getInventory: (tenantId: string, orgId: string, id: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/inventory/${id}`),
+
+  // 入库管理
+  listInboundOrders: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/inbound-orders`),
+  createInboundOrder: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/inbound-orders`, data),
+  deleteInboundOrder: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/inbound-orders/${id}`),
+
+  // 出库管理
+  listOutboundOrders: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/outbound-orders`),
+  createOutboundOrder: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/outbound-orders`, data),
+  deleteOutboundOrder: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/outbound-orders/${id}`),
+
+  // 供应商报价
+  listQuotations: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/quotations`),
+  createQuotation: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/quotations`, data),
+  updateQuotation: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/quotations/${id}`, data),
+  deleteQuotation: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/quotations/${id}`),
+
+  // 招投标管理
+  listBiddings: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/biddings`),
+  createBidding: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/biddings`, data),
+  updateBidding: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/biddings/${id}`, data),
+  deleteBidding: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/biddings/${id}`),
+
+  // 采购合同
+  listContracts: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/contracts`),
+  createContract: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/contracts`, data),
+  updateContract: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/contracts/${id}`, data),
+  deleteContract: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/contracts/${id}`),
+
+  // 库存盘点
+  listStocktakings: (tenantId: string, orgId: string) =>
+    request.get(`/scm/tenants/${tenantId}/orgs/${orgId}/stocktakings`),
+  createStocktaking: (tenantId: string, orgId: string, data: any) =>
+    request.post(`/scm/tenants/${tenantId}/orgs/${orgId}/stocktakings`, data),
+  updateStocktaking: (tenantId: string, orgId: string, id: string, data: any) =>
+    request.put(`/scm/tenants/${tenantId}/orgs/${orgId}/stocktakings/${id}`, data),
+  deleteStocktaking: (tenantId: string, orgId: string, id: string) =>
+    request.delete(`/scm/tenants/${tenantId}/orgs/${orgId}/stocktakings/${id}`),
+};

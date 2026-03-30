@@ -270,7 +270,7 @@ export default function OrganizationList() {
             name="status"
             label="状态"
             valuePropName="checked"
-            initialValue={true}
+            initialValue="active"
             getValueFromEvent={(checked: boolean) => checked ? 'active' : 'inactive'}
             getValueProps={(value) => ({ checked: value === 'active' })}
           >

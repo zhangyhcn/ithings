@@ -483,7 +483,7 @@ impl MenuService {
                 i18n_key: Some("menu.device.product"),
             },
             DefaultMenu {
-                name: "驱动管理",
+                name: "镜像管理",
                 path: "/device/driver",
                 component: "@/pages/device/driver/List",
                 icon: Some("HddOutlined"),
@@ -525,6 +525,41 @@ impl MenuService {
                 status: "active",
                 roles: vec!["admin", "editor"],
                 i18n_key: Some("menu.device.device"),
+            },
+            // 供应链管理一级菜单
+            DefaultMenu {
+                name: "供应链管理",
+                path: "/scm",
+                component: "Layout",
+                icon: Some("ShoppingCartOutlined"),
+                parent_path: None,
+                sort_order: 6,
+                status: "active",
+                roles: vec!["admin", "editor"],
+                i18n_key: Some("menu.scm"),
+            },
+            // 供应链管理二级菜单
+            DefaultMenu {
+                name: "供应商管理",
+                path: "/scm/supplier",
+                component: "@/pages/scm/supplier/List",
+                icon: Some("TeamOutlined"),
+                parent_path: Some("/scm"),
+                sort_order: 1,
+                status: "active",
+                roles: vec!["admin", "editor"],
+                i18n_key: Some("menu.scm.supplier"),
+            },
+            DefaultMenu {
+                name: "采购订单",
+                path: "/scm/purchase-order",
+                component: "@/pages/scm/purchase-order/List",
+                icon: Some("FileTextOutlined"),
+                parent_path: Some("/scm"),
+                sort_order: 2,
+                status: "active",
+                roles: vec!["admin", "editor"],
+                i18n_key: Some("menu.scm.purchaseOrder"),
             },
         ];
 

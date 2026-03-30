@@ -1,0 +1,27 @@
+[package]
+name = "finance"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+axum = "0.7"
+sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros"] }
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+config = { workspace = true }
+validator = { version = "0.16", features = ["derive"] }
+sea-orm-migration = "0.12"
+async-trait = { workspace = true }
+rust_decimal = { version = "1.33", features = ["serde"] }
+tower-http = { version = "0.5", features = ["cors"] }
+rand = "0.8"
