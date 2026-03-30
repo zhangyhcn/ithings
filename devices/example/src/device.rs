@@ -1,17 +1,13 @@
 use common::{
-    DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
+    DeviceConfig,
     PropertyValue, ServiceParams, ServiceResult,
     DeviceBuilder,
 };
-use driver_core::driver::{BaseDriver, Driver};
-use driver_core::config::DriverConfig;
 use anyhow::Result;
-use async_trait::async_trait;
 use std::sync::Arc;
 use std::collections::HashMap;
 
 pub struct ExampleDevice {
-    base: BaseDriver,
     config: Option<DeviceConfig>,
     runtime: Option<Arc<common::DeviceRuntime>>,
 }
@@ -25,7 +21,6 @@ impl Default for ExampleDevice {
 impl ExampleDevice {
     pub fn new() -> Self {
         Self {
-            base: BaseDriver::new(),
             config: None,
             runtime: None,
         }
@@ -49,6 +44,14 @@ impl ExampleDevice {
         
         tracing::info!("Example device initialized successfully");
         Ok(())
+    }
+
+    pub fn get_runtime(&self) -> Option<&Arc<common::DeviceRuntime>> {
+        self.runtime.as_ref()
+    }
+
+    pub fn poll_interval_ms(&self) -> u64 {
+        self.config.as_ref().map(|c| c.poll_interval_ms).unwrap_or(1000)
     }
 
     pub fn echo_service(msg_id: &str, service_id: &str, params: ServiceParams) -> ServiceResult {
@@ -121,83 +124,5 @@ impl ExampleDevice {
         );
 
         ServiceResult::success(msg_id, service_id, result_data)
-    }
-}
-
-#[async_trait]
-impl Driver for ExampleDevice {
-    fn metadata(&self) -> DriverMetadata {
-        DriverMetadata {
-            name: "example-device".to_string(),
-            version: env!("CARGO_PKG_VERSION").to_string(),
-            driver_type: "example".to_string(),
-            description: "Example device driver demonstrating DeviceBuilder usage".to_string(),
-            author: "iThings Team".to_string(),
-            tags: vec!["example".to_string(), "demo".to_string()],
-        }
-    }
-
-    fn device_name(&self) -> Option<&str> {
-        self.config.as_ref().map(|c| c.device_name.as_str())
-    }
-
-    async fn initialize(&mut self, config: DriverConfig) -> Result<()> {
-        let device_config = DeviceConfig {
-            device_name: config.driver_name.clone(),
-            device_type: config.driver_type.clone(),
-            poll_interval_ms: config.poll_interval_ms,
-            zmq: common::config::ZmqConfig {
-                enabled: config.zmq.subscriber_enabled,
-                publisher_address: config.zmq.publisher_address.clone(),
-                topic: config.zmq.topic.clone(),
-                subscriber_enabled: config.zmq.subscriber_enabled,
-                subscriber_address: config.zmq.subscriber_address.clone(),
-                write_topic: config.zmq.write_topic.clone(),
-                config_update_topic: config.zmq.config_update_topic.clone(),
-                high_water_mark: config.zmq.high_water_mark,
-                ..Default::default()
-            },
-            mqtt: common::config::MqttConfig::default(),
-            kafka: common::config::KafkaConfig::default(),
-            driver: common::config::DriverClientConfig::default(),
-            logging: common::config::LoggingConfig {
-                level: config.logging.level.clone(),
-                format: config.logging.format.clone(),
-            },
-            custom: config.custom.clone(),
-        };
-        
-        self.initialize_with_device_config(device_config).await
-    }
-
-    async fn connect(&mut self) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.start().await?;
-        }
-        Ok(())
-    }
-
-    async fn disconnect(&mut self) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.stop().await?;
-        }
-        Ok(())
-    }
-
-    async fn read(&self) -> Result<Vec<DataPoint>> {
-        Ok(vec![])
-    }
-
-    async fn write(&self, _data_point: &DataPoint) -> Result<()> {
-        Ok(())
-    }
-
-    async fn status(&self) -> DriverStatus {
-        if let Some(runtime) = &self.runtime {
-            if runtime.is_running().await {
-                return DriverStatus::Running;
-            }
-        }
-        self.base.status().await
     }
 }

@@ -1,17 +1,13 @@
 use common::{
-    DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
+    DeviceConfig,
     PropertyValue, ServiceParams, ServiceResult,
     DeviceBuilder,
 };
-use driver_core::driver::{BaseDriver, Driver};
-use driver_core::config::DriverConfig;
 use anyhow::Result;
-use async_trait::async_trait;
 use std::sync::Arc;
 use std::collections::HashMap;
 
 pub struct MeterDevice {
-    base: BaseDriver,
     config: Option<DeviceConfig>,
     runtime: Option<Arc<common::DeviceRuntime>>,
 }
@@ -25,7 +21,6 @@ impl Default for MeterDevice {
 impl MeterDevice {
     pub fn new() -> Self {
         Self {
-            base: BaseDriver::new(),
             config: None,
             runtime: None,
         }
@@ -47,22 +42,6 @@ impl MeterDevice {
         self.config = Some(config);
 
         tracing::info!("Electricity meter device initialized with thing model");
-        Ok(())
-    }
-
-    pub async fn poll_and_process(&self) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.read_properties().await?;
-        }
-        Ok(())
-    }
-
-    pub async fn start_processing(&self, interval_ms: u64) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.start().await?;
-            runtime.start_processing_loop(interval_ms).await;
-            tracing::info!("Started processing loop with {}ms interval", interval_ms);
-        }
         Ok(())
     }
 
@@ -138,119 +117,5 @@ impl MeterDevice {
 
         tracing::info!("set_threshold completed successfully");
         ServiceResult::success(msg_id, service_id, result_data)
-    }
-}
-
-#[async_trait]
-impl Driver for MeterDevice {
-    fn metadata(&self) -> DriverMetadata {
-        DriverMetadata {
-            name: "meter-device".to_string(),
-            version: env!("CARGO_PKG_VERSION").to_string(),
-            driver_type: "electricity-meter".to_string(),
-            description: "Electricity meter device via Modbus RTU/TCP with thing model support".to_string(),
-            author: "iThings Team".to_string(),
-            tags: vec!["meter".to_string(), "electricity".to_string(), "modbus".to_string(), "thing-model".to_string()],
-        }
-    }
-
-    fn device_name(&self) -> Option<&str> {
-        self.config.as_ref().map(|c| c.device_name.as_str())
-    }
-
-    async fn initialize(&mut self, config: DriverConfig) -> Result<()> {
-        tracing::info!("Initializing electricity meter device (DriverConfig mode)");
-        
-        let device_config = DeviceConfig {
-            device_name: config.driver_name.clone(),
-            device_type: config.driver_type.clone(),
-            poll_interval_ms: config.poll_interval_ms,
-            zmq: common::config::ZmqConfig {
-                enabled: config.zmq.subscriber_enabled,
-                publisher_address: config.zmq.publisher_address.clone(),
-                topic: config.zmq.topic.clone(),
-                subscriber_enabled: config.zmq.subscriber_enabled,
-                subscriber_address: config.zmq.subscriber_address.clone(),
-                write_topic: config.zmq.write_topic.clone(),
-                config_update_topic: config.zmq.config_update_topic.clone(),
-                high_water_mark: config.zmq.high_water_mark,
-                ..Default::default()
-            },
-            mqtt: common::config::MqttConfig::default(),
-            kafka: common::config::KafkaConfig::default(),
-            driver: common::config::DriverClientConfig::default(),
-            logging: common::config::LoggingConfig {
-                level: config.logging.level.clone(),
-                format: config.logging.format.clone(),
-            },
-            custom: config.custom.clone(),
-        };
-        
-        self.initialize_with_device_config(device_config).await
-    }
-
-    async fn connect(&mut self) -> Result<()> {
-        tracing::info!("Meter device connected (sidecar mode, starting runtime)");
-        if let Some(runtime) = &self.runtime {
-            runtime.start().await?;
-        }
-        Ok(())
-    }
-
-    async fn disconnect(&mut self) -> Result<()> {
-        tracing::info!("Meter device disconnected, stopping runtime");
-        if let Some(runtime) = &self.runtime {
-            runtime.stop().await?;
-        }
-        Ok(())
-    }
-
-    async fn read(&self) -> Result<Vec<DataPoint>> {
-        self.poll_and_process().await?;
-
-        if let Some(runtime) = &self.runtime {
-            let values = runtime.get_all_property_values().await;
-            let mut data_points = Vec::new();
-
-            for (_, prop_value) in values {
-                let data_value = common::types::DataValue::from_json(&prop_value.value);
-                data_points.push(DataPoint {
-                    id: uuid::Uuid::new_v4().to_string(),
-                    name: prop_value.identifier,
-                    value: data_value,
-                    quality: common::types::Quality::Good,
-                    timestamp: chrono::Utc::now(),
-                    metadata: std::collections::HashMap::new(),
-                    units: None,
-                });
-            }
-
-            Ok(data_points)
-        } else {
-            Ok(vec![])
-        }
-    }
-
-    async fn write(&self, data_point: &DataPoint) -> Result<()> {
-        tracing::info!("Writing data point: {:?}", data_point);
-
-        if let Some(runtime) = &self.runtime {
-            let value = serde_json::to_value(&data_point.value)?;
-            runtime.set_property_value(&data_point.name, value).await?;
-        }
-
-        Ok(())
-    }
-
-    async fn status(&self) -> DriverStatus {
-        if let Some(runtime) = &self.runtime {
-            if runtime.is_running().await {
-                DriverStatus::Running
-            } else {
-                DriverStatus::Stopped
-            }
-        } else {
-            self.base.status().await
-        }
     }
 }

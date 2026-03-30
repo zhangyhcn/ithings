@@ -1,0 +1,95 @@
+{
+  "tenant_id": "your-tenant-id",
+  "org_id": "your-org-id",
+  "site_id": "your-site-id",
+  "namespace_id": "your-namespace-id",
+  "devices": [
+    {
+      "device_id": "bacnet-device-001",
+      "device_name": "BACnet Temperature Sensor",
+      "device_type": "bacnet",
+      "poll_interval_ms": 5000,
+      "driver": {
+        "driver_name": "bacnet-driver",
+        "driver_type": "bacnet",
+        "zmq": {
+          "enabled": true,
+          "router_address": "tcp://localhost",
+          "router_sub_port": 5550,
+          "router_pub_port": 5551,
+          "topic": "bacnet/data"
+        },
+        "logging": {
+          "level": "info",
+          "format": "json"
+        },
+        "custom": {
+          "host": "192.168.1.100",
+          "port": 47808,
+          "deviceId": 1234,
+          "profile": {
+            "name": "BACnet Temperature Sensor",
+            "description": "BACnet temperature sensor device",
+            "deviceCommands": [
+              {
+                "name": "read_temperature",
+                "deviceResources": [
+                  {
+                    "name": "temperature",
+                    "description": "Current temperature",
+                    "attributes": {
+                      "objectType": "analogInput",
+                      "objectIdentifier": 1,
+                      "propertyId": "presentValue",
+                      "dataType": "real"
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "units": "degreesCelsius"
+                      }
+                    }
+                  },
+                  {
+                    "name": "temperature_status",
+                    "description": "Temperature sensor status",
+                    "attributes": {
+                      "objectType": "binaryInput",
+                      "objectIdentifier": 10,
+                      "propertyId": "presentValue",
+                      "dataType": "bool"
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Boolean",
+                        "readWrite": "R"
+                      }
+                    }
+                  },
+                  {
+                    "name": "humidity",
+                    "description": "Current humidity",
+                    "attributes": {
+                      "objectType": "analogInput",
+                      "objectIdentifier": 2,
+                      "propertyId": "presentValue",
+                      "dataType": "real"
+                    },
+                    "properties": {
+                      "value": {
+                        "type": "Float32",
+                        "readWrite": "R",
+                        "units": "percent"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

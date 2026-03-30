@@ -12,6 +12,7 @@ cargo build --release
 # 拷贝二进制到 Dockerfile 所在目录
 echo "Copying binaries to docker directory..."
 cp target/release/modbus-driver deploy/docker/
+cp target/release/driver-bacnet deploy/docker/
 cp target/release/device-meter deploy/docker/
 cp target/release/zmq-router deploy/docker/
 
@@ -20,6 +21,9 @@ cp target/release/zmq-router deploy/docker/
 echo "Building modbus-driver image..."
 docker build -f deploy/docker/modbus-driver.Dockerfile -t $REGISTRY_ADDR/driver/modbus-driver:latest deploy/docker
 
+echo "Building bacnet-driver image..."
+docker build -f deploy/docker/bacnet-driver.Dockerfile -t $REGISTRY_ADDR/driver/bacnet-driver:latest deploy/docker
+
 echo "Building device-meter image..."
 docker build -f deploy/docker/device-meter.Dockerfile -t $REGISTRY_ADDR/device/device-meter:latest deploy/docker
 
@@ -27,16 +31,18 @@ echo "Building zmq-router image..."
 docker build -f deploy/docker/zmq-router.Dockerfile -t $REGISTRY_ADDR/infra/zmq-router:latest deploy/docker
 
 # 清理复制的二进制
-rm -f deploy/docker/modbus-driver deploy/docker/device-meter deploy/docker/zmq-router
+rm -f deploy/docker/modbus-driver deploy/docker/driver-bacnet deploy/docker/device-meter deploy/docker/zmq-router
 
 # 推送到本地 registry
 echo "Pushing images to registry..."
 docker push $REGISTRY_ADDR/driver/modbus-driver:latest
+docker push $REGISTRY_ADDR/driver/bacnet-driver:latest
 docker push $REGISTRY_ADDR/device/device-meter:latest
 docker push $REGISTRY_ADDR/infra/zmq-router:latest
 
 echo "Done!"
 echo "Images:"
 echo "  - $REGISTRY_ADDR/driver/modbus-driver:latest"
+echo "  - $REGISTRY_ADDR/driver/bacnet-driver:latest"
 echo "  - $REGISTRY_ADDR/device/device-meter:latest"
 echo "  - $REGISTRY_ADDR/infra/zmq-router:latest"

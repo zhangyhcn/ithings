@@ -9,9 +9,7 @@ path = "src/main.rs"
 
 [dependencies]
 common = { path = "../../common" }
-driver-core = { path = "../../drivers/driver-core" }
 anyhow = "1.0"
-async-trait = "0.1"
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = "0.3"

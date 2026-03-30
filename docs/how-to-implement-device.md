@@ -2,6 +2,26 @@
 
 本文档说明如何使用 `DeviceBuilder` 快速实现一个新的设备驱动。
 
+## 架构说明
+
+```
+┌─────────────────┐         ZMQ          ┌─────────────────┐
+│  device-xxx     │ ◄──────────────────► │  xxx-driver     │
+│  (设备应用层)    │      数据/配置        │  (硬件驱动层)    │
+│                 │                      │                 │
+│  DeviceBuilder  │                      │  Driver trait   │
+│  DeviceRuntime  │                      │  MultiDeviceDriver │
+└─────────────────┘                      └─────────────────┘
+        │                                        │
+        │ MQTT                                   │ 硬件协议
+        ▼                                        ▼
+   云平台/消息队列                           物理设备/PLC
+```
+
+**关键区别**：
+- **设备应用层** (device-xxx): 使用 `DeviceBuilder` + `DeviceRuntime`，不实现 `Driver` trait
+- **硬件驱动层** (xxx-driver): 实现 `Driver` trait，直接操作硬件
+
 ## 目录结构
 
 ```
@@ -22,11 +42,13 @@ name = "device-mydevice"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "device-mydevice"
+path = "src/main.rs"
+
 [dependencies]
 common = { path = "../../common" }
-driver-core = { path = "../../driver-core" }
 anyhow = "1.0"
-async-trait = "0.1"
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = "0.3"
@@ -40,19 +62,15 @@ uuid = { version = "1", features = ["v4"] }
 
 ```rust
 use common::{
-    DeviceConfig, DataPoint, DriverMetadata, DriverStatus,
+    DeviceConfig,
     PropertyValue, ServiceParams, ServiceResult,
     DeviceBuilder,
 };
-use driver_core::driver::{BaseDriver, Driver};
-use driver_core::config::DriverConfig;
 use anyhow::Result;
-use async_trait::async_trait;
 use std::sync::Arc;
 use std::collections::HashMap;
 
 pub struct MyDevice {
-    base: BaseDriver,
     config: Option<DeviceConfig>,
     runtime: Option<Arc<common::DeviceRuntime>>,
 }
@@ -66,7 +84,6 @@ impl Default for MyDevice {
 impl MyDevice {
     pub fn new() -> Self {
         Self {
-            base: BaseDriver::new(),
             config: None,
             runtime: None,
         }
@@ -92,6 +109,14 @@ impl MyDevice {
         Ok(())
     }
 
+    pub fn get_runtime(&self) -> Option<&Arc<common::DeviceRuntime>> {
+        self.runtime.as_ref()
+    }
+
+    pub fn poll_interval_ms(&self) -> u64 {
+        self.config.as_ref().map(|c| c.poll_interval_ms).unwrap_or(1000)
+    }
+
     // 服务处理函数示例
     pub fn my_service_handler(msg_id: &str, service_id: &str, params: ServiceParams) -> ServiceResult {
         tracing::info!("my_service called: msg_id={}, service_id={}", msg_id, service_id);
@@ -111,85 +136,6 @@ impl MyDevice {
         );
 
         ServiceResult::success(msg_id, service_id, result_data)
-    }
-}
-
-#[async_trait]
-impl Driver for MyDevice {
-    fn metadata(&self) -> DriverMetadata {
-        DriverMetadata {
-            name: "my-device".to_string(),
-            version: env!("CARGO_PKG_VERSION").to_string(),
-            driver_type: "my-device-type".to_string(),
-            description: "My custom device driver".to_string(),
-            author: "Your Name".to_string(),
-            tags: vec!["custom".to_string()],
-        }
-    }
-
-    fn device_name(&self) -> Option<&str> {
-        self.config.as_ref().map(|c| c.device_name.as_str())
-    }
-
-    async fn initialize(&mut self, config: DriverConfig) -> Result<()> {
-        // 从 DriverConfig 转换为 DeviceConfig
-        let device_config = DeviceConfig {
-            device_name: config.driver_name.clone(),
-            device_type: config.driver_type.clone(),
-            poll_interval_ms: config.poll_interval_ms,
-            zmq: common::config::ZmqConfig {
-                enabled: config.zmq.subscriber_enabled,
-                publisher_address: config.zmq.publisher_address.clone(),
-                topic: config.zmq.topic.clone(),
-                subscriber_enabled: config.zmq.subscriber_enabled,
-                subscriber_address: config.zmq.subscriber_address.clone(),
-                write_topic: config.zmq.write_topic.clone(),
-                config_update_topic: config.zmq.config_update_topic.clone(),
-                high_water_mark: config.zmq.high_water_mark,
-                ..Default::default()
-            },
-            mqtt: common::config::MqttConfig::default(),
-            kafka: common::config::KafkaConfig::default(),
-            driver: common::config::DriverClientConfig::default(),
-            logging: common::config::LoggingConfig {
-                level: config.logging.level.clone(),
-                format: config.logging.format.clone(),
-            },
-            custom: config.custom.clone(),
-        };
-        
-        self.initialize_with_device_config(device_config).await
-    }
-
-    async fn connect(&mut self) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.start().await?;
-        }
-        Ok(())
-    }
-
-    async fn disconnect(&mut self) -> Result<()> {
-        if let Some(runtime) = &self.runtime {
-            runtime.stop().await?;
-        }
-        Ok(())
-    }
-
-    async fn read(&self) -> Result<Vec<DataPoint>> {
-        Ok(vec![])
-    }
-
-    async fn write(&self, _data_point: &DataPoint) -> Result<()> {
-        Ok(())
-    }
-
-    async fn status(&self) -> DriverStatus {
-        if let Some(runtime) = &self.runtime {
-            if runtime.is_running().await {
-                return DriverStatus::Running;
-            }
-        }
-        self.base.status().await
     }
 }
 ```
@@ -382,3 +328,7 @@ cargo build --release -p device-mydevice
 # 运行
 ./target/release/device-mydevice --configfile config.json --loglevel info
 ```
+
+## 完整示例
+
+参考 `devices/example` 目录下的完整示例代码。

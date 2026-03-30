@@ -1,0 +1,23 @@
+[package]
+name = "driver-bacnet"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "driver-bacnet"
+path = "src/main.rs"
+
+[dependencies]
+driver-core = { path = "../driver-core" }
+common = { path = "../../common" }
+anyhow = "1.0"
+async-trait = "0.1"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = "0.3"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+uuid = { version = "1", features = ["v4"] }
+bytes = "1.0"

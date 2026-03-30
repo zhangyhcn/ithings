@@ -4,6 +4,7 @@ members = [
     "icloud",
     "drivers/driver-core",
     "drivers/modbus",
+    "drivers/bacnet",
     "drivers/zmq-router",
     "devices/meter",
     "devices/example",
